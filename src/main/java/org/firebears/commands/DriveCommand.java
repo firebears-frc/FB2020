@@ -10,35 +10,43 @@
 
 
 package org.firebears.commands;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 import org.firebears.Robot;
+import org.firebears.subsystems.Chassis;
+
 import edu.wpi.first.wpilibj.Preferences;
 
 /**
  *
  */
-public class DriveCommand extends Command {
+public class DriveCommand extends CommandBase {
   final Preferences config;
     int joystickSpeedAxis;
     int joystickRotateAxis;
     double adjust;
 
-    public DriveCommand() {
+    public DriveCommand(Chassis chassis) {
+      addRequirements(chassis);
       config = Preferences.getInstance();
         joystickSpeedAxis = config.getInt("joystick1.speedAxis", 1);
         joystickRotateAxis = config.getInt("joystick1.rotateAxis", 4);
         adjust = config.getDouble("driveCommand.deadBand", 0.1);
-        requires(Robot.chassis);
+        
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
+
+      // Could be a problem in the future, with adding requirements more than once.
+      // Could check if already added as a requirement in the future if this turns out to be a problem.
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
       double speed = -1 * Robot.oi.getXboxController().getRawAxis(joystickSpeedAxis);
 
       double rotation = Robot.oi.getXboxController().getRawAxis(joystickRotateAxis) * 0.7;
@@ -47,18 +55,14 @@ public class DriveCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
+  
 }
