@@ -23,7 +23,8 @@ public class Shooter extends SubsystemBase {
     static private final double PER_MINUTE_100_MS = 600.0;
 
 
-    
+    double targetVelocity = RPM * SENSOR_UNITS_PER_REV
+            / (PER_MINUTE_100_MS * GEAR_RATIO);
     
     // private final WPI_TalonSRX srx;
     private final TalonSRX srx;
@@ -54,8 +55,11 @@ public class Shooter extends SubsystemBase {
         int velocity = srx.getSelectedSensorVelocity(PID_LOOP_IDX);
         SmartDashboard.putNumber("Velocity", velocity);
         // velocity in units per 100 ms
-        double targetVelocity = RPM * SENSOR_UNITS_PER_REV
-            / (PER_MINUTE_100_MS * GEAR_RATIO);
         srx.set(ControlMode.Velocity, targetVelocity);
     }
+
+    public boolean isWheelSpunUp(){
+        return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
+    }
+
 }
