@@ -45,6 +45,7 @@ public class Storage extends SubsystemBase {
     eye3 = new DigitalInput(config.getInt("storage.eye3.dio", 8));
     eye4 = new DigitalInput(config.getInt("storage.eye4.dio", 9));
     eye5 = new DigitalInput(config.getInt("storage.eye5.dio", 10));
+
   }
 
   @Override
@@ -63,4 +64,8 @@ public class Storage extends SubsystemBase {
   public void stop(){
     indexMotor.set(0.0);
   }
+  public boolean getPositionSensor(){
+     return positionSensor.get();
+  }
+
 }
