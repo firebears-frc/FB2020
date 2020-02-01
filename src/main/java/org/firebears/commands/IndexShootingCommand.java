@@ -12,13 +12,12 @@ import org.firebears.Robot;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class IndexShootingCommand extends CommandBase {
-  
 
   private BallQueueCommand ballQueue;
   int ballsShot = 0;
 
   public IndexShootingCommand() {
-      addRequirements(Robot.storage, Robot.shooter);
+    addRequirements(Robot.storage, Robot.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +29,7 @@ public class IndexShootingCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Robot.shooter.isWheelSpunUp()){
+    if (Robot.shooter.isWheelSpunUp()) {
       ballQueue.schedule(false);
 
     }
@@ -44,9 +43,9 @@ public class IndexShootingCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (ballsShot == 5){
+    if (ballsShot == 5) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }

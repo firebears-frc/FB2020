@@ -29,14 +29,11 @@ public final class Config {
     protected final static String FLOAT = "^-?\\d+\\.\\d*F$";
     protected final static String DOUBLE = "^-?\\d+\\.\\d*D?$";
 
-    
-
     /**
      * Print out all key/value pairs in {@link Preferences}, with the keys in
      * alphabetical order.
      * 
-     * @param outStream
-     *            Outputstream, such as {@code System.out}.
+     * @param outStream Outputstream, such as {@code System.out}.
      */
     public static void printPreferences(PrintStream outStream) {
         final Preferences config = Preferences.getInstance();
@@ -65,9 +62,9 @@ public final class Config {
     }
 
     /**
-     * Remove all preferences from the robot and the network tables.
-     * Network table values can be really tenacious, and sometimes you just
-     * want to start with a clean slate.
+     * Remove all preferences from the robot and the network tables. Network table
+     * values can be really tenacious, and sometimes you just want to start with a
+     * clean slate.
      */
     public static void cleanAllPreferences() {
         final Preferences config = Preferences.getInstance();
@@ -82,8 +79,7 @@ public final class Config {
      * resources don't exist, print an error message and gracefully move to the next
      * file.
      * 
-     * @param fileNames
-     *            File names or resource names.
+     * @param fileNames File names or resource names.
      */
     public static void loadConfiguration(String... fileNames) {
         final Preferences config = Preferences.getInstance();

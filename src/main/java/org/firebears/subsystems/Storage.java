@@ -1,5 +1,4 @@
 
-
 package org.firebears.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -18,25 +17,23 @@ public class Storage extends SubsystemBase {
   private SpeedControllerGroup belts;
 
   private DigitalInput positionSensor;
-  private DigitalInput loadEye; 
+  private DigitalInput loadEye;
   private DigitalInput eye1;
   private DigitalInput eye2;
   private DigitalInput eye3;
   private DigitalInput eye4;
   private DigitalInput eye5;
-  
-  
 
   final Preferences config = Preferences.getInstance();
 
   public Storage() {
-    belt1Motor = new WPI_TalonSRX(config.getInt("storage.belt1Motor.canID", 16));  // PDP channel 0
-    belt2Motor = new WPI_TalonSRX(config.getInt("storage.belt2Motor.canID", 15));  // PDP channel 1
+    belt1Motor = new WPI_TalonSRX(config.getInt("storage.belt1Motor.canID", 16)); // PDP channel 0
+    belt2Motor = new WPI_TalonSRX(config.getInt("storage.belt2Motor.canID", 15)); // PDP channel 1
     belts = new SpeedControllerGroup(belt1Motor, belt2Motor);
 
     int indexMotorCanID = config.getInt("storage.indexMotor.canID", 14);
-        indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
-        indexMotor.setInverted(false);
+    indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
+    indexMotor.setInverted(false);
 
     positionSensor = new DigitalInput(config.getInt("storage.position.dio", 4));
     loadEye = new DigitalInput(config.getInt("storage.loadEye.dio", 5));
@@ -53,19 +50,20 @@ public class Storage extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void transfer(){
+  public void transfer() {
     belts.set(0.1);
   }
 
-  public void move(){
+  public void move() {
     indexMotor.set(0.1);
   }
 
-  public void stop(){
+  public void stop() {
     indexMotor.set(0.0);
   }
-  public boolean getPositionSensor(){
-     return positionSensor.get();
+
+  public boolean getPositionSensor() {
+    return positionSensor.get();
   }
 
 }

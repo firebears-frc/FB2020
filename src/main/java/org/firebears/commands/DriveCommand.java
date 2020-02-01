@@ -8,8 +8,8 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-
 package org.firebears.commands;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -23,46 +23,46 @@ import edu.wpi.first.wpilibj.Preferences;
  */
 public class DriveCommand extends CommandBase {
   final Preferences config;
-    int joystickSpeedAxis;
-    int joystickRotateAxis;
-    double adjust;
+  int joystickSpeedAxis;
+  int joystickRotateAxis;
+  double adjust;
 
-    public DriveCommand(Chassis chassis) {
-      addRequirements(chassis);
-      config = Preferences.getInstance();
-        joystickSpeedAxis = config.getInt("joystick1.speedAxis", 1);
-        joystickRotateAxis = config.getInt("joystick1.rotateAxis", 4);
-        adjust = config.getDouble("driveCommand.deadBand", 0.1);
-        
-    }
+  public DriveCommand(Chassis chassis) {
+    addRequirements(chassis);
+    config = Preferences.getInstance();
+    joystickSpeedAxis = config.getInt("joystick1.speedAxis", 1);
+    joystickRotateAxis = config.getInt("joystick1.rotateAxis", 4);
+    adjust = config.getDouble("driveCommand.deadBand", 0.1);
 
-    // Called just before this Command runs the first time
-    @Override
-    public void initialize() {
+  }
 
-      // Could be a problem in the future, with adding requirements more than once.
-      // Could check if already added as a requirement in the future if this turns out to be a problem.
-    }
+  // Called just before this Command runs the first time
+  @Override
+  public void initialize() {
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    public void execute() {
-      double speed = -1 * Robot.oi.getXboxController().getRawAxis(joystickSpeedAxis);
+    // Could be a problem in the future, with adding requirements more than once.
+    // Could check if already added as a requirement in the future if this turns out
+    // to be a problem.
+  }
 
-      double rotation = Robot.oi.getXboxController().getRawAxis(joystickRotateAxis) * 0.7;
-     Robot.chassis.drive((speed), (rotation));
-    }
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  public void execute() {
+    double speed = -1 * Robot.oi.getXboxController().getRawAxis(joystickSpeedAxis);
 
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+    double rotation = Robot.oi.getXboxController().getRawAxis(joystickRotateAxis) * 0.7;
+    Robot.chassis.drive((speed), (rotation));
+  }
 
-    // Called once after isFinished returns true
-    @Override
-    public void end(boolean interrupted) {
-    }
+  // Make this return true when this Command no longer needs to run execute()
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 
-  
+  // Called once after isFinished returns true
+  @Override
+  public void end(boolean interrupted) {
+  }
+
 }

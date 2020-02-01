@@ -2,10 +2,7 @@ package org.firebears.commands;
 
 import org.firebears.Robot;
 
-
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 
 public class BallQueueCommand extends CommandBase {
 
@@ -32,10 +29,10 @@ public class BallQueueCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    if (aligned = true){
+    if (aligned = true) {
       Robot.storage.stop();
       return true;
-    }else{
+    } else {
       return false;
     }
   }

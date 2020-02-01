@@ -22,10 +22,8 @@ public class Shooter extends SubsystemBase {
     static private final double GEAR_RATIO = 13.56;
     static private final double PER_MINUTE_100_MS = 600.0;
 
+    double targetVelocity = RPM * SENSOR_UNITS_PER_REV / (PER_MINUTE_100_MS * GEAR_RATIO);
 
-    double targetVelocity = RPM * SENSOR_UNITS_PER_REV
-            / (PER_MINUTE_100_MS * GEAR_RATIO);
-    
     // private final WPI_TalonSRX srx;
     private final TalonSRX srx;
 
@@ -33,9 +31,7 @@ public class Shooter extends SubsystemBase {
         super();
         srx = new TalonSRX(config.getInt("shooter.motor1", 12));
         srx.configFactoryDefault();
-        srx.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
-                                         PID_LOOP_IDX,
-                                         TIMEOUT_MS);
+        srx.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, PID_LOOP_IDX, TIMEOUT_MS);
         srx.setSensorPhase(true);
         // Configure nominal / peak outputs
         srx.configNominalOutputForward(0, TIMEOUT_MS);
@@ -58,7 +54,7 @@ public class Shooter extends SubsystemBase {
         srx.set(ControlMode.Velocity, targetVelocity);
     }
 
-    public boolean isWheelSpunUp(){
+    public boolean isWheelSpunUp() {
         return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
     }
 

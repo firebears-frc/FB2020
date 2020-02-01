@@ -30,8 +30,9 @@ public class LidarLite {
         REF_COUNT_VAL(0x12),
         /** Bypass peak detection threshold */
         THRESHOLD_BYPASSS(0x1C),
-        /** Delay between measurements (5 ms units)
-         *  when ACQ_CFG_MEASURE_DELAY is set */
+        /**
+         * Delay between measurements (5 ms units) when ACQ_CFG_MEASURE_DELAY is set
+         */
         MEASURE_DELAY(0x45);
 
         /** Register number */
@@ -129,10 +130,8 @@ public class LidarLite {
     /** Start continuous measurement */
     public boolean startContinuous() {
         return write(Register.MEASURE_DELAY, 10)
-            || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE |
-                                          ACQ_CFG_MEASURE_DELAY)
-            || write(Register.BURST_COUNT, BURST_COUNT_CONTINUOUS)
-            || write(Register.ACQ_COMMAND, ACQ_CMD_MEASURE);
+                || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE | ACQ_CFG_MEASURE_DELAY)
+                || write(Register.BURST_COUNT, BURST_COUNT_CONTINUOUS) || write(Register.ACQ_COMMAND, ACQ_CMD_MEASURE);
     }
 
     /** Stop continuous measurement */
