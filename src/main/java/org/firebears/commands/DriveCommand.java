@@ -1,16 +1,10 @@
 package org.firebears.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import org.firebears.Robot;
 import org.firebears.subsystems.Chassis;
-
 import edu.wpi.first.wpilibj.Preferences;
 
-/**
- *
- */
 public class DriveCommand extends CommandBase {
   final Preferences config;
   int joystickSpeedAxis;
@@ -26,13 +20,11 @@ public class DriveCommand extends CommandBase {
 
   }
 
-  
   @Override
   public void initialize() {
 
   }
 
-  
   @Override
   public void execute() {
     double speed = -1 * Robot.oi.getXboxController().getRawAxis(joystickSpeedAxis);
@@ -41,13 +33,11 @@ public class DriveCommand extends CommandBase {
     Robot.chassis.drive((speed), (rotation));
   }
 
-  
   @Override
   public boolean isFinished() {
     return false;
   }
 
-  
   @Override
   public void end(boolean interrupted) {
   }

@@ -3,16 +3,14 @@ package org.firebears.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import org.firebears.commands.*;
 import org.firebears.util.PIDSparkMotor;
 
 public class Chassis extends SubsystemBase {
-    
+
     private final CANSparkMax rearRight;
     private final CANSparkMax frontRight;
     private final CANSparkMax frontLeft;
@@ -75,12 +73,12 @@ public class Chassis extends SubsystemBase {
 
     }
 
-    public double averageDistance(){
+    public double averageDistance() {
         double conversionFactor = config.getDouble("chassis.ticksToFeetConversionFactor", 0);
         return ((frontRightEncoder.getPosition() + frontLeftEncoder.getPosition()) * conversionFactor) / 2;
     }
 
-    public double rotation(){
+    public double rotation() {
         double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
         return ((frontRightEncoder.getPosition() - frontLeftEncoder.getPosition()) * rotationConversionFactor);
     }
