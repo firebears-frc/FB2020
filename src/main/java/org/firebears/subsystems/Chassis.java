@@ -75,6 +75,16 @@ public class Chassis extends SubsystemBase {
 
     }
 
+    public double averageDistance(){
+        double conversionFactor = config.getDouble("chassis.ticksToFeetConversionFactor", 0);
+        return ((frontRightEncoder.getPosition() + frontLeftEncoder.getPosition()) * conversionFactor) / 2;
+    }
+
+    public double rotation(){
+        double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
+        return ((frontRightEncoder.getPosition() - frontLeftEncoder.getPosition()) * rotationConversionFactor);
+    }
+
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed, rotation);
     }
