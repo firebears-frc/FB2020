@@ -17,7 +17,7 @@ public class Acquisition extends SubsystemBase {
     private final CANSparkMax spin;
 
     public Acquisition() {
-        int acquisitionLowerCanID = config.getInt("acquisition.lower.canID", 2);
+        int acquisitionLowerCanID = config.getInt("acquisition.lower.canID", 8);
         lower = new CANSparkMax(acquisitionLowerCanID, MotorType.kBrushless);
         lower.setInverted(false);
 
