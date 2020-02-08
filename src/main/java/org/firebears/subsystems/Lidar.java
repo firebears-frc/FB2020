@@ -1,26 +1,25 @@
 package org.firebears.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import org.firebears.sensors.LidarLite;
-
 import edu.wpi.first.wpilibj.MedianFilter;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.firebears.sensors.LidarLite;
 
 public class Lidar extends SubsystemBase {
 
-
-
     private double distance = 0;
-    private int status = 0;
-    public double getDistance(){
+
+    /** Get distance in cm */
+    public double getDistance() {
         return distance;
     }
-    
+
+    private int status = 0;
+
+    /** Get status flags */
+    public int getStatus() {
+        return status;
+    }
 
     /** Thread for I2C communication */
     private final Thread i2c_thread = new Thread() {
@@ -49,4 +48,4 @@ public class Lidar extends SubsystemBase {
         super();
         i2c_thread.start();
     }
- }     
+ }
