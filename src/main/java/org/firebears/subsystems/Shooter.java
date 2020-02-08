@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Shooter extends SubsystemBase {
 
-    static final Preferences config = Preferences.getInstance();
+    static private final Preferences config = Preferences.getInstance();
 
     static private final int PID_LOOP_IDX = 0;
     static private final int TIMEOUT_MS = config.getInt("shooter.timeout", 30);
@@ -24,7 +24,6 @@ public class Shooter extends SubsystemBase {
 
     double targetVelocity = RPM * SENSOR_UNITS_PER_REV / (PER_MINUTE_100_MS * GEAR_RATIO);
 
-    // private final WPI_TalonSRX srx;
     private final TalonSRX srx;
 
     public Shooter() {
@@ -57,5 +56,4 @@ public class Shooter extends SubsystemBase {
     public boolean isWheelSpunUp() {
         return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
     }
-
 }
