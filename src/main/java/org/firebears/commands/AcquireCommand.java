@@ -9,14 +9,11 @@ import org.firebears.Robot;
  */
 public class AcquireCommand extends CommandBase {
 
-    
     public AcquireCommand() {
         addRequirements(Robot.acquisition);
 
-        
     }
 
-    
     @Override
     public void initialize() {
     }

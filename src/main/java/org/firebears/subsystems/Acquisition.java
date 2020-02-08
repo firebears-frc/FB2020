@@ -11,37 +11,37 @@ public class Acquisition extends SubsystemBase {
     static final Preferences config = Preferences.getInstance();
 
     /** Motor to lower acquisition system */
-    private final CANSparkMax lower;
+    private final CANSparkMax lowerMotor;
 
     /** Motor to spin the stars */
-    private final CANSparkMax spin;
+    private final CANSparkMax spinMotor;
 
     public Acquisition() {
-        int acquisitionLowerCanID = config.getInt("acquisition.lower.canID", 8);
-        lower = new CANSparkMax(acquisitionLowerCanID, MotorType.kBrushless);
-        lower.setInverted(false);
+        int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 8);
+        lowerMotor = new CANSparkMax(acquisitionLowerMotorCanID, MotorType.kBrushless);
+        lowerMotor.setInverted(false);
 
-        int acquisitionSpinCanID = config.getInt("acquisition.spin.canID", 6);
-        spin = new CANSparkMax(acquisitionSpinCanID, MotorType.kBrushless);
-        spin.setInverted(false);
+        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 6);
+        spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
+        spinMotor.setInverted(false);
     }
 
     /** Periodic update */
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("lowerSpeed", lower.get());
-        SmartDashboard.putNumber("spinSpeed", spin.get());
+        SmartDashboard.putNumber("lowerMotorSpeed", lowerMotor.get());
+        SmartDashboard.putNumber("spinMotorSpeed", spinMotor.get());
     }
 
     /** Start acquiring power cells */
     public void startAcquire() {
-        lower.set(1);
-        spin.set(1);
+        lowerMotor.set(1);
+        spinMotor.set(1);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
-        lower.set(-1);
-        spin.set(0);
+        lowerMotor.set(-1);
+        spinMotor.set(0);
     }
 }
