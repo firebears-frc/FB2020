@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         chassis = new Chassis();
-        acquisition = new Acquisition();
+        //acquisition = new Acquisition();
         shooter = new Shooter();
         climber = new Climber();
         vision = new Vision();
