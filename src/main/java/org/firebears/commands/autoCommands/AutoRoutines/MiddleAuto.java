@@ -15,7 +15,7 @@ public class MiddleAuto extends SequentialCommandGroup {
    */
   public MiddleAuto(Chassis chassis, Shooter shooter) {
     addCommands(
-      new DriveStraightCommand(-1.0),
+      new DriveStraightCommand(1.0),
       new TurnToAngleCommand(90.0),
       new DriveStraightCommand(10),
       new TurnToAngleCommand(0.0)

@@ -22,7 +22,7 @@ public class NoShootAuto extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveStraightCommand(-1.0)
+      new DriveStraightCommand(1.0)
       //add shoot command here
     );
   }

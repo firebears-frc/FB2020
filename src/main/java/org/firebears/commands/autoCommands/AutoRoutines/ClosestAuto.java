@@ -15,7 +15,7 @@ public class ClosestAuto extends SequentialCommandGroup {
    */
   public ClosestAuto(Chassis chassis, Shooter shooter) {
     addCommands(
-      new DriveStraightCommand(-1.0)
+      new DriveStraightCommand(1.0)
       //add shoot command here
     );
   }

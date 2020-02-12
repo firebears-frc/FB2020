@@ -2,6 +2,7 @@
 
 package org.firebears.commands.autoCommands.AutoRoutines;
 
+import org.firebears.Robot;
 import org.firebears.commands.autoCommands.*;
 import org.firebears.subsystems.*;
 
@@ -16,9 +17,9 @@ public class FarthestAuto extends SequentialCommandGroup {
    */
   public FarthestAuto(Chassis chassis, Shooter shooter) {
     addCommands(
-      new DriveStraightCommand(-1.0),
+      new DriveStraightCommand(1.0),
       new TurnToAngleCommand(90.0),
-      new DriveStraightCommand(12.604),
+      new DriveStraightCommand(.604),
       new TurnToAngleCommand(0.0)
       //add shoot command here
     );
