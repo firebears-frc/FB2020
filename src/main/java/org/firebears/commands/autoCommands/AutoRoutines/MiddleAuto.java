@@ -1,6 +1,8 @@
 //Starting position 15 Roberts from our trench wall to closest robot edge
 
 package org.firebears.commands.autoCommands.AutoRoutines;
+import org.firebears.commands.autoCommands.*;
+import org.firebears.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -11,9 +13,13 @@ public class MiddleAuto extends SequentialCommandGroup {
   /**
    * Creates a new MiddleAuto.
    */
-  public MiddleAuto() {
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    super();
+  public MiddleAuto(Chassis chassis, Shooter shooter) {
+    addCommands(
+      new DriveStraightCommand(-1.0),
+      new TurnToAngleCommand(90.0),
+      new DriveStraightCommand(10),
+      new TurnToAngleCommand(0.0)
+      //add shoot command here
+    );
   }
 }

@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 package org.firebears.commands.autoCommands.AutoRoutines;
+import org.firebears.commands.autoCommands.*;
+import org.firebears.subsystems.*;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -16,9 +18,12 @@ public class NoShootAuto extends SequentialCommandGroup {
   /**
    * Creates a new NoShootAuto.
    */
-  public NoShootAuto() {
+  public NoShootAuto(Chassis chassis, Shooter shooter) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super();
+    addCommands(
+      new DriveStraightCommand(-1.0)
+      //add shoot command here
+    );
   }
 }
