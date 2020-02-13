@@ -6,11 +6,15 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.firebears.commands.*;
 import org.firebears.util.PIDSparkMotor;
 
 public class Chassis extends SubsystemBase {
+
+    static private final ShuffleboardTab tab = Shuffleboard.getTab("Chassis");
 
     private final Preferences config = Preferences.getInstance();
 
@@ -23,8 +27,11 @@ public class Chassis extends SubsystemBase {
     private final DifferentialDrive robotDrive;
     private final CANEncoder frontRightEncoder;
     private final CANEncoder frontLeftEncoder;
+    private final long dashDelay;
+    private long dashTimeout;
 
     public Chassis() {
+        CANError err;
         double stallLimit = config.getDouble("chassis.stallLimit", 25.0);
         double freeLimit = config.getDouble("chassis.freeLimit", 65.0);
         double limitRPM = config.getDouble("chassis.limitRPM", 1000.0);
@@ -39,7 +46,8 @@ public class Chassis extends SubsystemBase {
         int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
         int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 4);
         int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
-        CANError err;
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay;
 
         frontRight = new CANSparkMax(chassisFrontRightCanID, MotorType.kBrushless);
         frontRight.setInverted(false);
@@ -85,7 +93,14 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            SmartDashboard.putNumber("frontLeft temp", frontLeft.getMotorTemperature());
+            SmartDashboard.putNumber("rearLeft temp", rearLeft.getMotorTemperature());
+            SmartDashboard.putNumber("frontRight temp", frontRight.getMotorTemperature());
+            SmartDashboard.putNumber("rearRight temp", rearRight.getMotorTemperature());
+            dashTimeout = now + dashDelay;
+        }
     }
 
     public double averageDistance() {
