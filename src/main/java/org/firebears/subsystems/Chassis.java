@@ -1,6 +1,7 @@
 package org.firebears.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Preferences;
@@ -38,10 +39,13 @@ public class Chassis extends SubsystemBase {
         int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
         int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 4);
         int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
+        CANError err;
 
         frontRight = new CANSparkMax(chassisFrontRightCanID, MotorType.kBrushless);
         frontRight.setInverted(false);
-        frontRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        err = frontRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on frontRight");
         frontRightEncoder = frontRight.getEncoder();
 
         pidFrontRight = new PIDSparkMotor(frontRight, kP, kI, kD);
@@ -51,12 +55,16 @@ public class Chassis extends SubsystemBase {
 
         rearRight = new CANSparkMax(chassisRearRightCanID, MotorType.kBrushless);
         rearRight.setInverted(false);
-        rearRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        err = rearRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on rearRight");
         rearRight.follow(frontRight);
 
         frontLeft = new CANSparkMax(chassisFrontLeftCanID, MotorType.kBrushless);
         frontLeft.setInverted(false);
-        frontLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        err = frontLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on frontLeft");
         frontLeftEncoder = frontLeft.getEncoder();
         pidFrontLeft = new PIDSparkMotor(frontLeft, kP, kI, kD);
         pidFrontLeft.setClosedLoop(closedLoop);
@@ -64,7 +72,9 @@ public class Chassis extends SubsystemBase {
 
         rearLeft = new CANSparkMax(chassisRearLeftCanID, MotorType.kBrushless);
         rearLeft.setInverted(false);
-        rearLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        err = rearLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on rearLeft");
         rearLeft.follow(frontLeft);
 
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
