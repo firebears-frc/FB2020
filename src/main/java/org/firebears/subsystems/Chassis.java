@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.firebears.commands.*;
 import org.firebears.util.PIDSparkMotor;
@@ -32,9 +33,9 @@ public class Chassis extends SubsystemBase {
 
     public Chassis() {
         CANError err;
-        double stallLimit = config.getDouble("chassis.stallLimit", 25.0);
-        double freeLimit = config.getDouble("chassis.freeLimit", 65.0);
-        double limitRPM = config.getDouble("chassis.limitRPM", 1000.0);
+        int stallLimit = config.getInt("chassis.stallLimit", 25);
+        int freeLimit = config.getInt("chassis.freeLimit", 65);
+        int limitRPM = config.getInt("chassis.limitRPM", 1000);
         double kP = config.getDouble("chassis.p", 0.00015);
         double kI = config.getDouble("chassis.i", 0.0);
         double kD = config.getDouble("chassis.d", 0.0);
