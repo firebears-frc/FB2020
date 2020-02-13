@@ -33,8 +33,8 @@ public class Chassis extends SubsystemBase {
 
     public Chassis() {
         CANError err;
-        int stallLimit = config.getInt("chassis.stallLimit", 25);
-        int freeLimit = config.getInt("chassis.freeLimit", 65);
+        int stallLimit = config.getInt("chassis.stallLimit", 65);
+        int freeLimit = config.getInt("chassis.freeLimit", 20);
         int limitRPM = config.getInt("chassis.limitRPM", 1000);
         double kP = config.getDouble("chassis.p", 0.00015);
         double kI = config.getDouble("chassis.i", 0.0);
