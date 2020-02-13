@@ -11,19 +11,22 @@ import org.firebears.util.PIDSparkMotor;
 
 public class Chassis extends SubsystemBase {
 
-    private final CANSparkMax rearRight;
+    private final Preferences config = Preferences.getInstance();
+
     private final CANSparkMax frontRight;
+    private final CANSparkMax rearRight;
     private final CANSparkMax frontLeft;
     private final CANSparkMax rearLeft;
-    public final PIDSparkMotor pidFrontRight;
-    public final PIDSparkMotor pidFrontLeft;
+    private final PIDSparkMotor pidFrontRight;
+    private final PIDSparkMotor pidFrontLeft;
     private final DifferentialDrive robotDrive;
     private final CANEncoder frontRightEncoder;
     private final CANEncoder frontLeftEncoder;
 
-    private final Preferences config = Preferences.getInstance();
-
     public Chassis() {
+        double stallLimit = config.getDouble("chassis.stallLimit", 25.0);
+        double freeLimit = config.getDouble("chassis.freeLimit", 65.0);
+        double limitRPM = config.getDouble("chassis.limitRPM", 1000.0);
         double kP = config.getDouble("chassis.p", 0.00015);
         double kI = config.getDouble("chassis.i", 0.0);
         double kD = config.getDouble("chassis.d", 0.0);
@@ -31,35 +34,37 @@ public class Chassis extends SubsystemBase {
         double kI2 = config.getDouble("chassis.secondary.i", 0.0);
         double kD2 = config.getDouble("chassis.secondary.d", 0.0);
         boolean closedLoop = config.getBoolean("chassis.closedLoop", false);
-        // navXUsePitchAngle = config.getBoolean("chassis.navXUsePitchAngle", true);
-        // navXPitchOffset = config.getDouble("chassis.navXPitchOffset", 5.0);
-
-        int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
-        rearRight = new CANSparkMax(chassisRearRightCanID, MotorType.kBrushless);
-        rearRight.setInverted(false);
-
         int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 3);
+        int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
+        int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 4);
+        int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
+
         frontRight = new CANSparkMax(chassisFrontRightCanID, MotorType.kBrushless);
         frontRight.setInverted(false);
+        frontRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         frontRightEncoder = frontRight.getEncoder();
+
         pidFrontRight = new PIDSparkMotor(frontRight, kP, kI, kD);
         pidFrontRight.setClosedLoop(closedLoop);
         pidFrontRight.setInvertEncoder(true);
         pidFrontRight.setSecondaryPID(kP2, kI2, kD2);
 
+        rearRight = new CANSparkMax(chassisRearRightCanID, MotorType.kBrushless);
+        rearRight.setInverted(false);
+        rearRight.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         rearRight.follow(frontRight);
 
-        int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 4);
         frontLeft = new CANSparkMax(chassisFrontLeftCanID, MotorType.kBrushless);
         frontLeft.setInverted(false);
+        frontLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         frontLeftEncoder = frontLeft.getEncoder();
         pidFrontLeft = new PIDSparkMotor(frontLeft, kP, kI, kD);
         pidFrontLeft.setClosedLoop(closedLoop);
+        pidFrontLeft.setInvertEncoder(false);
 
-        int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
         rearLeft = new CANSparkMax(chassisRearLeftCanID, MotorType.kBrushless);
         rearLeft.setInverted(false);
-
+        rearLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         rearLeft.follow(frontLeft);
 
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
