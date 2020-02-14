@@ -117,15 +117,15 @@ public class Chassis extends SubsystemBase {
             rearRightTemp.setNumber(rearRight.getMotorTemperature());
             dashTimeout = now + dashDelay;
         }
-        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kLeft)) > 0.5)
-        {
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kLeft)) < 0.5)
+            direction = 1;
+        else
             direction = -1;
-        }
 
-        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kRight)) > 0.5)
-        {
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kRight)) < 0.5)
+            pace = 1.0;
+        else
             pace = 0.5;
-        }
     }
 
     public double averageDistance() {
@@ -141,8 +141,4 @@ public class Chassis extends SubsystemBase {
     public void drive(double speed, double rotation) {
         robotDrive.arcadeDrive(speed * direction * pace, rotation * direction * pace);
     }
-
-   // public void invert() {
-      //  direction *= -1;
-   // }
 }
