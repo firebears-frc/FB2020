@@ -73,6 +73,20 @@ public class LidarLite {
     static public final int STATUS_REFERENCE_OVERFLOW = 1 << 1;
     static public final int STATUS_BUSY = 1 << 0;
 
+    /** Get errors as a string */
+    static public String getErrors(int status) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(", ");
+        if (status & STATUS_SYSTEM_ERR)
+            sb.append("System err, ");
+        if (status & STATUS_HEALTH_OK == 0)
+            sb.append("Health err, ");
+        if (status & STATUS_INVALID_SIGNAL)
+            sb.append("Invalid signal, ");
+        sb.setLength(sb.length() - 2);
+        return sb.toString();
+    }
+
     /** Acquisition commands (ACQ_COMMAND) */
     static private final byte ACQ_CMD_RESET = 0x00;
     static private final byte ACQ_CMD_MEASURE_NO_BIAS = 0x03;
@@ -133,8 +147,9 @@ public class LidarLite {
     /** Start continuous measurement */
     public boolean startContinuous() {
         return write(Register.MEASURE_DELAY, 10)
-                || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE | ACQ_CFG_MEASURE_DELAY)
-                || write(Register.BURST_COUNT, BURST_COUNT_CONTINUOUS) || write(Register.ACQ_COMMAND, ACQ_CMD_MEASURE);
+            || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE | ACQ_CFG_MEASURE_DELAY)
+            || write(Register.BURST_COUNT, BURST_COUNT_CONTINUOUS)
+            || write(Register.ACQ_COMMAND, ACQ_CMD_MEASURE);
     }
 
     /** Stop continuous measurement */

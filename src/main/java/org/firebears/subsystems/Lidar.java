@@ -1,25 +1,12 @@
 package org.firebears.subsystems;
 
 import edu.wpi.first.wpilibj.MedianFilter;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.firebears.sensors.LidarLite;
 
 public class Lidar extends SubsystemBase {
-
-    private double distance = 0;
-
-    /** Get distance in cm */
-    public double getDistance() {
-        return distance;
-    }
-
-    private int status = 0;
-
-    /** Get status flags */
-    public int getStatus() {
-        return status;
-    }
 
     /** Thread for I2C communication */
     private final Thread i2c_thread = new Thread() {
@@ -34,6 +21,7 @@ public class Lidar extends SubsystemBase {
                     if (d >= 0) {
                         distance = mfilter.calculate(d);
                     } else {
+                        distance = -1;
                         mfilter.reset();
                         break;
                     }
@@ -44,8 +32,46 @@ public class Lidar extends SubsystemBase {
         }
     };
 
+    /** Distance in cm */
+    private double distance = -1;
+
+    /** Get distance in cm */
+    public double getDistance() {
+        return distance;
+    }
+
+    /** Status flags */
+    private int status = 0;
+
+    /** Get status flags */
+    public int getStatus() {
+        return status;
+    }
+
+    private final Preferences config = Preferences.getInstance();
+    private final long dashDelay;
+    private long dashTimeout = 50;
+
+    private final ShuffleboardTab tab = Shuffleboard.getTab("Lidar");
+    private final NetworkTableEntry errorWidget;
+    private final NetworkTableEntry distanceWidget;
+
     public Lidar() {
-        super();
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay;
+        errorWidget = tab.add("errors", "").withPosition(0, 0).getEntry();
+        distanceWidget = tab.add("distance", 0).withPosition(1, 0)
+            .withSize(3, 3).getEntry();
         i2c_thread.start();
+    }
+
+    @Override
+    public void periodic() {
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            errorWidget.setString(LidarLite.getErrors(status));
+            distanceWidget.setNumber(distance);
+            dashTimeout = now + dashDelay;
+        }
     }
  }

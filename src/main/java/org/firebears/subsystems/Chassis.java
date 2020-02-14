@@ -30,7 +30,7 @@ public class Chassis extends SubsystemBase {
     private final CANEncoder frontLeftEncoder;
     private final CANEncoder frontRightEncoder;
     private final long dashDelay;
-    private long dashTimeout;
+    private long dashTimeout = 0;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Chassis");
     private final NetworkTableEntry frontLeftTemp;
