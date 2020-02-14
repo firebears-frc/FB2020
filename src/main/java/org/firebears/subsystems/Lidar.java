@@ -53,7 +53,7 @@ public class Lidar extends SubsystemBase {
 
     private final Preferences config = Preferences.getInstance();
     private final long dashDelay;
-    private long dashTimeout = 50;
+    private long dashTimeout;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Lidar");
     private final NetworkTableEntry errorWidget;
@@ -61,7 +61,7 @@ public class Lidar extends SubsystemBase {
 
     public Lidar() {
         dashDelay = config.getLong("dashDelay", 250);
-        dashTimeout = System.currentTimeMillis() + dashDelay;
+        dashTimeout = System.currentTimeMillis() + dashDelay + 100;
         errorWidget = tab.add("errors", "").withPosition(0, 0).getEntry();
         distanceWidget = tab.add("distance", 0).withPosition(1, 0)
             .withSize(3, 3).getEntry();
