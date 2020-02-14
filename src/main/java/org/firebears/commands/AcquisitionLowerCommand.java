@@ -7,10 +7,10 @@ import org.firebears.Robot;
 /**
  *
  */
-public class AcquireCommand extends CommandBase {
+public class AcquisitionLowerCommand extends CommandBase {
 
-    public AcquireCommand() {
-        addRequirements(Robot.acquisition);
+    public AcquisitionLowerCommand() {
+        addRequirements(Robot.acquisition, Robot.storage);
 
     }
 
@@ -21,6 +21,7 @@ public class AcquireCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.acquisition.startAcquire();
+        Robot.storage.transfer();
     }
 
     @Override

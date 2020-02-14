@@ -6,10 +6,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.firebears.Robot;
 import org.firebears.commands.*;
 import org.firebears.util.PIDSparkMotor;
 
@@ -34,6 +37,9 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry rearLeftTemp;
     private final NetworkTableEntry frontRightTemp;
     private final NetworkTableEntry rearRightTemp;
+
+    private double direction = 1.0;
+    private double pace = 1.0;
 
     public Chassis() {
         CANError err;
@@ -111,6 +117,15 @@ public class Chassis extends SubsystemBase {
             rearRightTemp.setNumber(rearRight.getMotorTemperature());
             dashTimeout = now + dashDelay;
         }
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kLeft)) > 0.5)
+        {
+            direction = -1;
+        }
+
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kRight)) > 0.5)
+        {
+            pace = 0.5;
+        }
     }
 
     public double averageDistance() {
@@ -124,6 +139,10 @@ public class Chassis extends SubsystemBase {
     }
 
     public void drive(double speed, double rotation) {
-        robotDrive.arcadeDrive(speed, rotation);
+        robotDrive.arcadeDrive(speed * direction * pace, rotation * direction * pace);
     }
+
+   // public void invert() {
+      //  direction *= -1;
+   // }
 }

@@ -7,23 +7,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.firebears.Robot;
 
 
-public class UnacquireCommand extends CommandBase {
+public class AcquisitionRaiseCommand extends CommandBase {
 
-    
-
-    
-
-    
-    public UnacquireCommand() {
-        addRequirements(Robot.acquisition);
-
-        
-        
-
-        
-        
-
-        
+    public AcquisitionRaiseCommand() {
+        addRequirements(Robot.acquisition, Robot.storage);
     }
 
     
@@ -35,8 +22,8 @@ public class UnacquireCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.acquisition.endAcquire();
+        Robot.storage.beltStop();
     }
-
     
     @Override
     public boolean isFinished() {

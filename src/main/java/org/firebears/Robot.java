@@ -17,7 +17,8 @@ public class Robot extends TimedRobot {
     public static Chassis chassis;
     public static Acquisition acquisition;
     public static Shooter shooter;
-    public static Climber climber;
+    public static ClimberRight climberRight;
+    public static ClimberLeft climberLeft;
     public static Vision vision;
     public static Storage storage;
 
@@ -27,7 +28,8 @@ public class Robot extends TimedRobot {
         chassis = new Chassis();
         // acquisition = new Acquisition();
         shooter = new Shooter();
-        climber = new Climber();
+        climberRight = new ClimberRight();
+        climberLeft = new ClimberLeft();
         vision = new Vision();
 
         CommandScheduler.getInstance().registerSubsystem(vision);

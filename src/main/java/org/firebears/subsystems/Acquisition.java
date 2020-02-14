@@ -42,13 +42,17 @@ public class Acquisition extends SubsystemBase {
 
     /** Start acquiring power cells */
     public void startAcquire() {
-        lowerMotor.set(1);
-        spinMotor.set(1);
+        lowerMotor.set(1.0);
+        spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
-        lowerMotor.set(-1);
+        lowerMotor.set(-1.0);
         spinMotor.set(0);
+    }
+
+    public void starReverse(){
+        spinMotor.set(-1.0);
     }
 }

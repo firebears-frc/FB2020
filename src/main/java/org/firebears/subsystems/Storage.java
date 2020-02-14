@@ -50,7 +50,17 @@ public class Storage extends SubsystemBase {
   }
 
   public void transfer() {
-    belts.set(0.1);
+    belts.set(0.5);
+  }
+
+  public void beltStop()
+  {
+    belts.set(0);
+  }
+
+  public void beltReverse()
+  {
+    belts.set(-0.5);
   }
 
   public void move() {
