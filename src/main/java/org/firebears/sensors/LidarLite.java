@@ -103,8 +103,11 @@ public class LidarLite {
     static private final int ACQ_CFG_MODE_DELAY_PWN = 0x02;
     static private final int ACQ_CFG_MODE_OSCILLATOR = 0x03;
 
-    /** Offset of distance readings */
-    static private final int DISTANCE_OFFSET = 962;
+    /** Offset of distance readings (962 for broken lidar) */
+    static private final int DISTANCE_OFFSET = 0;
+
+    /** Maximum distance of 1.5 m */
+    static private final int DISTANCE_MAX = 1500;
 
     /** Write a value to a register */
     private boolean write(Register reg, int value) {
@@ -147,15 +150,14 @@ public class LidarLite {
     /** Get a distance measurement */
     public int getDistance() {
         int d = readShort(Register.DISTANCE_MSB);
+        if (d >= DISTANCE_OFFSET)
+            d -= DISTANCE_OFFSET;
         if (d < 0)
             return d;
-        else if (d >= DISTANCE_OFFSET)
-            return d - DISTANCE_OFFSET;
-        else {
-            // Some error codes: 1, 210, 217-222, 232,
-            // 234, 236, 237, 769, 773 ???
-            System.err.println("Error reading distance: " + d);
+        else if (d >= DISTANCE_MAX) {
+            System.err.println("Invalid distance: " + d);
             return -2;
-        }
+        } else
+            return d;
     }
 }
