@@ -29,6 +29,7 @@ public class Chassis extends SubsystemBase {
     private final DifferentialDrive robotDrive;
     private final CANEncoder frontLeftEncoder;
     private final CANEncoder frontRightEncoder;
+    private final double ticksPerFoot;
     private final long dashDelay;
     private long dashTimeout = 0;
 
@@ -57,6 +58,8 @@ public class Chassis extends SubsystemBase {
         int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
         int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 3);
         int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
+
+        ticksPerFoot = config.getDouble("chassis.ticksPerFoot", 5.3388);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay;
@@ -128,14 +131,24 @@ public class Chassis extends SubsystemBase {
             pace = 0.5;
     }
 
+    /** Get left distance in ticks */
+    private double ticksLeft() {
+        return frontLeftEncoder.getPosition();
+    }
+
+    /** Get right distance in ticks */
+    private double ticksRight() {
+        return frontRightEncoder.getPosition();
+    }
+
+    /** Get average distance in feet */
     public double averageDistance() {
-        double conversionFactor = config.getDouble("chassis.ticksToFeetConversionFactor", 0);
-        return ((frontRightEncoder.getPosition() + frontLeftEncoder.getPosition()) * conversionFactor) / 2;
+        return ticksPerFoot * (ticksLeft() + ticksRight()) / 2.0;
     }
 
     public double rotation() {
         double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
-        return ((frontRightEncoder.getPosition() - frontLeftEncoder.getPosition()) * rotationConversionFactor);
+        return (ticksRight() - ticksLeft()) * rotationConversionFactor;
     }
 
     public void drive(double speed, double rotation) {
