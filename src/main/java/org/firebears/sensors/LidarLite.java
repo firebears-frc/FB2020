@@ -77,11 +77,11 @@ public class LidarLite {
     static public String getErrors(int status) {
         StringBuilder sb = new StringBuilder();
         sb.append(", ");
-        if (status & STATUS_SYSTEM_ERR)
+        if ((status & STATUS_SYSTEM_ERR) != 0)
             sb.append("System err, ");
-        if (status & STATUS_HEALTH_OK == 0)
+        if ((status & STATUS_HEALTH_OK) == 0)
             sb.append("Health err, ");
-        if (status & STATUS_INVALID_SIGNAL)
+        if ((status & STATUS_INVALID_SIGNAL) != 0)
             sb.append("Invalid signal, ");
         sb.setLength(sb.length() - 2);
         return sb.toString();
