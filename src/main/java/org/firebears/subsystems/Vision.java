@@ -1,70 +1,72 @@
 package org.firebears.subsystems;
 
-//import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision extends SubsystemBase {
 
-    NetworkTable visionTargetTable;
+    private static final String TABLE_NAME = "visionTarget";
 
-    public static final String VISION_TARGET_TABLE_NAME = "visionTarget";
+    /** Horizontal angle in degrees to the target */
+    private static final String ANGLE_X = TABLE_NAME + ".angleX";
 
-    /** Horizontal angle in degrees to the target. */
-    public static final String VISION_TARGET_ANGLE_X = "visionTarget.angleX";
+    /** Vertical angle in degrees to the target */
+    private static final String ANGLE_Y = TABLE_NAME + ".angleY";
 
-    /** Vertical angle in degrees to the target. */
-    public static final String VISION_TARGET_ANGLE_Y = "visionTarget.angleY";
+    /** Confidence that we see a valid target, in the range 0.0 to 1.0 */
+    private static final String CONFIDENCE = TABLE_NAME + ".confidence";
 
-    /** Confidence that we see a valid target, in the range 0.0 to 1.0. */
-    public static final String VISION_TARGET_CONFIDENCE = "visionTarget.confidence";
+    private final Preferences config = Preferences.getInstance();
 
-    /** Number of vision target pairs */
-    public static final String VISION_TARGET_PAIRS = "visionTarget.pairs";
+    private final NetworkTable table;
 
-    /** Processing throughout in frames per second. */
-    public static final String VISION_TARGET_FPS = "visionTarget.fps";
+    private final long dashDelay;
+    private long dashTimeout;
 
-    public static final String VISION_TARGET_SAVE_IMAGE_TIME = "visionTarget.saveImageTime";
+    private final ShuffleboardTab tab = Shuffleboard.getTab("Vision");
+    private final NetworkTableEntry angleX;
+    private final NetworkTableEntry angleY;
+    private final NetworkTableEntry confidence;
 
     public Vision() {
-        visionTargetTable = NetworkTableInstance.getDefault().getTable(VISION_TARGET_TABLE_NAME);
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay + 50;
+        table = NetworkTableInstance.getDefault().getTable(TABLE_NAME);
+        angleX = tab.add(ANGLE_X, 0).withPosition(0, 0).getEntry();
+        angleY = tab.add(ANGLE_Y, 0).withPosition(1, 0).getEntry();
+        confidence = tab.add(CONFIDENCE, 0).withPosition(0, 1).getEntry();
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber(VISION_TARGET_ANGLE_X, getVisionTargetAngleX());
-        SmartDashboard.putNumber(VISION_TARGET_CONFIDENCE, getVisionTargetConfidence());
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            angleX.setNumber(getTargetAngleX());
+            angleY.setNumber(getTargetAngleY());
+            confidence.setNumber(getTargetConfidence());
+            dashTimeout = now + dashDelay;
+        }
     }
 
-    public double getVisionTargetAngleX() {
-        return visionTargetTable.getEntry(VISION_TARGET_ANGLE_X).getDouble(0);
+    public double getTargetAngleX() {
+        return table.getEntry(ANGLE_X).getDouble(0);
     }
 
-    public double getVisionTargetAngleY() {
-        return visionTargetTable.getEntry(VISION_TARGET_ANGLE_Y).getDouble(0);
+    public double getTargetAngleY() {
+        return table.getEntry(ANGLE_Y).getDouble(0);
     }
 
-    public double getVisionTargetConfidence() {
-        return visionTargetTable.getEntry(VISION_TARGET_CONFIDENCE).getDouble(0);
+    public double getTargetConfidence() {
+        return table.getEntry(CONFIDENCE).getDouble(0);
     }
 
-    public double getVisionTargetPairs() {
-        return visionTargetTable.getEntry(VISION_TARGET_PAIRS).getDouble(0);
-    }
-
-    public double getVisionTargetFPS() {
-        return visionTargetTable.getEntry(VISION_TARGET_PAIRS).getDouble(0);
-    }
-
-    public void setVisionTargetSaveImageTime(double miliSeconds) {
-        visionTargetTable.getEntry(VISION_TARGET_SAVE_IMAGE_TIME).setNumber(miliSeconds);
-    }
-
-    public boolean getVisionTargetConfidenceBoolean() {
-        if (getVisionTargetConfidence() == 1) {
+    public boolean getTargetConfidenceBoolean() {
+        if (getTargetConfidence() >= 1.0) {
             return true;
         } else {
             return false;
