@@ -2,7 +2,6 @@
 
 package org.firebears.commands.autoCommands.AutoRoutines;
 
-import org.firebears.Robot;
 import org.firebears.commands.autoCommands.*;
 import org.firebears.subsystems.*;
 
