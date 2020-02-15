@@ -57,4 +57,19 @@ public class Storage extends SubsystemBase {
     public boolean getPositionSensor() {
         return positionSensor.get();
     }
+
+    public int getPowerCellCount() {
+        int count = 0;
+        if (eye1.get()) 
+            count ++; 
+        if (eye2.get()) 
+            count ++; 
+        if (eye3.get()) 
+            count ++; 
+        if (eye4.get()) 
+            count ++; 
+        if (eye5.get()) 
+            count ++;
+        return count;
+    }
 }

@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class IndexShootingCommand extends CommandBase {
 
   private BallQueueCommand ballQueue;
-  int ballsShot = 0;
 
   public IndexShootingCommand() {
     addRequirements(Robot.storage, Robot.shooter);
@@ -24,6 +23,7 @@ public class IndexShootingCommand extends CommandBase {
   @Override
   public void initialize() {
     ballQueue = new BallQueueCommand();
+    Robot.lights.shoot(true);
   }
 
   
@@ -43,10 +43,6 @@ public class IndexShootingCommand extends CommandBase {
   
   @Override
   public boolean isFinished() {
-    if (ballsShot == 5) {
-      return true;
-    } else {
-      return false;
-    }
+    return Robot.storage.getPowerCellCount() == 0;
   }
 }
