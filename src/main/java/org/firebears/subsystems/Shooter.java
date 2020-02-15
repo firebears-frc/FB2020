@@ -28,7 +28,7 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         super();
-        srx = new TalonSRX(config.getInt("shooter.motor1", 12));
+        srx = new TalonSRX(config.getInt("shooter.motor1", 25));
         srx.configFactoryDefault();
         srx.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, PID_LOOP_IDX, TIMEOUT_MS);
         srx.setSensorPhase(true);
