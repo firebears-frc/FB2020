@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
         climberLeft = new ClimberLeft();
         vision = new Vision();
         lidar = new Lidar();
+        storage = new Storage();
 
         CommandScheduler.getInstance().registerSubsystem(vision);
         CommandScheduler.getInstance().registerSubsystem(lidar);
