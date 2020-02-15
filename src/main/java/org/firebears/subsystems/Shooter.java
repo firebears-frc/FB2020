@@ -12,7 +12,7 @@ public class Shooter extends SubsystemBase {
     static private final Preferences config = Preferences.getInstance();
 
     static private final int PID_LOOP_IDX = 0;
-    static private final int TIMEOUT_MS = config.getInt("shooter.timeout", 30);
+    static private final int TIMEOUT_MS = config.getInt("srx.timeout", 30);
     static private final double P = config.getDouble("shooter.P", 1.0);
     static private final double I = config.getDouble("shooter.I", 0.0);
     static private final double D = config.getDouble("shooter.D", 0.0);
@@ -37,6 +37,10 @@ public class Shooter extends SubsystemBase {
         srx.configNominalOutputReverse(0, TIMEOUT_MS);
         srx.configPeakOutputForward(1, TIMEOUT_MS);
         srx.configPeakOutputReverse(1, TIMEOUT_MS);
+        // Configure limits
+        srx.configPeakCurrentLimit(25, TIMEOUT_MS);
+        srx.configPeakCurrentDuration(2000, TIMEOUT_MS);
+        srx.configContinuousCurrentLimit(10, TIMEOUT_MS);
         // Config PIDF
         srx.config_kP(PID_LOOP_IDX, P, TIMEOUT_MS);
         srx.config_kI(PID_LOOP_IDX, I, TIMEOUT_MS);

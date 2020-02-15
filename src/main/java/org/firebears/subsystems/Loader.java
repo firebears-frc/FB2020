@@ -14,9 +14,13 @@ public class Loader extends SubsystemBase {
     private final WPI_TalonSRX rightBeltMotor;
     private final SpeedControllerGroup belts;
     private final DigitalInput loadEye;
+    private final int TIMEOUT_MS = config.getInt("srx.timeout", 30);
 
     public Loader() {
         leftBeltMotor = new WPI_TalonSRX(config.getInt("loader.leftBeltMotor.canID", 20));
+        leftBeltMotor.configPeakCurrentLimit(15, TIMEOUT_MS);
+        leftBeltMotor.configPeakCurrentDuration(5000, TIMEOUT_MS);
+        leftBeltMotor.configContinuousCurrentLimit(10,TIMEOUT_MS);
         rightBeltMotor = new WPI_TalonSRX(config.getInt("loader.rightBeltMotor.canID", 21));
         belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
         loadEye = new DigitalInput(config.getInt("loader.eye.dio", 5));

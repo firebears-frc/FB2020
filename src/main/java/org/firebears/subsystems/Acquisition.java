@@ -1,5 +1,6 @@
 package org.firebears.subsystems;
 
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Preferences;
@@ -19,13 +20,27 @@ public class Acquisition extends SubsystemBase {
     private final CANSparkMax spinMotor;
 
     public Acquisition() {
+        CANError err;
+        int lowerStallLimit = config.getInt("acquisition.lowerStallLimit", 20);
+        int lowerFreeLimit = config.getInt("acquisition.lowerFreeLimit", 10);
+        int lowerLimitRPM = config.getInt("acquisition.lowerLimitRPM", 500);
+        int spinStallLimit = config.getInt("acquisition.spinStallLimit", 10);
+        int spinFreeLimit = config.getInt("acquisition.spinFreeLimit", 10);
+        int spinLimitRPM = config.getInt("acquisition.spinLimitRPM", 500);
+        
         int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
         lowerMotor = new CANSparkMax(acquisitionLowerMotorCanID, MotorType.kBrushless);
         lowerMotor.setInverted(false);
+        err = lowerMotor.setSmartCurrentLimit(lowerStallLimit, lowerFreeLimit, lowerLimitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on lowerMotor");
 
         int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 12);
         spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
         spinMotor.setInverted(false);
+        err = spinMotor.setSmartCurrentLimit(spinStallLimit, spinFreeLimit, spinLimitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on spinMotor");
 
         group = new SpeedControllerGroup(spinMotor);
         addChild("SpinMotor", group);

@@ -1,5 +1,6 @@
 package org.firebears.subsystems;
 
+import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -20,9 +21,17 @@ public class Storage extends SubsystemBase {
     private final DigitalInput eye5;
 
     public Storage() {
+        CANError err;
+        int stallLimit = config.getInt("storage.stallLimit", 20);
+        int freeLimit = config.getInt("storage.freeLimit", 10);
+        int limitRPM = config.getInt("storage.limitRPM", 500);
         int indexMotorCanID = config.getInt("storage.indexMotor.canID", 10);
+
         indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
         indexMotor.setInverted(false);
+        err = indexMotor.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        if (err != CANError.kOk)
+            System.err.println("ERROR: " + err + " setting limits on indexMotor");
 
         positionSensor = new DigitalInput(config.getInt("storage.position.dio", 4));
         eye1 = new DigitalInput(config.getInt("storage.eye1.dio", 6));

@@ -11,11 +11,15 @@ public class ClimberRight extends SubsystemBase {
     private final Preferences config = Preferences.getInstance();
     SpeedControllerGroup group;
     private final WPI_TalonSRX rightClimber;
+    private final int TIMEOUT_MS = config.getInt("srx.timeout", 30);
 
     public ClimberRight() {
         int rightClimberCanID = config.getInt("climber.right.canID", 23);
         rightClimber = new WPI_TalonSRX(rightClimberCanID);
         rightClimber.setInverted(false);
+        rightClimber.configPeakCurrentLimit(40, TIMEOUT_MS);
+        rightClimber.configPeakCurrentDuration(3000, TIMEOUT_MS);
+        rightClimber.configContinuousCurrentLimit(20, TIMEOUT_MS);
 
         addChild("Right Climber", rightClimber);
     }
