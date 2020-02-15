@@ -10,10 +10,9 @@ import org.firebears.Robot;
 public class AcquisitionRaiseCommand extends CommandBase {
 
     public AcquisitionRaiseCommand() {
-        addRequirements(Robot.acquisition, Robot.storage);
+        addRequirements(Robot.acquisition, Robot.loader);
     }
 
-    
     @Override
     public void initialize() {
     }
@@ -22,7 +21,7 @@ public class AcquisitionRaiseCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.acquisition.endAcquire();
-        Robot.storage.beltStop();
+        Robot.loader.beltStop();
     }
     
     @Override
@@ -30,9 +29,7 @@ public class AcquisitionRaiseCommand extends CommandBase {
         return false;
     }
 
-    
     @Override
     public void end(boolean interrupted) {
     }
-
 }
