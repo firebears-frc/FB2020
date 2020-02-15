@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class SpitCommand extends CommandBase {
   
   public SpitCommand() {
-    addRequirements(Robot.storage, Robot.acquisition);
+    addRequirements(Robot.loader, Robot.storage);
   }
 
   // Called when the command is initially scheduled.
@@ -19,7 +19,7 @@ public class SpitCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.storage.beltReverse();
+    Robot.loader.beltReverse();
     Robot.acquisition.starReverse();
   }
 

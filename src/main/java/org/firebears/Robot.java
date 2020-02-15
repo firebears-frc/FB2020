@@ -16,6 +16,7 @@ public class Robot extends TimedRobot {
     public static OI oi;
     public static Chassis chassis;
     public static Acquisition acquisition;
+    public static Loader loader;
     public static Shooter shooter;
     public static ClimberRight climberRight;
     public static ClimberLeft climberLeft;
@@ -27,7 +28,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         chassis = new Chassis();
-        // acquisition = new Acquisition();
+        acquisition = new Acquisition();
+        loader = new Loader();
         shooter = new Shooter();
         climberRight = new ClimberRight();
         climberLeft = new ClimberLeft();

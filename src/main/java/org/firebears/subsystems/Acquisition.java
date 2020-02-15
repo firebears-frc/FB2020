@@ -10,19 +10,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Acquisition extends SubsystemBase {
 
     static final Preferences config = Preferences.getInstance();
-    SpeedControllerGroup group;
-    SpeedControllerGroup group1;
+
+    private final SpeedControllerGroup group;
+    private final SpeedControllerGroup group1;
     /** Motor to lower acquisition system */
     private final CANSparkMax lowerMotor;
     /** Motor to spin the stars */
     private final CANSparkMax spinMotor;
 
     public Acquisition() {
-        int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 8);
+        int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
         lowerMotor = new CANSparkMax(acquisitionLowerMotorCanID, MotorType.kBrushless);
         lowerMotor.setInverted(false);
 
-        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 6);
+        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 12);
         spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
         spinMotor.setInverted(false);
 
