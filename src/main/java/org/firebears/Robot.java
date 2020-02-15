@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
     public static Vision vision;
     private static Lidar lidar;
     public static Storage storage;
+    public static Lights lights;
 
     @Override
     public void robotInit() {
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
         vision = new Vision();
         lidar = new Lidar();
         storage = new Storage();
+        lights = new Lights();
 
         CommandScheduler.getInstance().registerSubsystem(vision);
         CommandScheduler.getInstance().registerSubsystem(lidar);
