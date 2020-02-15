@@ -54,10 +54,10 @@ public class Chassis extends SubsystemBase {
         double kI2 = config.getDouble("chassis.secondary.i", 0.0);
         double kD2 = config.getDouble("chassis.secondary.d", 0.0);
         boolean closedLoop = config.getBoolean("chassis.closedLoop", false);
-        int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 4);
-        int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 5);
-        int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 3);
-        int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 2);
+        int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 2);
+        int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 3);
+        int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 4);
+        int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 5);
 
         ticksPerFoot = config.getDouble("chassis.ticksPerFoot", 5.3388);
 
