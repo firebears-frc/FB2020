@@ -8,7 +8,6 @@ import org.firebears.Robot;
  *
  */
 public class AcquisitionLowerCommand extends CommandBase {
-
     public AcquisitionLowerCommand() {
         addRequirements(Robot.acquisition, Robot.loader);
     }

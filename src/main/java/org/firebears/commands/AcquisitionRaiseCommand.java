@@ -20,6 +20,7 @@ public class AcquisitionRaiseCommand extends CommandBase {
     
     @Override
     public void execute() {
+        Robot.loader.beltReverse();
         Robot.acquisition.endAcquire();
         Robot.loader.beltStop();
     }

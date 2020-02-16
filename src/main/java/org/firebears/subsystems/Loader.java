@@ -2,6 +2,8 @@ package org.firebears.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.firebears.Robot;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -14,6 +16,8 @@ public class Loader extends SubsystemBase {
     private final WPI_TalonSRX rightBeltMotor;
     private final SpeedControllerGroup belts;
     private final DigitalInput loadEye;
+    private int eyeDuration;
+    static private final int MAX_DURATION = 100;
 
     public Loader() {
         int timeoutMs = config.getInt("srx.timeout", 30);
@@ -39,7 +43,11 @@ public class Loader extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        if (loadEye.get()){
+            eyeDuration++;
+        }else{
+            eyeDuration = 0;
+        }
     }
 
     public void transfer() {
@@ -52,5 +60,12 @@ public class Loader extends SubsystemBase {
 
     public void beltReverse() {
         belts.set(-0.5);
+    }
+    public boolean isJammed(){
+        if(eyeDuration > MAX_DURATION){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
