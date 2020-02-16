@@ -5,11 +5,24 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import org.firebears.Robot;
 
 public class Lights extends SubsystemBase {
+
+    /** Thread for I2C communication */
+    private final Thread i2c_thread = new Thread() {
+        @Override
+        public void run() {
+            while (true) {
+                sendAllAnimations();
+                Timer.delay(0.1);
+            }
+        }
+    };
+
     public static final int MAX_ANIMATIONS = 10;
     public static final int MAX_PIXELSTRIPS = 3;
     public static final int BRIGHTNESS = 125;
@@ -26,9 +39,9 @@ public class Lights extends SubsystemBase {
     public static final int FOURBALL_ANIMATION = 8;
     public static final int FIVEBALL_ANIMATION = 9;
 
-    public static final int PIXEL_STRIP = 0;
+    private static final int PIXEL_STRIP = 0;
 
-    public final I2C i2c;
+    private final I2C i2c;
     private final DriverStation driverstation;
     private final boolean DEBUG;
     private byte[] dataOut = new byte[2];
@@ -41,36 +54,44 @@ public class Lights extends SubsystemBase {
         i2c = new I2C(Port.kOnboard, config.getInt("lights.i2cAddress", 4));
         driverstation = DriverStation.getInstance();
         DEBUG = config.getBoolean("debug", false);
+        i2c_thread.start();
     }
 
-    private synchronized void setAnimation(int s, int a) {
+    private void setAnimation(int s, int a) {
         nextAnimation[s] = a;
     }
 
-    private synchronized boolean sendAllAnimations() {
+    private boolean sendAllAnimations() {
         boolean messagesSent = false;
-        for (int s = 0; s < MAX_PIXELSTRIPS; s++) {
-            if (nextAnimation[s] != currentAnimation[s]) {
-                int a = nextAnimation[s];
-                dataOut[0] = (byte) (s + '0');
-                dataOut[1] = (byte) (a + '0');
-                i2c.transaction(dataOut, dataOut.length, dataBack, dataBack.length);
-                currentAnimation[s] = a;
-                if (DEBUG) {
-                    System.out.printf("Lights: setAnimation(%d, %d)%n", s, a);
-                }
+        for (int strip = 0; strip < MAX_PIXELSTRIPS; strip++) {
+            int n = nextAnimation[strip];
+            int c = currentAnimation[strip];
+            if (n != c) {
+                sendAnimation(strip, n);
                 messagesSent = true;
+                currentAnimation[strip] = n;
             }
         }
         return messagesSent;
     }
 
+    private void sendAnimation(int strip, int a) {
+        dataOut[0] = (byte) (a + '0');
+        dataOut[1] = (byte) (a + '0');
+        i2c.transaction(dataOut, dataOut.length, dataBack, dataBack.length);
+        if (DEBUG) {
+            System.out.printf("Lights: setAnimation(%d, %d)%n", strip, a);
+        }
+    }
+
     boolean isCelebrating = false;
+
     public void celebrate(boolean isCelebrating) {
         this.isCelebrating = isCelebrating;
     }
 
     boolean isShooting = false;
+
     public void shoot(boolean isShooting) {
         this.isShooting = isShooting;
     }
