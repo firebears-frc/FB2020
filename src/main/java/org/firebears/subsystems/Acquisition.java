@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Acquisition extends SubsystemBase {
 
-    static final Preferences config = Preferences.getInstance();
+    private final Preferences config = Preferences.getInstance();
 
     private final SpeedControllerGroup group;
     private final SpeedControllerGroup group1;
@@ -87,7 +87,7 @@ public class Acquisition extends SubsystemBase {
         spinMotor.set(0);
     }
 
-    public void starReverse(){
+    public void starReverse() {
         spinMotor.set(-1.0);
     }
 }

@@ -34,6 +34,7 @@ public class Loader extends SubsystemBase {
         rightBeltMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
         belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
         loadEye = new DigitalInput(eyeDio);
+        addChild("Belts", belts);
     }
 
     @Override
