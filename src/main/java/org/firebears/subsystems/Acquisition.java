@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.firebears.commands.AcquisitionRaiseCommand;
 
 public class Acquisition extends SubsystemBase {
 
@@ -62,6 +63,7 @@ public class Acquisition extends SubsystemBase {
 
         lowerMotorSpeed = tab.add("lower motor speed", 0).withPosition(0, 0).getEntry();
         spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 1).getEntry();
+        setDefaultCommand(new AcquisitionRaiseCommand());
     }
 
     /** Periodic update */

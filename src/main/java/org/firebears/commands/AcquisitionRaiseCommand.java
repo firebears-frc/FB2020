@@ -1,13 +1,12 @@
-
-
 package org.firebears.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import org.firebears.Robot;
 
-
 public class AcquisitionRaiseCommand extends CommandBase {
+
+    // Remaining time in 20 ms ticks
+    private int remaining = 100;
 
     public AcquisitionRaiseCommand() {
         addRequirements(Robot.acquisition, Robot.loader);
@@ -16,13 +15,15 @@ public class AcquisitionRaiseCommand extends CommandBase {
     @Override
     public void initialize() {
     }
-
     
     @Override
     public void execute() {
-        Robot.loader.beltReverse();
+        remaining--;
         Robot.acquisition.endAcquire();
-        Robot.loader.beltStop();
+        if (remaining > 0)
+            Robot.loader.beltReverse();
+        else
+            Robot.loader.beltStop();
     }
     
     @Override
