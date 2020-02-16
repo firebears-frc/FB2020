@@ -3,9 +3,11 @@ package org.firebears.subsystems;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Acquisition extends SubsystemBase {
@@ -19,6 +21,13 @@ public class Acquisition extends SubsystemBase {
     /** Motor to spin the stars */
     private final CANSparkMax spinMotor;
 
+    private final ShuffleboardTab tab = Shuffleboard.getTab("Acquisition");
+    private final NetworkTableEntry lowerMotorSpeed;
+    private final NetworkTableEntry spinMotorSpeed;
+
+    private final long dashDelay;
+    private long dashTimeout = 0;
+
     public Acquisition() {
         CANError err;
         int lowerStallLimit = config.getInt("acquisition.lowerStallLimit", 20);
@@ -27,15 +36,18 @@ public class Acquisition extends SubsystemBase {
         int spinStallLimit = config.getInt("acquisition.spinStallLimit", 10);
         int spinFreeLimit = config.getInt("acquisition.spinFreeLimit", 10);
         int spinLimitRPM = config.getInt("acquisition.spinLimitRPM", 500);
-        
         int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
+        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 12);
+
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay + 150;
+
         lowerMotor = new CANSparkMax(acquisitionLowerMotorCanID, MotorType.kBrushless);
         lowerMotor.setInverted(false);
         err = lowerMotor.setSmartCurrentLimit(lowerStallLimit, lowerFreeLimit, lowerLimitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on lowerMotor");
 
-        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 12);
         spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
         spinMotor.setInverted(false);
         err = spinMotor.setSmartCurrentLimit(spinStallLimit, spinFreeLimit, spinLimitRPM);
@@ -47,13 +59,20 @@ public class Acquisition extends SubsystemBase {
 
         group1 = new SpeedControllerGroup(lowerMotor);
         addChild("LowerMotor", group1);
+
+        lowerMotorSpeed = tab.add("lower motor speed", 0).withPosition(0, 0).getEntry();
+        spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 1).getEntry();
     }
 
     /** Periodic update */
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("lowerMotorSpeed", lowerMotor.get());
-        SmartDashboard.putNumber("spinMotorSpeed", spinMotor.get());
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            lowerMotorSpeed.setNumber(lowerMotor.get());
+            spinMotorSpeed.setNumber(spinMotor.get());
+            dashTimeout = now + dashDelay;
+        }
     }
 
     /** Start acquiring power cells */
