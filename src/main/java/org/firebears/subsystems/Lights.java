@@ -31,23 +31,43 @@ public class Lights extends SubsystemBase {
 
   public final I2C i2c;
   private final DriverStation driverstation;
-  //private byte[] dataOut = new byte[2];
-	//private byte[] dataBack = new byte[0];
-	//private int[] currentAnimation = new int[MAX_PIXELSTRIPS];
+  private final boolean DEBUG;
+  private byte[] dataOut = new byte[2];
+	private byte[] dataBack = new byte[0];
+	private int[] currentAnimation = new int[MAX_PIXELSTRIPS];
   private int[] nextAnimation = new int[MAX_PIXELSTRIPS];
   
 
   public Lights() {
     final Preferences config = Preferences.getInstance();
 		i2c = new I2C(Port.kOnboard, config.getInt("lights.i2cAddress", 4));
-		driverstation = DriverStation.getInstance();
+    driverstation = DriverStation.getInstance();
+    DEBUG = config.getBoolean("debug", false);
   }
 
   
   private synchronized void setAnimation(int s, int a) {
-		nextAnimation[s] = a;
-	}
-
+    nextAnimation[s] = a;
+  }
+  
+  private synchronized boolean sendAllAnimations() {
+		boolean messagesSent = false;
+		for (int s = 0; s < MAX_PIXELSTRIPS; s++) {
+			if (nextAnimation[s] != currentAnimation[s]) {
+				int a = nextAnimation[s];
+				dataOut[0] = (byte) (s + '0');
+				dataOut[1] = (byte) (a + '0');
+				i2c.transaction(dataOut, dataOut.length, dataBack, dataBack.length);
+				currentAnimation[s] = a;
+				if (DEBUG) {
+					System.out.printf("Lights: setAnimation(%d, %d)%n", s, a);
+				}
+				messagesSent = true;
+			}
+		}
+		return messagesSent;
+  }
+  
   boolean isCelebrating = false;
   public void celebrate(boolean isCelebrating) {
     this.isCelebrating = isCelebrating;
@@ -67,6 +87,8 @@ public class Lights extends SubsystemBase {
       setAnimation(PIXEL_STRIP, BLUE_ANIMATION);
     }else if(driverstation.getAlliance().equals(Alliance.Red)){
       setAnimation(PIXEL_STRIP, RED_ANIMATION);
+    }else if (driverstation.isDisabled()){
+      setAnimation(PIXEL_STRIP, DEFAULT_ANIMATION);
     }else if(isCelebrating){
       setAnimation(PIXEL_STRIP, CELEBRATE_ANIMATION);
     }else if(Robot.storage.getPowerCellCount() == 1){
