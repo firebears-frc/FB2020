@@ -1,15 +1,15 @@
-.-------------------------------.     
-|        Raise (default)        |     
+.-------------------------------.
+|        Raise (default)        |
 |                               |
 | * Raise acquisition           |
 | * Stop spinning stars         |
 | * Reverse belts for 2 seconds |
-'-----+-------------------------'     
+'-----+-------------------------'
       |                ^
       | Lower          | Raise
       | button         | button
       V                |
- .---------------------+-----.               
+ .---------------------+-----.
  |            Lower          |
  |                           |
  | * Lower acquisition       |

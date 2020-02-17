@@ -1,4 +1,4 @@
-<svg class="bob" font-family="Deja Vu Sans Mono" font-size="14" height="464" width="360" xmlns="http://www.w3.org/2000/svg">
+<svg class="bob" font-family="Courier New" font-size="14" height="464" width="272" xmlns="http://www.w3.org/2000/svg">
 <defs>
 <marker id="triangle" markerHeight="8" markerWidth="8" orient="auto" refX="4" refY="2" viewBox="0 0 8 4">
 <polygon class="fg_fill" points="0,0 0,4 8,2 0,0"/>
@@ -74,7 +74,7 @@ tspan.head{
 }
     
 </style>
-<rect class="backdrop" height="464" width="360" x="0" y="0"/>
+<rect class="backdrop" height="464" width="272" x="0" y="0"/>
 <g>
 <line x1="4" x2="4" y1="12" y2="100"/>
 <path d="M 4 100 A 4 4 0 0 0 8 104"/>

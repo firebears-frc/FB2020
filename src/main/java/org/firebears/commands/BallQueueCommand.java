@@ -7,34 +7,31 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class BallQueueCommand extends CommandBase {
 
-  boolean aligned;
-
-  public BallQueueCommand() {
-
-    addRequirements(Robot.storage);
-  }
-
-  @Override
-  public void initialize() {
-    Robot.storage.move();
-  }
-
-  @Override
-  public void execute() {
-    aligned = Robot.storage.getPositionSensor();
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-  }
-
-  @Override
-  public boolean isFinished() {
-    if (aligned = true) {
-      Robot.storage.stop();
-      return true;
-    } else {
-      return false;
+    public BallQueueCommand() {
+        addRequirements(Robot.storage);
     }
-  }
+
+    @Override
+    public void initialize() {
+    }
+
+    @Override
+    public void execute() {
+        Robot.storage.move();
+    }
+
+    @Override
+    public boolean isFinished() {
+        boolean aligned = Robot.storage.getPositionSensor();
+        if (aligned) {
+            Robot.storage.stop();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+    }
 }
