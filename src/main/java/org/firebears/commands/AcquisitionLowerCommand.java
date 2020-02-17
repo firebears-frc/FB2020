@@ -17,7 +17,7 @@ public class AcquisitionLowerCommand extends CommandBase {
     @Override
     public void execute() {
         Robot.acquisition.startAcquire();
-        Robot.loader.transfer();
+        Robot.loader.beltForward();
         if (Robot.loader.isJammed()) {
             cancel();
             CommandScheduler.getInstance().schedule(new SpitCommand());

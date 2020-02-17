@@ -90,6 +90,7 @@ public class Acquisition extends SubsystemBase {
     }
 
     public void starReverse() {
+        lowerMotor.set(0.0);
         spinMotor.set(-1.0);
     }
 }

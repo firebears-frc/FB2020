@@ -49,7 +49,7 @@ public class Loader extends SubsystemBase {
         }
     }
 
-    public void transfer() {
+    public void beltForward() {
         belts.set(0.5);
     }
 
