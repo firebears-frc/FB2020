@@ -2,6 +2,6 @@
 
 FireBears' robot code for Infinite Recharge 2020
 
-## Acquisition
+## Acquisition / Loader States
 
 ![acquisition states](./img/acquisition.svg)
