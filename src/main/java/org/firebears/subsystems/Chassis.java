@@ -60,7 +60,7 @@ public class Chassis extends SubsystemBase {
         int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 4);
         int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 5);
 
-        ticksPerFoot = config.getDouble("chassis.ticksPerFoot", 5.3388);
+        ticksPerFoot = config.getDouble("chassis.ticksPerFoot", 26.9724);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay;
@@ -144,7 +144,7 @@ public class Chassis extends SubsystemBase {
 
     /** Get average distance in feet */
     public double averageDistance() {
-        return ticksPerFoot * (ticksLeft() + ticksRight()) / 2.0;
+        return (ticksLeft() + ticksRight()) / (2.0 * ticksPerFoot);
     }
 
     public double rotation() {
