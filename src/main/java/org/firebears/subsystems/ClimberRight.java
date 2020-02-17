@@ -22,7 +22,7 @@ public class ClimberRight extends SubsystemBase {
         rightClimber.setInverted(false);
         rightClimber.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
         rightClimber.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
-        rightClimber.configContinuousCurrentLimit(continuousCurrentDuration,
+        rightClimber.configContinuousCurrentLimit(continuousCurrentLimit,
             timeoutMs);
 
         addChild("Right Climber", rightClimber);

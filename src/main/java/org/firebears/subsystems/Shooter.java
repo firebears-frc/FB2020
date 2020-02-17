@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
         super();
-        double timeoutMs = config.getInt("srx.timeout", 30);
+        int timeoutMs = config.getInt("srx.timeout", 30);
         int peakCurrentLimit = config.getInt("shooter.peakCurrentLimit", 25);
         int peakCurrentDuration = config.getInt("shooter.peakCurrentDuration",
             2000);
