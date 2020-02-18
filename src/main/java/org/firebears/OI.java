@@ -23,6 +23,7 @@ public class OI {
     private JoystickButton rightClimbDownSwitch;
     private JoystickButton leftClimbUpSwitch;
     private JoystickButton leftClimbDownSwitch;
+    private JoystickButton celebrateButton;
     
 
     
@@ -42,22 +43,25 @@ public class OI {
         buttonBox = new Joystick(1);
         
         shootButton = new JoystickButton(buttonBox, 1);
-        shootButton.whenHeld(new IndexShootingCommand());
+        shootButton.whenHeld(new yeEt());
 
-        indexButton = new JoystickButton(buttonBox, 2);
+        indexButton = new JoystickButton(buttonBox, 11);
         indexButton.whenPressed(new BallQueueCommand());
 
-        rightClimbUpSwitch = new JoystickButton(buttonBox, 3);
+        rightClimbUpSwitch = new JoystickButton(buttonBox, 6);
         rightClimbUpSwitch.whenHeld(new ClimberUpRightCommand());
 
         rightClimbDownSwitch = new JoystickButton(buttonBox, 4);
         rightClimbDownSwitch.whenHeld(new ClimberDownRightCommand());
 
-        leftClimbUpSwitch = new JoystickButton(buttonBox, 3);
+        leftClimbUpSwitch = new JoystickButton(buttonBox, 5);
         leftClimbUpSwitch.whenHeld(new ClimberUpLeftCommand());
 
         leftClimbDownSwitch = new JoystickButton(buttonBox, 3);
         leftClimbDownSwitch.whenHeld(new ClimberDownLeftCommand());
+
+        celebrateButton = new JoystickButton(buttonBox, 12);
+        celebrateButton.whenHeld(new CelebrateCommand());
     }
 
     public XboxController getXboxController() {

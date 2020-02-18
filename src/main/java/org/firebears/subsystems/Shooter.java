@@ -15,9 +15,7 @@ public class Shooter extends SubsystemBase {
     static private final double GEAR_RATIO = 13.56;
     static private final double PER_MINUTE_100_MS = 600.0;
 
-    private final double targetVelocity = RPM * SENSOR_UNITS_PER_REV /
-        (PER_MINUTE_100_MS * GEAR_RATIO);
-
+    private double targetVelocity = 0;
     private final Preferences config = Preferences.getInstance();
 
     private final TalonSRX srx;
@@ -66,5 +64,10 @@ public class Shooter extends SubsystemBase {
 
     public boolean isWheelSpunUp() {
         return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
+    }
+    
+    public void setTargetRPM(double RPM){
+        targetVelocity = RPM * SENSOR_UNITS_PER_REV /
+        (PER_MINUTE_100_MS * GEAR_RATIO);
     }
 }
