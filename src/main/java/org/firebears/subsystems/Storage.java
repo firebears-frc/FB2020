@@ -1,5 +1,6 @@
 package org.firebears.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -19,6 +20,7 @@ public class Storage extends SubsystemBase {
     private final DigitalInput eye3;
     private final DigitalInput eye4;
     private final DigitalInput eye5;
+    private final CANEncoder indexEncoder;
 
     public Storage() {
         CANError err;
@@ -26,10 +28,11 @@ public class Storage extends SubsystemBase {
         int freeLimit = config.getInt("storage.freeLimit", 10);
         int limitRPM = config.getInt("storage.limitRPM", 500);
         int indexMotorCanID = config.getInt("storage.indexMotor.canID", 10);
-
+        
         indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
         indexMotor.setInverted(false);
         err = indexMotor.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
+        indexEncoder = indexMotor.getEncoder();
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on indexMotor");
 
@@ -43,11 +46,16 @@ public class Storage extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        if (positionSensor.get()){
+            indexEncoder.setPosition(0.0);
+        }
     }
 
     public void move() {
         indexMotor.set(0.1);
+    }
+    public void reverse(){
+        indexMotor.set(-0.1);
     }
 
     public void stop() {
@@ -72,4 +80,16 @@ public class Storage extends SubsystemBase {
             count ++;
         return count;
     }
+    public double resetEncoder(){
+        indexEncoder.setPosition(0.0);
+        return indexEncoder.getPosition();
+    }
+    public boolean needsIndexing(){
+        if (eye1.get() && !eye5.get()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
