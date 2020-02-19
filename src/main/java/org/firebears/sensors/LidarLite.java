@@ -1,14 +1,9 @@
-package frc.robot.subsystems;
+package org.firebears.sensors;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.io.FileReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.io.FileReader;
-import java.io.BufferedReader;
 
 /*
 EX. how to get the rpm that you need
@@ -17,7 +12,7 @@ double rpm = LidarLite.calcRpm(desired_velocity);
 */
 
 /** Class for LIDAR Lite v3 */
-public class LidarLite extends SubsystemBase {
+public class LidarLite {
 
     /** Bit to enable bulk read from a series of registers */
     static private final byte BULK_REGISTER_BIT = (byte) (1 << 7);
@@ -84,6 +79,20 @@ public class LidarLite extends SubsystemBase {
     static public final int STATUS_REFERENCE_OVERFLOW = 1 << 1;
     static public final int STATUS_BUSY = 1 << 0;
 
+        /** Get errors as a string */
+        static public String getErrors(int status) {
+        StringBuilder sb = new StringBuilder();
+            sb.append(", ");
+        if ((status & STATUS_SYSTEM_ERR) != 0)
+            sb.append("System err, ");
+        if ((status & STATUS_HEALTH_OK) == 0)
+            sb.append("Health err, ");
+        if ((status & STATUS_INVALID_SIGNAL) != 0)
+            sb.append("Invalid signal, ");
+            sb.setLength(sb.length() - 2);
+        return sb.toString();
+    }
+
     /** Acquisition commands (ACQ_COMMAND) */
     static private final byte ACQ_CMD_RESET = 0x00;
     static private final byte ACQ_CMD_MEASURE_NO_BIAS = 0x03;
@@ -114,6 +123,12 @@ public class LidarLite extends SubsystemBase {
     static private final int ACQ_CFG_MODE_DELAY_PWN = 0x02;
     static private final int ACQ_CFG_MODE_OSCILLATOR = 0x03;
 
+    /** Offset of distance readings (962 for broken lidar) */
+    static private final int DISTANCE_OFFSET = 0;
+
+    /** Maximum distance of 1.5 m */
+    static private final int DISTANCE_MAX = 1500;
+    
     /** Write a value to a register */
     private boolean write(Register reg, int value) {
         return lidar.write(reg.register, (byte) value);
@@ -138,8 +153,7 @@ public class LidarLite extends SubsystemBase {
     /** Start continuous measurement */
     public boolean startContinuous() {
         return write(Register.MEASURE_DELAY, 10)
-            || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE |
-                                          ACQ_CFG_MEASURE_DELAY)
+            || write(Register.ACQ_CONFIG, ACQ_CFG_QUICK_TERM_DISABLE | ACQ_CFG_MEASURE_DELAY)
             || write(Register.BURST_COUNT, BURST_COUNT_CONTINUOUS)
             || write(Register.ACQ_COMMAND, ACQ_CMD_MEASURE);
     }
@@ -157,9 +171,14 @@ public class LidarLite extends SubsystemBase {
     /** Get a distance measurement */
     public int getDistance() {
         int d = readShort(Register.DISTANCE_MSB);
+        if (d >= DISTANCE_OFFSET)
+            d -= DISTANCE_OFFSET;
         if (d < 0)
             return d;
-        else
+        else if (d >= DISTANCE_MAX) {
+            System.err.println("Invalid distance: " + d);
+            return -2;
+        } else
             return d;
     }
 
