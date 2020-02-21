@@ -4,10 +4,12 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Storage extends SubsystemBase {
     private final Preferences config = Preferences.getInstance();
@@ -21,6 +23,13 @@ public class Storage extends SubsystemBase {
     private final DigitalInput eye4;
     private final DigitalInput eye5;
     private final CANEncoder indexEncoder;
+
+    private final ShuffleboardTab tab = Shuffleboard.getTab("Storage");
+    private final NetworkTableEntry magnetWidget;
+    private final NetworkTableEntry countWidget;
+
+    private final long dashDelay;
+    private long dashTimeout = 0;
 
     public Storage() {
         CANError err;
@@ -42,19 +51,33 @@ public class Storage extends SubsystemBase {
         eye3 = new DigitalInput(config.getInt("storage.eye3.dio", 8));
         eye4 = new DigitalInput(config.getInt("storage.eye4.dio", 9));
         eye5 = new DigitalInput(config.getInt("storage.eye5.dio", 10));
+
+        magnetWidget = tab.add("magnet", 0).withPosition(0, 0).getEntry();
+        countWidget = tab.add("count", 0).withPosition(0, 1).getEntry();
+
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay + 125;
     }
 
     @Override
     public void periodic() {
-        if (positionSensor.get()){
+        boolean magnet = positionSensor.get();
+        if (magnet) {
             indexEncoder.setPosition(0.0);
+        }
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            magnetWidget.setBoolean(magnet);
+            countWidget.setNumber(getPowerCellCount());
+            dashTimeout = now + dashDelay;
         }
     }
 
     public void move() {
         indexMotor.set(0.1);
     }
-    public void reverse(){
+
+    public void reverse() {
         indexMotor.set(-0.1);
     }
 
@@ -80,16 +103,13 @@ public class Storage extends SubsystemBase {
             count ++;
         return count;
     }
-    public double resetEncoder(){
+
+    public double resetEncoder() {
         indexEncoder.setPosition(0.0);
         return indexEncoder.getPosition();
     }
-    public boolean needsIndexing(){
-        if (eye1.get() && !eye5.get()){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
+    public boolean needsIndexing() {
+        return (eye1.get() && !eye5.get());
+    }
 }
