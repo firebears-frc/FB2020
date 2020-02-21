@@ -99,29 +99,39 @@ public class Lights extends SubsystemBase {
     // This method will be called once per scheduler run
     @Override
     public void periodic() {
-        Robot.storage.getPowerCellCount();
-        if (driverstation.getAlliance().equals(Alliance.Blue)) {
-            setAnimation(PIXEL_STRIP, BLUE_ANIMATION);
-        } else if(driverstation.getAlliance().equals(Alliance.Red)) {
-            setAnimation(PIXEL_STRIP, RED_ANIMATION);
-        } else if (driverstation.isDisabled()) {
-            setAnimation(PIXEL_STRIP, DEFAULT_ANIMATION);
-        } else if(isCelebrating) {
-            setAnimation(PIXEL_STRIP, CELEBRATE_ANIMATION);
-        } else if(Robot.storage.getPowerCellCount() == 1) {
-            setAnimation(PIXEL_STRIP, ONEBALL_ANIMATION);
-        } else if(Robot.storage.getPowerCellCount() == 2) {
-            setAnimation(PIXEL_STRIP, TWOBALL_ANIMATION);
-        } else if(Robot.storage.getPowerCellCount() == 3) {
-            setAnimation(PIXEL_STRIP, THREEBALL_ANIMATION);
-        } else if(Robot.storage.getPowerCellCount() == 4) {
-            setAnimation(PIXEL_STRIP, FOURBALL_ANIMATION);
-        } else if(Robot.storage.getPowerCellCount() == 5) {
-            setAnimation(PIXEL_STRIP, FIVEBALL_ANIMATION);
-        } else if (isShooting) {
-            setAnimation(PIXEL_STRIP, SHOOTING_ANIMATION);
-        } else {
-            setAnimation(PIXEL_STRIP, DEFAULT_ANIMATION);
+        setAnimation(PIXEL_STRIP, getAnimation());
+    }
+
+    private int getAnimation() {
+        int count = Robot.storage.getPowerCellCount();
+        if (driverstation.isDisabled())
+            return DEFAULT_ANIMATION;
+        else if (isCelebrating)
+            return CELEBRATE_ANIMATION;
+        else if (isShooting)
+            return SHOOTING_ANIMATION;
+        else if (count > 0)
+            return getCountAnimation(count);
+        else if (driverstation.getAlliance().equals(Alliance.Blue))
+            return BLUE_ANIMATION;
+        else
+            return RED_ANIMATION;
+    }
+
+    private int getCountAnimation(int count) {
+        switch (count) {
+            case 1:
+                return ONEBALL_ANIMATION;
+            case 2:
+                return TWOBALL_ANIMATION;
+            case 3:
+                return THREEBALL_ANIMATION;
+            case 4:
+                return FOURBALL_ANIMATION;
+            case 5:
+                return FIVEBALL_ANIMATION;
+            default:
+                return DEFAULT_ANIMATION;
         }
     }
 }
