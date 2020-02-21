@@ -19,6 +19,12 @@ import org.firebears.util.PIDSparkMotor;
 
 public class Chassis extends SubsystemBase {
 
+    /** Maximum acceleration per 20 ms tick */
+    static private final double MAX_ACCEL = 0.1;
+
+    /** Maximum deceleration per 20 ms tick */
+    static private final double MAX_DECEL = 0.2;
+
     private final Preferences config = Preferences.getInstance();
 
     private final CANSparkMax frontLeft;
@@ -42,6 +48,8 @@ public class Chassis extends SubsystemBase {
 
     private double direction = 1.0;
     private double pace = 1.0;
+    private double speed = 0.0;
+    private double rotation = 0.0;
 
     public Chassis() {
         CANError err;
@@ -121,15 +129,24 @@ public class Chassis extends SubsystemBase {
             rearRightTemp.setNumber(rearRight.getMotorTemperature());
             dashTimeout = now + dashDelay;
         }
-        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kLeft)) < 0.5)
-            direction = 1;
-        else
-            direction = -1;
+        direction = getDirection();
+        pace = getPace();
+    }
 
-        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kRight)) < 0.5)
-            pace = 1.0;
+    /** Get selected direction */
+    private double getDirection() {
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kLeft)) < 0.5)
+            return 1.0;
         else
-            pace = 0.5;
+            return -1.0;
+    }
+
+    /** Get selected pace */
+    private double getPace() {
+        if (Math.abs(Robot.oi.xboxController.getTriggerAxis(Hand.kRight)) < 0.5)
+            return 1.0;
+        else
+            return 0.5;
     }
 
     /** Get left distance in ticks */
@@ -153,6 +170,28 @@ public class Chassis extends SubsystemBase {
     }
 
     public void drive(double speed, double rotation) {
-        robotDrive.arcadeDrive(speed * direction * pace, rotation * direction * pace);
+        this.speed = filterSpeed(speed);
+        this.rotation = filterRotation(rotation);
+        robotDrive.arcadeDrive(getSpeed(), getRotation());
+    }
+
+    private double filterSpeed(double s) {
+        s = Math.min(s, speed + MAX_ACCEL);
+        s = Math.max(s, speed - MAX_DECEL);
+        return s;
+    }
+
+    private double filterRotation(double r) {
+        r = Math.min(r, rotation + MAX_ACCEL);
+        r = Math.max(r, rotation - MAX_DECEL);
+        return r;
+    }
+
+    private double getSpeed() {
+        return speed * direction * pace;
+    }
+
+    private double getRotation() {
+        return rotation * direction * pace;
     }
 }
