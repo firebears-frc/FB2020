@@ -1,15 +1,8 @@
 package org.firebears.sensors;
 
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-
-/*
-EX. how to get the rpm that you need
-double desired_velocity = LidarLite.optimal_velocity(LidarLite.getDistance() / 100.0);
-double rpm = LidarLite.calcRpm(desired_velocity);
-*/
 
 /** Class for LIDAR Lite v3 */
 public class LidarLite {
@@ -79,17 +72,17 @@ public class LidarLite {
     static public final int STATUS_REFERENCE_OVERFLOW = 1 << 1;
     static public final int STATUS_BUSY = 1 << 0;
 
-        /** Get errors as a string */
-        static public String getErrors(int status) {
+    /** Get errors as a string */
+    static public String getErrors(int status) {
         StringBuilder sb = new StringBuilder();
-            sb.append(", ");
+        sb.append(", ");
         if ((status & STATUS_SYSTEM_ERR) != 0)
             sb.append("System err, ");
         if ((status & STATUS_HEALTH_OK) == 0)
             sb.append("Health err, ");
         if ((status & STATUS_INVALID_SIGNAL) != 0)
             sb.append("Invalid signal, ");
-            sb.setLength(sb.length() - 2);
+        sb.setLength(sb.length() - 2);
         return sb.toString();
     }
 
@@ -186,10 +179,7 @@ public class LidarLite {
     double loss_rate = 0.45; // estamated loss rate 
     double nedded_rpm; // needed rpm for desired velocity of ball
 
-
-
-    double array [][]={
-
+    double array [][] = {
         {1.660,8.879,8.921,8.879},
         {1.670,8.808,8.902,8.808},
         {1.680,8.741,8.883,8.741},
@@ -490,40 +480,19 @@ public class LidarLite {
         {4.840,9.318,9.318,9.305},
         {4.860,9.327,9.327,9.317},
         {4.930,9.359,9.359,9.359}
-
     };
 
-    public double optimal_velocity (double range)
-    {
-        for(int i = 1; i < array.length; i++)
-        {
-            if(array[i][0]>range)
-            {
+    public double optimal_velocity (double range) {
+        for(int i = 1; i < array.length; i++) {
+            if(array[i][0]>range) {
                 return array[i-1][1];
             }
         }
         return 0;
     }
 
-    
-
-    public double calcRpm (double desired_velocity)
-    {
+    public double calcRpm(double desired_velocity) {
         nedded_rpm = (desired_velocity / wheel_speed) * loss_rate;
         return nedded_rpm;
-
     }
-
-    public void periodic() 
-    {
-        double desired_velocity = optimal_velocity(getDistance() / 100.0);
-        SmartDashboard.putNumber("Velocity Needed", desired_velocity);
-        SmartDashboard.putNumber("RPM Needed", calcRpm(desired_velocity));
-
-    }
-        /*
-        EX. how to get the rpm that you need
-        double desired_velocity = LidarLite.optimal_velocity(LidarLite.getDistance() / 100.0);
-        double rpm = LidarLite.calcRpm(desired_velocity);
-        */
 }
