@@ -3,14 +3,15 @@ package org.firebears.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class Shooter extends SubsystemBase {
 
     static private final int PID_LOOP_IDX = 0;
-    static private final double RPM = 350.0 * 5.0;
     static private final double SENSOR_UNITS_PER_REV = 4096;
     static private final double GEAR_RATIO = 13.56;
     static private final double PER_MINUTE_100_MS = 600.0;
@@ -18,7 +19,14 @@ public class Shooter extends SubsystemBase {
     private double targetVelocity = 0;
     private final Preferences config = Preferences.getInstance();
 
+    private final ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
+    private final NetworkTableEntry outputWidget;
+    private final NetworkTableEntry velocityWidget;
+
     private final TalonSRX srx;
+
+    private final long dashDelay;
+    private long dashTimeout = 0;
 
     public Shooter() {
         super();
@@ -51,23 +59,34 @@ public class Shooter extends SubsystemBase {
         srx.config_kI(PID_LOOP_IDX, i, timeoutMs);
         srx.config_kD(PID_LOOP_IDX, d, timeoutMs);
         srx.config_kF(PID_LOOP_IDX, f, timeoutMs);
+
+        outputWidget = tab.add("output", 0).withPosition(0, 0).getEntry();
+        velocityWidget = tab.add("velocity", 0).withPosition(0, 1).getEntry();
+
+        dashDelay = config.getLong("dashDelay", 250);
+        dashTimeout = System.currentTimeMillis() + dashDelay + 200;
     }
 
+    @Override
     public void periodic() {
         double output = srx.getMotorOutputPercent();
-        SmartDashboard.putNumber("Output", output);
         int velocity = srx.getSelectedSensorVelocity(PID_LOOP_IDX);
-        SmartDashboard.putNumber("Velocity", velocity);
         // velocity in units per 100 ms
         srx.set(ControlMode.Velocity, targetVelocity);
+        long now = System.currentTimeMillis();
+        if (now > dashTimeout) {
+            outputWidget.setNumber(output);
+            velocityWidget.setNumber(velocity);
+            dashTimeout = now + dashDelay;
+        }
     }
 
     public boolean isWheelSpunUp() {
         return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
     }
     
-    public void setTargetRPM(double RPM){
-        targetVelocity = RPM * SENSOR_UNITS_PER_REV /
-        (PER_MINUTE_100_MS * GEAR_RATIO);
+    public void setTargetRPM(double rpm) {
+        targetVelocity = rpm * SENSOR_UNITS_PER_REV /
+            (PER_MINUTE_100_MS * GEAR_RATIO);
     }
 }
