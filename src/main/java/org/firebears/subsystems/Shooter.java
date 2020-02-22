@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
         double f = config.getDouble("shooter.F", 0.0);
         srx = new TalonSRX(config.getInt("shooter.motor1", 25));
         srx.configFactoryDefault();
-        srx.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
+        srx.configSelectedFeedbackSensor(FeedbackDevice.Tachometer,
             PID_LOOP_IDX, timeoutMs);
         srx.setSensorPhase(true);
         // Configure nominal / peak outputs

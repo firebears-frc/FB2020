@@ -50,7 +50,7 @@ public class Storage extends SubsystemBase {
             System.err.println("ERROR: " + err + " setting limits on indexMotor");
 
 
-        positionSensor = new DigitalInput(config.getInt("storage.position.dio", 4));
+        positionSensor = new DigitalInput(config.getInt("storage.position.dio", 0));
         eye1 = new DigitalInput(config.getInt("storage.eye1.dio", 6));
         eye2 = new DigitalInput(config.getInt("storage.eye2.dio", 7));
         eye3 = new DigitalInput(config.getInt("storage.eye3.dio", 8));
