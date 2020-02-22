@@ -24,6 +24,7 @@ public class ClimberRetractCommand extends CommandBase {
  
     @Override
     public void end(boolean interrupted) {
+        climber.stop();
     }
  
     @Override

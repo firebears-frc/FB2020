@@ -22,6 +22,7 @@ public class ClimberExtendCommand extends CommandBase {
  
     @Override
     public void end(boolean interrupted) {
+        climber.stop();
     }
  
     @Override
