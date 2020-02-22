@@ -1,13 +1,15 @@
 package org.firebears.commands;
 
-import org.firebears.Robot;
+import org.firebears.subsystems.Storage;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ResetCommand extends CommandBase {
+    private final Storage storage;
 
-    public ResetCommand() {
-        addRequirements(Robot.storage);
+    public ResetCommand(Storage storage) {
+        this.storage = storage;
+        addRequirements(storage);
     }
 
     @Override
@@ -16,14 +18,14 @@ public class ResetCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.storage.reverse();
+        storage.reverse();
     }
 
     @Override
     public boolean isFinished() {
-        boolean aligned = Robot.storage.getPositionSensor();
+        boolean aligned = storage.getPositionSensor();
         if (aligned) {
-            Robot.storage.stop();
+            storage.stop();
             return true;
         } else {
             return false;

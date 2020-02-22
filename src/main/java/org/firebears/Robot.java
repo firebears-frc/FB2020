@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("FollowTarget", new FollowTargetCommand(chassis));
 
         SmartDashboard.putData("Auto mode", chooser);
+
+        new ResetCommand(storage).schedule(); 
     }
 
     @Override
