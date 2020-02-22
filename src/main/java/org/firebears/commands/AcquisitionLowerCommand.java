@@ -2,12 +2,21 @@ package org.firebears.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import org.firebears.Robot;
+import org.firebears.subsystems.Acquisition;
+import org.firebears.subsystems.Loader;
 
 public class AcquisitionLowerCommand extends CommandBase {
 
-    public AcquisitionLowerCommand() {
-        addRequirements(Robot.acquisition, Robot.loader);
+    private final Acquisition acquisition;
+
+    private final Loader loader;
+
+    public AcquisitionLowerCommand(Acquisition acquisition,
+        Loader loader)
+    {
+        this.acquisition = acquisition;
+        this.loader = loader;
+        addRequirements(acquisition, loader);
     }
 
     @Override
@@ -16,9 +25,9 @@ public class AcquisitionLowerCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.acquisition.startAcquire();
-        Robot.loader.beltForward();
-        if (Robot.loader.isJammed()) {
+        acquisition.startAcquire();
+        loader.beltForward();
+        if (loader.isJammed()) {
             cancel();
             CommandScheduler.getInstance().schedule(new SpitCommand());
         }

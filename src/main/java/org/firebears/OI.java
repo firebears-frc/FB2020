@@ -1,4 +1,3 @@
-
 package org.firebears;
 
 import org.firebears.commands.*;
@@ -6,8 +5,6 @@ import org.firebears.commands.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
-
 
 public class OI {
     public XboxController xboxController;
@@ -24,18 +21,17 @@ public class OI {
     private JoystickButton leftClimbUpSwitch;
     private JoystickButton leftClimbDownSwitch;
     private JoystickButton celebrateButton;
-    
-
-    
 
     public OI() {
         xboxController = new XboxController(0);
 
         lowerAcqButton = new JoystickButton(xboxController, 5); //LB
-        lowerAcqButton.whenPressed(new AcquisitionLowerCommand());
+        lowerAcqButton.whenPressed(new AcquisitionLowerCommand(
+            Robot.acquisition, Robot.loader));
 
         raiseAcqButton = new JoystickButton(xboxController, 6); //RB
-        raiseAcqButton.whenPressed(new AcquisitionRaiseCommand());
+        raiseAcqButton.whenPressed(new AcquisitionRaiseCommand(
+            Robot.acquisition, Robot.loader));
 
         spitButton = new JoystickButton(xboxController, 2); //B
         spitButton.whenPressed(new SpitCommand());
