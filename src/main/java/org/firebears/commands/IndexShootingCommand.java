@@ -1,33 +1,39 @@
 package org.firebears.commands;
 
-import org.firebears.Robot;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import org.firebears.Robot;
+import org.firebears.subsystems.Storage;
+import org.firebears.subsystems.Shooter;
 
 public class IndexShootingCommand extends CommandBase {
 
-    private BallQueueCommand ballQueue;
+    private final Storage storage;
+    private final Shooter shooter;
 
-    public IndexShootingCommand() {
-        addRequirements(Robot.storage, Robot.shooter);
+    private final BallQueueCommand ballQueue;
+
+    public IndexShootingCommand(Storage storage, Shooter shooter) {
+        this.storage = storage;
+        this.shooter = shooter;
+        ballQueue = new BallQueueCommand(storage);
+        addRequirements(storage, shooter);
     }
 
     @Override
     public void initialize() {
-        ballQueue = new BallQueueCommand();
         Robot.lights.shoot(true);
     }
 
     @Override
     public void execute() {
-        if (Robot.shooter.isWheelSpunUp()) {
+        if (shooter.isWheelSpunUp()) {
             ballQueue.schedule(false);
         }
     }
 
     @Override
     public boolean isFinished() {
-        return Robot.storage.getPowerCellCount() == 0;
+        return storage.getPowerCellCount() == 0;
     }
 
     @Override

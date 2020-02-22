@@ -39,10 +39,10 @@ public class OI {
         buttonBox = new Joystick(1);
         
         shootButton = new JoystickButton(buttonBox, 1);
-        shootButton.whenHeld(new yeEt());
+        shootButton.whenHeld(new yeEt(Robot.storage, Robot.shooter));
 
         indexButton = new JoystickButton(buttonBox, 11);
-        indexButton.whenPressed(new BallQueueCommand());
+        indexButton.whenPressed(new BallQueueCommand(Robot.storage));
 
         rightClimbUpSwitch = new JoystickButton(buttonBox, 6);
         rightClimbUpSwitch.whenHeld(new ClimberUpRightCommand());

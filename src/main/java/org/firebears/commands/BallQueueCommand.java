@@ -1,14 +1,16 @@
 //moves index 72 degrees
 package org.firebears.commands;
 
-import org.firebears.Robot;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import org.firebears.subsystems.Storage;
 
 public class BallQueueCommand extends CommandBase {
 
-    public BallQueueCommand() {
-        addRequirements(Robot.storage);
+    private final Storage storage;
+
+    public BallQueueCommand(Storage storage) {
+        this.storage = storage;
+        addRequirements(storage);
     }
 
     @Override
@@ -17,14 +19,14 @@ public class BallQueueCommand extends CommandBase {
 
     @Override
     public void execute() {
-        Robot.storage.move();
+        storage.move();
     }
 
     @Override
     public boolean isFinished() {
-        boolean aligned = Robot.storage.getPositionSensor();
+        boolean aligned = storage.getPositionSensor();
         if (aligned) {
-            Robot.storage.stop();
+            storage.stop();
             return true;
         } else {
             return false;

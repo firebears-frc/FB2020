@@ -1,37 +1,39 @@
 package org.firebears.commands;
 
-import org.firebears.Robot;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import org.firebears.subsystems.Shooter;
 
 public class spinTHATwheel extends CommandBase {
-  /**
-   * Creates a new spinTHATwheel.
-   */
-  public spinTHATwheel() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.shooter);
-  }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    Robot.shooter.setTargetRPM(1000.0);
-  }
+    private final Shooter shooter;
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
+    /**
+     * Creates a new spinTHATwheel.
+     */
+    public spinTHATwheel(Shooter shooter) {
+        this.shooter = shooter;
+        addRequirements(shooter);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        shooter.setTargetRPM(1000.0);
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return Robot.shooter.isWheelSpunUp();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return shooter.isWheelSpunUp();
+    }
 }
