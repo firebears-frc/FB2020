@@ -114,7 +114,6 @@ public class Chassis extends SubsystemBase {
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
         addChild("RobotDrive", robotDrive);
 
-        setDefaultCommand(new DriveCommand(this));
         frontLeftTemp = tab.add("frontLeft temp", 0).withPosition(0, 0).getEntry();
         rearLeftTemp = tab.add("rearLeft temp", 0).withPosition(0, 1).getEntry();
         frontRightTemp = tab.add("frontRight temp", 0).withPosition(1, 0).getEntry();

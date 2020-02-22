@@ -97,6 +97,10 @@ public class Robot extends TimedRobot {
         // this line or comment it out.
         if (autonomousCommand != null)
             autonomousCommand.cancel();
+
+        acquisition.setDefaultCommand(new AcquisitionRaiseCommand(
+            acquisition, loader));
+        chassis.setDefaultCommand(new DriveCommand(chassis));
     }
 
     /**
@@ -105,5 +109,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
 
+    }
+
+    @Override
+    public void testInit() {
+        acquisition.setDefaultCommand(null);
+        chassis.setDefaultCommand(null);
     }
 }

@@ -64,8 +64,6 @@ public class Acquisition extends SubsystemBase {
 
         lowerMotorSpeed = tab.add("lower motor speed", 0).withPosition(0, 0).getEntry();
         spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 1).getEntry();
-        setDefaultCommand(new AcquisitionRaiseCommand(
-            this, Robot.loader));
     }
 
     /** Periodic update */
