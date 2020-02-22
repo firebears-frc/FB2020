@@ -1,29 +1,33 @@
 package org.firebears.commands;
 
-import org.firebears.Robot;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import org.firebears.subsystems.Acquisition;
+import org.firebears.subsystems.Loader;
 
 public class SpitCommand extends CommandBase {
+
+    private final Acquisition acquisition;
+    private final Loader loader;
 
     // Remaining time in 20 ms ticks
     private int remaining = 100;
 
-    public SpitCommand() {
-        addRequirements(Robot.loader, Robot.storage);
+    public SpitCommand(Acquisition acquisition, Loader loader) {
+        this.acquisition = acquisition;
+        this.loader = loader;
+        addRequirements(acquisition, loader);
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        Robot.loader.beltReverse();
-        Robot.acquisition.starReverse();
+        acquisition.starReverse();
+        loader.beltReverse();
         remaining--;
     }
 
@@ -36,6 +40,5 @@ public class SpitCommand extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
     }
 }

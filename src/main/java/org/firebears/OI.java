@@ -34,7 +34,7 @@ public class OI {
             Robot.acquisition, Robot.loader));
 
         spitButton = new JoystickButton(xboxController, 2); //B
-        spitButton.whenPressed(new SpitCommand());
+        spitButton.whenPressed(new SpitCommand(Robot.acquisition, Robot.loader));
 
         buttonBox = new Joystick(1);
         

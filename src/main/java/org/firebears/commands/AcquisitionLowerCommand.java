@@ -8,7 +8,6 @@ import org.firebears.subsystems.Loader;
 public class AcquisitionLowerCommand extends CommandBase {
 
     private final Acquisition acquisition;
-
     private final Loader loader;
 
     public AcquisitionLowerCommand(Acquisition acquisition,
@@ -29,7 +28,8 @@ public class AcquisitionLowerCommand extends CommandBase {
         loader.beltForward();
         if (loader.isJammed()) {
             cancel();
-            CommandScheduler.getInstance().schedule(new SpitCommand());
+            CommandScheduler.getInstance().schedule(
+                new SpitCommand(acquisition, loader));
         }
     }
 
