@@ -45,16 +45,16 @@ public class OI {
         indexButton.whenPressed(new BallQueueCommand(Robot.storage));
 
         rightClimbUpSwitch = new JoystickButton(buttonBox, 6);
-        rightClimbUpSwitch.whenHeld(new ClimberUpRightCommand());
+        rightClimbUpSwitch.whenHeld(new ClimberExtendCommand(Robot.climberRight));
 
         rightClimbDownSwitch = new JoystickButton(buttonBox, 4);
-        rightClimbDownSwitch.whenHeld(new ClimberDownRightCommand());
+        rightClimbDownSwitch.whenHeld(new ClimberRetractCommand(Robot.climberRight));
 
         leftClimbUpSwitch = new JoystickButton(buttonBox, 5);
-        leftClimbUpSwitch.whenHeld(new ClimberUpLeftCommand());
+        leftClimbUpSwitch.whenHeld(new ClimberExtendCommand(Robot.climberLeft));
 
         leftClimbDownSwitch = new JoystickButton(buttonBox, 3);
-        leftClimbDownSwitch.whenHeld(new ClimberDownLeftCommand());
+        leftClimbDownSwitch.whenHeld(new ClimberRetractCommand(Robot.climberLeft));
 
         celebrateButton = new JoystickButton(buttonBox, 12);
         celebrateButton.whenHeld(new CelebrateCommand());

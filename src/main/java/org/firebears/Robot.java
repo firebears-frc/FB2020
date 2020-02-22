@@ -18,8 +18,8 @@ public class Robot extends TimedRobot {
     public static Acquisition acquisition;
     public static Loader loader;
     public static Shooter shooter;
-    public static ClimberRight climberRight;
-    public static ClimberLeft climberLeft;
+    public static Climber climberRight;
+    public static Climber climberLeft;
     public static Vision vision;
     private static Lidar lidar;
     public static Storage storage;
@@ -32,8 +32,8 @@ public class Robot extends TimedRobot {
         acquisition = new Acquisition();
         loader = new Loader();
         shooter = new Shooter();
-        climberRight = new ClimberRight();
-        climberLeft = new ClimberLeft();
+        climberRight = new Climber("configCANID", 23);
+        climberLeft = new Climber("configCANID", 22);
         vision = new Vision();
         lidar = new Lidar();
         storage = new Storage();

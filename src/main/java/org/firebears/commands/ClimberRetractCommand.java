@@ -2,13 +2,15 @@
 package org.firebears.commands;
 
 import org.firebears.Robot;
+import org.firebears.subsystems.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ClimberUpRightCommand extends CommandBase {
- 
-  public ClimberUpRightCommand() {
-   
+public class ClimberRetractCommand extends CommandBase {
+  private final Climber climber;
+
+  public ClimberRetractCommand(Climber climber) {
+    this.climber = climber;
     addRequirements(Robot.climberRight);
   }
 
@@ -19,7 +21,7 @@ public class ClimberUpRightCommand extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.climberRight.rightClimberUp();
+  climber.retract();
   }
 
  

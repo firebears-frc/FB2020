@@ -2,13 +2,16 @@
 package org.firebears.commands;
 
 import org.firebears.Robot;
+import org.firebears.subsystems.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class ClimberDownLeftCommand extends CommandBase {
+public class ClimberExtendCommand extends CommandBase {
+  private final Climber climber;
  
-  public ClimberDownLeftCommand() {
-    addRequirements(Robot.climberLeft);
+  public ClimberExtendCommand(Climber climber) {
+    this.climber = climber;
+   addRequirements(climber);
   }
 
   
@@ -18,7 +21,7 @@ public class ClimberDownLeftCommand extends CommandBase {
 
   @Override
   public void execute() {
-    Robot.climberLeft.leftClimberDown();
+    climber.extend();
   }
 
  
