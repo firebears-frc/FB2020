@@ -17,8 +17,8 @@ public class Climber extends SubsystemBase {
             3000);
         int continuousCurrentLimit = config.getInt(
             "climber.continuousCurrentLimit", 20);
-        int leftClimberCanID = config.getInt("configCANID", defCANID);
-        srx = new WPI_TalonSRX(leftClimberCanID);
+        int canID = config.getInt("configCANID", defCANID);
+        srx = new WPI_TalonSRX(canID);
         srx.setInverted(false);
         srx.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
         srx.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
@@ -30,7 +30,6 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void periodic() {
-
     }
 
     public void extend() {
