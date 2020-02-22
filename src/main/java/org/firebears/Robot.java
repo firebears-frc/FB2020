@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
         acquisition.setDefaultCommand(new AcquisitionRaiseCommand(
             acquisition, loader));
         chassis.setDefaultCommand(new DriveCommand(chassis));
+        storage.setDefaultCommand(new TheOneCommandToRuleThemAll(storage));
     }
 
     /**
@@ -115,5 +116,6 @@ public class Robot extends TimedRobot {
     public void testInit() {
         acquisition.setDefaultCommand(null);
         chassis.setDefaultCommand(null);
+        storage.setDefaultCommand(null);
     }
 }
