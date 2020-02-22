@@ -16,7 +16,7 @@ public class IndexShootingCommand extends CommandBase {
         this.storage = storage;
         this.shooter = shooter;
         ballQueue = new BallQueueCommand(storage);
-        addRequirements(storage, shooter);
+        addRequirements(storage);
     }
 
     @Override

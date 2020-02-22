@@ -51,7 +51,7 @@ public class Acquisition extends SubsystemBase {
             System.err.println("ERROR: " + err + " setting limits on lowerMotor");
 
         spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
-        spinMotor.setInverted(false);
+        spinMotor.setInverted(true);
         err = spinMotor.setSmartCurrentLimit(spinStallLimit, spinFreeLimit, spinLimitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on spinMotor");
@@ -81,13 +81,13 @@ public class Acquisition extends SubsystemBase {
 
     /** Start acquiring power cells */
     public void startAcquire() {
-        lowerMotor.set(1.0);
+        lowerMotor.set(0.3);
         spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
-        lowerMotor.set(-1.0);
+        lowerMotor.set(-0.3);
         spinMotor.set(0);
     }
 

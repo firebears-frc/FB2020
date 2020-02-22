@@ -29,11 +29,11 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         chassis = new Chassis();
-        acquisition = new Acquisition();
         loader = new Loader();
+        acquisition = new Acquisition();
         shooter = new Shooter();
-        climberRight = new Climber("configCANID", 23);
-        climberLeft = new Climber("configCANID", 22);
+        climberRight = new Climber("climber.right.canID", 23);
+        climberLeft = new Climber("climber.left.canID", 22);
         vision = new Vision();
         lidar = new Lidar();
         storage = new Storage();

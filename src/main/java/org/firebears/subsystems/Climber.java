@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
         srx.configContinuousCurrentLimit(continuousCurrentLimit,
             timeoutMs);
 
-        addChild("Climber", srx);
+        addChild(configCANID, srx);
     }
 
     @Override

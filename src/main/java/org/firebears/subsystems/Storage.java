@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -23,6 +24,7 @@ public class Storage extends SubsystemBase {
     private final DigitalInput eye4;
     private final DigitalInput eye5;
     private final CANEncoder indexEncoder;
+    private final SpeedControllerGroup group;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Storage");
     private final NetworkTableEntry magnetWidget;
@@ -42,8 +44,11 @@ public class Storage extends SubsystemBase {
         indexMotor.setInverted(false);
         err = indexMotor.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         indexEncoder = indexMotor.getEncoder();
+        group = new SpeedControllerGroup(indexMotor);
+        addChild("SpinMotor", group);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on indexMotor");
+
 
         positionSensor = new DigitalInput(config.getInt("storage.position.dio", 4));
         eye1 = new DigitalInput(config.getInt("storage.eye1.dio", 6));
