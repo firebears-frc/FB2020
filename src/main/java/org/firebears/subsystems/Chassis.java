@@ -45,6 +45,8 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry rearLeftTemp;
     private final NetworkTableEntry frontRightTemp;
     private final NetworkTableEntry rearRightTemp;
+    private final NetworkTableEntry speedWidget;
+    private final NetworkTableEntry rotationWidget;
 
     private double direction = 1.0;
     private double pace = 1.0;
@@ -117,6 +119,8 @@ public class Chassis extends SubsystemBase {
         rearLeftTemp = tab.add("rearLeft temp", 0).withPosition(0, 1).getEntry();
         frontRightTemp = tab.add("frontRight temp", 0).withPosition(1, 0).getEntry();
         rearRightTemp = tab.add("rearRight temp", 0).withPosition(1, 1).getEntry();
+        speedWidget = tab.add("speed", 0).withPosition(2, 0).getEntry();
+        rotationWidget = tab.add("rotation", 0).withPosition(2, 1).getEntry();
     }
 
     @Override
@@ -127,6 +131,8 @@ public class Chassis extends SubsystemBase {
             rearLeftTemp.setNumber(rearLeft.getMotorTemperature());
             frontRightTemp.setNumber(frontRight.getMotorTemperature());
             rearRightTemp.setNumber(rearRight.getMotorTemperature());
+            speedWidget.setNumber(getSpeed());
+            rotationWidget.setNumber(getRotation());
             dashTimeout = now + dashDelay;
         }
         direction = getDirection();
