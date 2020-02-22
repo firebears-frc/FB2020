@@ -4,6 +4,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
@@ -27,6 +28,7 @@ public class Storage extends SubsystemBase {
     private final SpeedControllerGroup group;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Storage");
+
     private final NetworkTableEntry magnetWidget;
     private final NetworkTableEntry countWidget;
 
@@ -51,13 +53,14 @@ public class Storage extends SubsystemBase {
 
 
         positionSensor = new DigitalInput(config.getInt("storage.position.dio", 0));
-        eye1 = new DigitalInput(config.getInt("storage.eye1.dio", 6));
-        eye2 = new DigitalInput(config.getInt("storage.eye2.dio", 7));
-        eye3 = new DigitalInput(config.getInt("storage.eye3.dio", 8));
-        eye4 = new DigitalInput(config.getInt("storage.eye4.dio", 9));
-        eye5 = new DigitalInput(config.getInt("storage.eye5.dio", 10));
+        eye1 = new DigitalInput(config.getInt("storage.eye1.dio", 1));
+        eye2 = new DigitalInput(config.getInt("storage.eye2.dio", 2));
+        eye3 = new DigitalInput(config.getInt("storage.eye3.dio", 3));
+        eye4 = new DigitalInput(config.getInt("storage.eye4.dio", 4));
+        eye5 = new DigitalInput(config.getInt("storage.eye5.dio", 5));
 
-        magnetWidget = tab.add("magnet", 0).withPosition(0, 0).getEntry();
+        //magnetWidget = tab.add("magnet", 0).withPosition(0, 0).getEntry();
+        magnetWidget = tab.add("positionSensorValue", false).getEntry();
         countWidget = tab.add("count", 0).withPosition(0, 1).getEntry();
 
         dashDelay = config.getLong("dashDelay", 250);

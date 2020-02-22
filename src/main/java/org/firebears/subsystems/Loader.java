@@ -23,7 +23,7 @@ public class Loader extends SubsystemBase {
         int timeoutMs = config.getInt("srx.timeout", 30);
         int leftBeltCanID = config.getInt("loader.leftBeltMotor.canID", 20);
         int rightBeltCanID = config.getInt("loader.rightBeltMotor.canID", 21);
-        int eyeDio = config.getInt("loader.eye.dio", 5);
+        int eyeDio = config.getInt("loader.eye.dio", 9);
         int peakCurrentLimit = config.getInt("loader.peakCurrentLimit", 15);
         int peakCurrentDuration = config.getInt("loader.peakCurrentDuration", 5000);
         int continuousCurrentLimit = config.getInt("loader.continuousCurrentLimit", 10);
