@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
     static private final double LOSS_COEFFICIENT = 0.45;
 
     /** Speed (power cell) when idling */
-    static private final double IDLE_SPEED = 0;
+    static private final double IDLE_SPEED = 5;
 
     private double targetVelocity = 0;
     private final Preferences config = Preferences.getInstance();
@@ -50,6 +50,7 @@ public class Shooter extends SubsystemBase {
         double d = config.getDouble("shooter.D", 0.0);
         double f = config.getDouble("shooter.F", 0.0);
         srx = new TalonSRX(config.getInt("shooter.motor1", 25));
+        srx.setInverted(true);
         srx.configFactoryDefault();
         srx.configSelectedFeedbackSensor(FeedbackDevice.Tachometer,
             PID_LOOP_IDX, timeoutMs);

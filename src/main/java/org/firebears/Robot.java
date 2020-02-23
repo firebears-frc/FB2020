@@ -121,5 +121,6 @@ public class Robot extends TimedRobot {
         acquisition.setDefaultCommand(new AcquisitionRaiseCommand(acquisition, loader));
         chassis.setDefaultCommand(new DriveCommand(chassis));
         storage.setDefaultCommand(new TheOneCommandToRuleThemAll(storage));
+        shooter.setDefaultCommand(new idleTHATwheel(shooter));
     }
 }
