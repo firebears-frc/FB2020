@@ -81,6 +81,7 @@ public class Robot extends TimedRobot {
         // schedule the autonomous command (example)
         if (autonomousCommand != null)
             autonomousCommand.schedule();
+        setDefaultCommands();
     }
 
     /**
@@ -98,12 +99,8 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null)
-            autonomousCommand.cancel();
-
-        acquisition.setDefaultCommand(new AcquisitionRaiseCommand(
-            acquisition, loader));
-        chassis.setDefaultCommand(new DriveCommand(chassis));
-        storage.setDefaultCommand(new TheOneCommandToRuleThemAll(storage));
+            autonomousCommand.cancel();     
+        setDefaultCommands();   
     }
 
     /**
@@ -119,5 +116,10 @@ public class Robot extends TimedRobot {
         acquisition.setDefaultCommand(null);
         chassis.setDefaultCommand(null);
         storage.setDefaultCommand(null);
+    }
+    public void setDefaultCommands(){
+        acquisition.setDefaultCommand(new AcquisitionRaiseCommand(acquisition, loader));
+        chassis.setDefaultCommand(new DriveCommand(chassis));
+        storage.setDefaultCommand(new TheOneCommandToRuleThemAll(storage));
     }
 }

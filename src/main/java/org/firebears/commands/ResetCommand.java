@@ -18,7 +18,7 @@ public class ResetCommand extends CommandBase {
 
     @Override
     public void execute() {
-        storage.reverse();
+        storage.move();
     }
 
     @Override

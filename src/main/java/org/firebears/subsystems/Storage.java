@@ -5,6 +5,8 @@ import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.firebears.commands.ResetCommand;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
@@ -31,6 +33,11 @@ public class Storage extends SubsystemBase {
 
     private final NetworkTableEntry magnetWidget;
     private final NetworkTableEntry countWidget;
+    private final NetworkTableEntry eye1Widget;
+    private final NetworkTableEntry eye2Widget;
+    private final NetworkTableEntry eye3Widget;
+    private final NetworkTableEntry eye4Widget;
+    private final NetworkTableEntry eye5Widget;
 
     private final long dashDelay;
     private long dashTimeout = 0;
@@ -62,6 +69,12 @@ public class Storage extends SubsystemBase {
         //magnetWidget = tab.add("magnet", 0).withPosition(0, 0).getEntry();
         magnetWidget = tab.add("positionSensorValue", false).getEntry();
         countWidget = tab.add("count", 0).withPosition(0, 1).getEntry();
+        eye1Widget = tab.add("position1Filled", false).getEntry();
+        eye2Widget = tab.add("position2Filled", false).getEntry();
+        eye3Widget = tab.add("position3Filled", false).getEntry();
+        eye4Widget = tab.add("position4Filled", false).getEntry();
+        eye5Widget = tab.add("position5Filled", false).getEntry();
+        tab.add("reset", new ResetCommand(this));
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 125;
@@ -69,7 +82,7 @@ public class Storage extends SubsystemBase {
 
     @Override
     public void periodic() {
-        boolean magnet = positionSensor.get();
+        boolean magnet = getPositionSensor();
         if (magnet) {
             indexEncoder.setPosition(0.0);
         }
@@ -78,6 +91,11 @@ public class Storage extends SubsystemBase {
             magnetWidget.setBoolean(magnet);
             countWidget.setNumber(getPowerCellCount());
             dashTimeout = now + dashDelay;
+            eye1Widget.setBoolean(eye1.get());
+            eye2Widget.setBoolean(eye2.get());
+            eye3Widget.setBoolean(eye3.get());
+            eye4Widget.setBoolean(eye4.get());
+            eye5Widget.setBoolean(eye5.get());
         }
     }
 
@@ -85,16 +103,16 @@ public class Storage extends SubsystemBase {
         indexMotor.set(0.1);
     }
 
-    public void reverse() {
-        indexMotor.set(-0.1);
-    }
+   // public void reverse() {
+     //   indexMotor.set(-0.4);
+    //}
 
     public void stop() {
         indexMotor.set(0.0);
     }
 
     public boolean getPositionSensor() {
-        return positionSensor.get();
+        return !positionSensor.get();
     }
 
     public int getPowerCellCount() {

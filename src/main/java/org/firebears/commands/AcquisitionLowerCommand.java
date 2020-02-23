@@ -26,11 +26,11 @@ public class AcquisitionLowerCommand extends CommandBase {
     public void execute() {
         acquisition.startAcquire();
         loader.beltForward();
-        if (loader.isJammed()) {
-            cancel();
-            CommandScheduler.getInstance().schedule(
-                new SpitCommand(acquisition, loader));
-        }
+        //if (loader.isJammed()) {
+           // cancel();
+            //CommandScheduler.getInstance().schedule(
+             //   new SpitCommand(acquisition, loader));
+      //  }
     }
 
     @Override
