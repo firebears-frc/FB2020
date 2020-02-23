@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
     static private final double LOSS_COEFFICIENT = 0.45;
 
     /** Speed (power cell) when idling */
-    static private final double IDLE_SPEED = 5;
+    static private final double IDLE_SPEED = 3;
 
     private double targetVelocity = 0;
     private final Preferences config = Preferences.getInstance();

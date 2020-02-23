@@ -33,10 +33,12 @@ public class IndexShootingCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return storage.getPowerCellCount() == 0;
+        return ballQueue.isFinished() &&
+            (storage.getPowerCellCount() == 0);
     }
 
     @Override
     public void end(boolean interrupted) {
+        Robot.lights.shoot(false);
     }
 }
