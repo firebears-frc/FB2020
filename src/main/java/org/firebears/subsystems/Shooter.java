@@ -31,6 +31,8 @@ public class Shooter extends SubsystemBase {
     private final ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
     private final NetworkTableEntry outputWidget;
     private final NetworkTableEntry velocityWidget;
+    private final NetworkTableEntry targetVelocityWidget;
+    private final NetworkTableEntry isSpunWidget;
 
     private final TalonSRX srx;
 
@@ -72,6 +74,8 @@ public class Shooter extends SubsystemBase {
 
         outputWidget = tab.add("output", 0).withPosition(0, 0).getEntry();
         velocityWidget = tab.add("velocity", 0).withPosition(0, 1).getEntry();
+        targetVelocityWidget = tab.add("target", 0).withPosition(1, 0).getEntry();
+        isSpunWidget = tab.add("isWheelSpunUp", false).withPosition(2, 2).getEntry();
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 200;
@@ -87,6 +91,8 @@ public class Shooter extends SubsystemBase {
         if (now > dashTimeout) {
             outputWidget.setNumber(output);
             velocityWidget.setNumber(velocity);
+            targetVelocityWidget.setNumber(targetVelocity);
+            isSpunWidget.setBoolean(isWheelSpunUp());
             dashTimeout = now + dashDelay;
         }
     }
@@ -96,10 +102,16 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinUp() {
+        
         double range = Robot.lidar.getDistance();
-        double speed = optimalVelocity(range);
-        double rpm = calcRpm(speed);
-        setTargetRPM(rpm);
+        if (range < 0){
+            setTargetRPM(2000);
+        }else{
+            double speed = optimalVelocity(range);
+            double rpm = calcRpm(speed);
+            setTargetRPM(rpm);
+        }
+        
     }
 
     public void idle() {
