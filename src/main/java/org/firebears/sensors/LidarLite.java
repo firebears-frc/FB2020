@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /** Class for LIDAR Lite v3 */
+@SuppressWarnings("unused")
 public class LidarLite {
 
     /** Bit to enable bulk read from a series of registers */
