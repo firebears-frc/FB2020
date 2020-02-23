@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
     public static Climber climberRight;
     public static Climber climberLeft;
     public static Vision vision;
-    private static Lidar lidar;
+    public static Lidar lidar;
     public static Storage storage;
     public static Lights lights;
 
