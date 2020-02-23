@@ -38,9 +38,12 @@ public class Lidar extends SubsystemBase {
     /** Distance in cm */
     private double distance = -1;
 
-    /** Get distance in cm */
+    /** Get distance in m */
     public double getDistance() {
-        return distance;
+        if (LidarLite.isError(status))
+            return -1;
+        else
+            return distance * 100.0;
     }
 
     /** Status flags */

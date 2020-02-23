@@ -3,6 +3,9 @@ package org.firebears.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import org.firebears.Robot;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Preferences;
@@ -15,6 +18,12 @@ public class Shooter extends SubsystemBase {
     static private final double SENSOR_UNITS_PER_REV = 4096;
     static private final double GEAR_RATIO = 13.56;
     static private final double PER_MINUTE_100_MS = 600.0;
+
+    /** Estamate of velocity loss from shooter */ 
+    static private final double LOSS_COEFFICIENT = 0.45;
+
+    /** Speed (power cell) when idling */
+    static private final double IDLE_SPEED = 0;
 
     private double targetVelocity = 0;
     private final Preferences config = Preferences.getInstance();
@@ -84,8 +93,38 @@ public class Shooter extends SubsystemBase {
     public boolean isWheelSpunUp() {
         return srx.getSelectedSensorVelocity(PID_LOOP_IDX) >= targetVelocity;
     }
-    
-    public void setTargetRPM(double rpm) {
+
+    public void spinUp() {
+        double range = Robot.lidar.getDistance();
+        double speed = optimalVelocity(range);
+        double rpm = calcRpm(speed);
+        setTargetRPM(rpm);
+    }
+
+    public void idle() {
+        double rpm = calcRpm(IDLE_SPEED);
+        setTargetRPM(rpm);
+    }
+
+    /** Calculate the optimal power cell velocity */
+    private double optimalVelocity(double range) {
+/*        for (int i = 1; i < array.length; i++) {
+            if (array[i][0] > range) {
+                return array[i-1][1];
+            }
+        }*/
+        return 5.0;
+    }
+
+    // the number of m/s that one rpm is equal to
+    static private final double WHEEL_SPEED = 0.0079756;
+
+    /** Calculate the RPM needed for a given power cell speed */
+    private double calcRpm(double speed) {
+        return (speed / WHEEL_SPEED) * LOSS_COEFFICIENT;
+    }
+
+    private void setTargetRPM(double rpm) {
         targetVelocity = rpm * SENSOR_UNITS_PER_REV /
             (PER_MINUTE_100_MS * GEAR_RATIO);
     }
