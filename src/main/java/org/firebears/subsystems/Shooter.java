@@ -15,7 +15,7 @@ public class Shooter extends SubsystemBase {
 
     static private final int PID_LOOP_IDX = 0;
     static private final double SENSOR_UNITS_PER_REV = 4096;
-    static private final double GEAR_RATIO = 13.56;
+    static private final double GEAR_RATIO = 2.5;
     static private final double PER_MINUTE_100_MS = 600.0;
     static private final double DEFAULT_RANGE_FT = 10.0;
     static private final double FEET_PER_METER = 0.3048;
