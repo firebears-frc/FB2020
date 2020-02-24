@@ -47,6 +47,7 @@ public class RangeVelocityTable {
             range_velocity[i][1] = max;
             range_velocity[i][2] = min;
         }
+        br.close();
     }
 
     /** Create a new range velocity table for a given angle */

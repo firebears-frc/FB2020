@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
         double d = config.getDouble("shooter.D", 0.0);
         double f = config.getDouble("shooter.F", 0.0);
         range_velocity = RangeVelocityTable.load(
-            config.getInt("shooter.angle"), 45);
+            config.getInt("shooter.angle", 45));
         int timeoutMs = config.getInt("srx.timeout", 30);
         srx = new TalonSRX(config.getInt("shooter.motor1", 25));
         srx.setInverted(true);
@@ -148,7 +148,7 @@ public class Shooter extends SubsystemBase {
     /** Calculate the optimal power cell velocity in m/s
      * @param range Distance in meters */
     private double optimalVelocity(double range) {
-        return range_velocity.getOptimal();
+        return range_velocity.getOptimal(range);
     }
 
     /** Calculate the RPM needed for a given power cell speed */
