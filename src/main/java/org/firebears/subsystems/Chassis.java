@@ -196,6 +196,6 @@ public class Chassis extends SubsystemBase {
     }
 
     private double getRotation() {
-        return rotation * direction * pace;
+        return rotation * pace;
     }
 }
