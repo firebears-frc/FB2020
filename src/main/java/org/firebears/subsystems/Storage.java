@@ -103,10 +103,6 @@ public class Storage extends SubsystemBase {
         indexMotor.set(0.1);
     }
 
-   // public void reverse() {
-     //   indexMotor.set(-0.4);
-    //}
-
     public void stop() {
         indexMotor.set(0.0);
     }
@@ -137,5 +133,9 @@ public class Storage extends SubsystemBase {
 
     public boolean needsIndexing() {
         return (eye1.get() && !eye5.get());
+    }
+
+    public boolean isBackedUp() {
+        return eye1.get();
     }
 }

@@ -14,7 +14,6 @@ public class Loader extends SubsystemBase {
     private final SpeedControllerGroup belts;
     private final DigitalInput loadEye;
     private int eyeDuration;
-   
 
     /** Duration in 20 ms ticks */
     static private final int MAX_DURATION = 100;
@@ -27,7 +26,6 @@ public class Loader extends SubsystemBase {
         int peakCurrentLimit = config.getInt("loader.peakCurrentLimit", 15);
         int peakCurrentDuration = config.getInt("loader.peakCurrentDuration", 5000);
         int continuousCurrentLimit = config.getInt("loader.continuousCurrentLimit", 10);
-        
 
         leftBeltMotor = new WPI_TalonSRX(leftBeltCanID);
         leftBeltMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
@@ -38,7 +36,6 @@ public class Loader extends SubsystemBase {
         rightBeltMotor.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
         rightBeltMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
         rightBeltMotor.setInverted(true);
-
 
         belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
         loadEye = new DigitalInput(eyeDio);
@@ -67,6 +64,7 @@ public class Loader extends SubsystemBase {
     }
 
     public boolean isJammed() {
-        return eyeDuration > MAX_DURATION;
+        return false;
+//        return eyeDuration > MAX_DURATION;
     }
 }
