@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
     static private final double DEFAULT_RANGE_M =
         DEFAULT_RANGE_FT * FEET_PER_METER;
 
-    static private final double WHEEL_RADIUS_FT = 3.0;
+    static private final double WHEEL_RADIUS_FT = 0.25;
     static private final double WHEEL_RADIUS_M =
         WHEEL_RADIUS_FT * FEET_PER_METER;
 
@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
     static private final double LOSS_COEFFICIENT = 0.45;
 
     /** Speed (power cell) when idling (m/s) */
-    static private final double IDLE_SPEED = 3;
+    static private final double IDLE_SPEED = 0;
 
     /** Table to convert range to velocity */
     private final RangeVelocityTable range_velocity;
@@ -158,7 +158,7 @@ public class Shooter extends SubsystemBase {
             / WHEEL_RADIUS_M;
         // revolutions per second
         double rps = Math.toDegrees(angularVelocity) / 360.0;
-        return rps / 60.0;
+        return rps * 60.0;
     }
 
     private double targetVelocity() {

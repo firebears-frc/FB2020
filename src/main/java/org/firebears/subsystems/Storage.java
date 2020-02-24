@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.firebears.commands.ResetCommand;
+import org.firebears.util.PIDSparkMotor;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,6 +20,7 @@ public class Storage extends SubsystemBase {
     private final Preferences config = Preferences.getInstance();
 
     private final CANSparkMax indexMotor;
+    private final PIDSparkMotor PIDindexMotor;
 
     private final DigitalInput positionSensor;
     private final DigitalInput eye1;
@@ -30,6 +32,7 @@ public class Storage extends SubsystemBase {
     private final SpeedControllerGroup group;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Storage");
+
 
     private final NetworkTableEntry magnetWidget;
     private final NetworkTableEntry countWidget;
@@ -50,6 +53,12 @@ public class Storage extends SubsystemBase {
         int indexMotorCanID = config.getInt("storage.indexMotor.canID", 10);
         
         indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
+
+        PIDindexMotor = new PIDSparkMotor(indexMotor,
+        config.getDouble("storage.P", 0.0), 
+        config.getDouble("storage.I", 0.0), 
+        config.getDouble("storage.D", 0.0));
+
         indexMotor.setInverted(false);
         err = indexMotor.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         indexEncoder = indexMotor.getEncoder();
@@ -101,6 +110,7 @@ public class Storage extends SubsystemBase {
 
     public void move() {
         indexMotor.set(0.1);
+        
     }
 
     public void stop() {
