@@ -61,9 +61,9 @@ public class RangeVelocityTable {
     /** Create a new empty range velocity table */
     private RangeVelocityTable() {
         for (int i = 0; i < 1000; i++) {
-            table[i][0] = DEFAULT_VELOCITY;
-            table[i][1] = DEFAULT_VELOCITY;
-            table[i][2] = DEFAULT_VELOCITY;
+            range_velocity[i][0] = DEFAULT_VELOCITY;
+            range_velocity[i][1] = DEFAULT_VELOCITY;
+            range_velocity[i][2] = DEFAULT_VELOCITY;
         }
     }
 
