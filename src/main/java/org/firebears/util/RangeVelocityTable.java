@@ -6,6 +6,9 @@ import java.io.FileReader;
 /** Table of range to power cell velocity for a specific launch angle */
 public class RangeVelocityTable {
 
+    /** Default velocity (m/s) */
+    static private final double DEFAULT_VELOCITY = 8.0;
+
     /** Table of range in cm to power cell velocity (optimal, max, min) */
     private final double[][] range_velocity = new double[1000][3];
 
@@ -15,7 +18,7 @@ public class RangeVelocityTable {
         if (cm > 0 && cm < 1000)
             return range_velocity[cm][col];
         else
-            return 0.0;
+            return DEFAULT_VELOCITY;
     }
 
     /** Get optimal velocity for a given range (m) */
@@ -57,7 +60,11 @@ public class RangeVelocityTable {
 
     /** Create a new empty range velocity table */
     private RangeVelocityTable() {
-        // empty
+        for (int i = 0; i < 1000; i++) {
+            table[i][0] = DEFAULT_VELOCITY;
+            table[i][1] = DEFAULT_VELOCITY;
+            table[i][2] = DEFAULT_VELOCITY;
+        }
     }
 
     /** Load a range velocity table */
