@@ -1,9 +1,12 @@
 package org.firebears.subsystems;
 
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,6 +16,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Acquisition extends SubsystemBase {
 
     private final Preferences config = Preferences.getInstance();
+
+    private final CANDigitalInput limitUp;
+    private final CANDigitalInput limitDown;
 
     private final SpeedControllerGroup group;
     private final SpeedControllerGroup group1;
@@ -24,9 +30,12 @@ public class Acquisition extends SubsystemBase {
     private final ShuffleboardTab tab = Shuffleboard.getTab("Acquisition");
     private final NetworkTableEntry lowerMotorSpeed;
     private final NetworkTableEntry spinMotorSpeed;
+    private final NetworkTableEntry upWidget;
+    private final NetworkTableEntry downWidget;
 
     private final long dashDelay;
     private long dashTimeout = 0;
+
 
     public Acquisition() {
         CANError err;
@@ -60,6 +69,13 @@ public class Acquisition extends SubsystemBase {
         group1 = new SpeedControllerGroup(lowerMotor);
         addChild("LowerMotor", group1);
 
+        limitUp = new CANDigitalInput(lowerMotor, CANDigitalInput.LimitSwitch.kForward, CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+        limitDown = new CANDigitalInput(lowerMotor, CANDigitalInput.LimitSwitch.kReverse, CANDigitalInput.LimitSwitchPolarity.kNormallyOpen);
+
+
+        upWidget = tab.add("Up Limit", false).withPosition(0, 2).getEntry();
+        downWidget = tab.add("Down Limit", false).withPosition(0, 3).getEntry();
+
         lowerMotorSpeed = tab.add("lower motor speed", 0).withPosition(0, 0).getEntry();
         spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 1).getEntry();
     }
@@ -67,8 +83,16 @@ public class Acquisition extends SubsystemBase {
     /** Periodic update */
     @Override
     public void periodic() {
+
+        boolean isUp = limitUp.get();
+        boolean isDown = limitDown.get();
+
         long now = System.currentTimeMillis();
         if (now > dashTimeout) {
+
+            upWidget.setBoolean(isUp);
+            downWidget.setBoolean(isDown);
+
             lowerMotorSpeed.setNumber(lowerMotor.get());
             spinMotorSpeed.setNumber(spinMotor.get());
             dashTimeout = now + dashDelay;

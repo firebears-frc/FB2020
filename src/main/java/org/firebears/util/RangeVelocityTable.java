@@ -7,7 +7,7 @@ import java.io.FileReader;
 public class RangeVelocityTable {
 
     /** Default velocity (m/s) */
-    static private final double DEFAULT_VELOCITY = 6.0;
+    static private final double DEFAULT_VELOCITY = 4.5;
 
     /** Table of range in cm to power cell velocity (optimal, max, min) */
     private final double[][] range_velocity = new double[1000][3];
