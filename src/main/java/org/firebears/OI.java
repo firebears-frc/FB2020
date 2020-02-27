@@ -37,7 +37,7 @@ public class OI {
         buttonBox = new Joystick(1);
 
         shootButton = new JoystickButton(buttonBox, 1);
-        shootButton.whenHeld(new spinTHATwheel(Robot.shooter));
+        shootButton.whenHeld(new ShooterSpinUp(Robot.shooter));
 
         indexButton = new JoystickButton(buttonBox, 11);
         indexButton.whenPressed(new BallQueueCommand(Robot.storage));

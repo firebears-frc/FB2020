@@ -1,18 +1,18 @@
 package org.firebears.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.firebears.subsystems.Shooter;
+import org.firebears.subsystems.Storage;
 
-public class spinTHATwheel extends CommandBase {
+public class DefaultIndexCommand extends CommandBase {
 
-    private final Shooter shooter;
+    private final Storage storage;
 
-    /**
-     * Creates a new spinTHATwheel.
-     */
-    public spinTHATwheel(Shooter shooter) {
-        this.shooter = shooter;
-        addRequirements(shooter);
+    private final BallQueueCommand queue;
+
+    public DefaultIndexCommand(Storage storage) {
+        this.storage = storage;
+        addRequirements(storage);
+        queue = new BallQueueCommand(storage);
     }
 
     // Called when the command is initially scheduled.
@@ -23,7 +23,9 @@ public class spinTHATwheel extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        shooter.spinUp();
+        if (storage.needsIndexing()){
+            queue.schedule(false);
+        }
     }
 
     // Called once the command ends or is interrupted.

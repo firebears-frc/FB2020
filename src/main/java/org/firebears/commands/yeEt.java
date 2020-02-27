@@ -7,7 +7,7 @@ import org.firebears.subsystems.Storage;
 public class yeEt extends ParallelRaceGroup {
     public yeEt(Storage storage, Shooter shooter) {
         super(
-            new spinTHATwheel(shooter),
+            new ShooterSpinUp(shooter),
             new IndexShootingCommand(storage, shooter)
         );
     }

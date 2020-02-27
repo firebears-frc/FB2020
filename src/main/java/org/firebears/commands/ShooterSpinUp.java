@@ -1,18 +1,18 @@
 package org.firebears.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import org.firebears.subsystems.Storage;
+import org.firebears.subsystems.Shooter;
 
-public class TheOneCommandToRuleThemAll extends CommandBase {
+public class ShooterSpinUp extends CommandBase {
 
-    private final Storage storage;
+    private final Shooter shooter;
 
-    private final BallQueueCommand queue;
-
-    public TheOneCommandToRuleThemAll(Storage storage) {
-        this.storage = storage;
-        addRequirements(storage);
-        queue = new BallQueueCommand(storage);
+    /**
+     * Creates a new ShooterSpinUp.
+     */
+    public ShooterSpinUp(Shooter shooter) {
+        this.shooter = shooter;
+        addRequirements(shooter);
     }
 
     // Called when the command is initially scheduled.
@@ -23,9 +23,7 @@ public class TheOneCommandToRuleThemAll extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (storage.needsIndexing()){
-            queue.schedule(false);
-        }
+        shooter.spinUp();
     }
 
     // Called once the command ends or is interrupted.

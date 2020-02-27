@@ -22,6 +22,8 @@ public class Storage extends SubsystemBase {
     private final CANSparkMax indexMotor;
     private final PIDSparkMotor PIDindexMotor;
 
+    
+
     private final DigitalInput positionSensor;
     private final DigitalInput eye1;
     private final DigitalInput eye2;
