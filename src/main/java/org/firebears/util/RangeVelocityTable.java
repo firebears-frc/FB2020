@@ -1,7 +1,8 @@
 package org.firebears.util;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 /** Table of range to power cell velocity for a specific launch angle */
 public class RangeVelocityTable {
@@ -38,8 +39,9 @@ public class RangeVelocityTable {
 
     /** Create a new range velocity table from a file */
     private RangeVelocityTable(String file) throws Exception {
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
+        URL url = ClassLoader.getSystemResource(file);
+        InputStreamReader isr = new InputStreamReader(url.openStream());
+        BufferedReader br = new BufferedReader(isr);
         for (int i = 1; i < 1000; i++) {
             String line = br.readLine();
             String[] v = line.split(",");
