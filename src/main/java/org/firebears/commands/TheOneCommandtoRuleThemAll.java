@@ -3,13 +3,13 @@ package org.firebears.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.firebears.subsystems.Storage;
 
-public class DefaultIndexCommand extends CommandBase {
+public class TheOneCommandtoRuleThemAll extends CommandBase {
 
     private final Storage storage;
 
     private final BallQueueCommand queue;
 
-    public DefaultIndexCommand(Storage storage) {
+    public TheOneCommandtoRuleThemAll(Storage storage) {
         this.storage = storage;
         addRequirements(storage);
         queue = new BallQueueCommand(storage);

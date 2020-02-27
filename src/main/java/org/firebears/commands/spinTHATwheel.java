@@ -3,14 +3,14 @@ package org.firebears.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.firebears.subsystems.Shooter;
 
-public class ShooterSpinUp extends CommandBase {
+public class spinTHATwheel extends CommandBase {
 
     private final Shooter shooter;
 
     /**
-     * Creates a new ShooterSpinUp.
+     * Creates a new SpinTHATWheel.
      */
-    public ShooterSpinUp(Shooter shooter) {
+    public spinTHATwheel(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }

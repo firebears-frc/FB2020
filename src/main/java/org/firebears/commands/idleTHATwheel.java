@@ -3,10 +3,10 @@ package org.firebears.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.firebears.subsystems.Shooter;
 
-public class ShooterIdle extends CommandBase {
+public class idleTHATwheel extends CommandBase {
     private final Shooter shooter;
 
-    public ShooterIdle(Shooter shooter) {
+    public idleTHATwheel(Shooter shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
