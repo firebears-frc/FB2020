@@ -186,8 +186,10 @@ public class Chassis extends SubsystemBase {
     }
 
     private double filterRotation(double r) {
-        r = Math.min(r, rotation + MAX_ACCEL);
-        r = Math.max(r, rotation - MAX_DECEL);
+        double accel = Math.max(speed, rotation);
+        r = Math.min(r, accel + MAX_ACCEL);
+        double decel = Math.min(speed, rotation);
+        r = Math.max(r, decel - MAX_DECEL);
         return r;
     }
 
