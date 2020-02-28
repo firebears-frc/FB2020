@@ -34,8 +34,8 @@ public class Robot extends TimedRobot {
         loader = new Loader();
         acquisition = new Acquisition();
         shooter = new Shooter();
-        climberLeft = new Climber("climber.left.canID", 22);
-        climberRight = new Climber("climber.right.canID", 24);
+        climberLeft = new ClimberSRX("climber.left.canID", 22);
+        climberRight = new ClimberSRX("climber.right.canID", 24);
         vision = new Vision();
         lidar = new Lidar();
         storage = new Storage();
@@ -45,7 +45,6 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().registerSubsystem(lidar);
 
         UsbCamera camera = CameraServer.getInstance().startAutomaticCapture(0);
-
 
         // OI must be constructed after subsystems. If the OI creates Commands
         // (which it very likely will), subsystems are not guaranteed to be
