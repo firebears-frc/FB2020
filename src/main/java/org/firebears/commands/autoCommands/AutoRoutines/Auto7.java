@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class Auto7 extends SequentialCommandGroup {
 
-  public Auto7(Chassis chassis, Shooter shooter) {
-      super(new DriveStraightCommand(1.0));
+  public Auto7(Chassis chassis) {
+      super(new ResetEncoderCommand(),
+      new DriveStraightCommand(5));
     
   }
 }
+

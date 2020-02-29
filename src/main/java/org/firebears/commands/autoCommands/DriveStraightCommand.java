@@ -8,6 +8,7 @@
 package org.firebears.commands.autoCommands;
 
 import org.firebears.Robot;
+import org.firebears.subsystems.Chassis;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -19,26 +20,31 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 
 public class DriveStraightCommand extends PIDCommand {
-   
+
+  double targetDistance;
+
   public DriveStraightCommand(double distance) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(0.37, 0.2, 0),
         // This should return the measurement
-        () -> Robot.chassis.averageDistance(),
+        () -> Robot.chassis.getAverageDistance(),
         // This should return the setpoint (can also be a constant)
         () -> distance,
         // This uses the output
         output -> {
-          Robot.chassis.drive(output, 0);
+          Robot.chassis.drive(output, 0); 
         });
     addRequirements(Robot.chassis);
+    targetDistance = distance;
     // Configure additional PID options by calling `getController` here.
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-  }
+    double distanceDiff = Math.abs(Robot.chassis.getAverageDistance() - targetDistance);
+    return (distanceDiff < .1);
+  }    
+
 }

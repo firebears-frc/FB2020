@@ -9,16 +9,17 @@ public class AcquisitionRaiseCommand extends CommandBase {
     private final Acquisition acquisition;
 
     private final Loader loader;
-
+    boolean doTHATspit;
     // Remaining time in 20 ms ticks
     private int remaining = 100;
 
     public AcquisitionRaiseCommand(Acquisition acquisition,
-        Loader loader)
+        Loader loader, boolean shouldSpit)
     {
         this.acquisition = acquisition;
         this.loader = loader;
         addRequirements(acquisition, loader);
+        doTHATspit = shouldSpit;
     }
 
     @Override
@@ -29,7 +30,7 @@ public class AcquisitionRaiseCommand extends CommandBase {
     public void execute() {
         remaining--;
         acquisition.endAcquire();
-        if (remaining > 0)
+        if (remaining > 0 && doTHATspit)
             loader.beltReverse();
         else
             loader.beltStop();

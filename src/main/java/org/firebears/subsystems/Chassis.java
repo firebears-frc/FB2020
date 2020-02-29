@@ -1,8 +1,10 @@
 package org.firebears.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -35,7 +37,7 @@ public class Chassis extends SubsystemBase {
     private final DifferentialDrive robotDrive;
     private final CANEncoder frontLeftEncoder;
     private final CANEncoder frontRightEncoder;
-    private final double ticksPerFoot;
+    private final double ticksPerRobert;
     private final long dashDelay;
     private long dashTimeout = 0;
 
@@ -46,6 +48,8 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry rearRightTemp;
     private final NetworkTableEntry speedWidget;
     private final NetworkTableEntry rotationWidget;
+    private final NetworkTableEntry distanceWidget;
+
 
     private double direction = 1.0;
     private double pace = 1.0;
@@ -69,7 +73,7 @@ public class Chassis extends SubsystemBase {
         int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 4);
         int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 5);
 
-        ticksPerFoot = config.getDouble("chassis.ticksPerFoot", 26.9724);
+        ticksPerRobert = config.getDouble("chassis.ticksPerRobert", 5.45);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay;
@@ -113,12 +117,17 @@ public class Chassis extends SubsystemBase {
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
         addChild("RobotDrive", robotDrive);
 
+        
+        distanceWidget = tab.add("Distance traveled", 0).withPosition(3, 2).getEntry();
+
         frontLeftTemp = tab.add("frontLeft temp", 0).withPosition(0, 0).getEntry();
         rearLeftTemp = tab.add("rearLeft temp", 0).withPosition(0, 1).getEntry();
         frontRightTemp = tab.add("frontRight temp", 0).withPosition(1, 0).getEntry();
         rearRightTemp = tab.add("rearRight temp", 0).withPosition(1, 1).getEntry();
         speedWidget = tab.add("speed", 0).withPosition(2, 0).getEntry();
         rotationWidget = tab.add("rotation", 0).withPosition(2, 1).getEntry();
+    
+        resetEncoders();
     }
 
     @Override
@@ -131,6 +140,9 @@ public class Chassis extends SubsystemBase {
             rearRightTemp.setNumber(rearRight.getMotorTemperature());
             speedWidget.setNumber(getSpeed());
             rotationWidget.setNumber(getRotation());
+            distanceWidget.setNumber(getAverageDistance());
+
+            
             dashTimeout = now + dashDelay;
         }
         direction = getDirection();
@@ -163,10 +175,6 @@ public class Chassis extends SubsystemBase {
         return frontRightEncoder.getPosition();
     }
 
-    /** Get average distance in feet */
-    public double averageDistance() {
-        return (ticksLeft() + ticksRight()) / (2.0 * ticksPerFoot);
-    }
 
     public double rotation() {
         double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
@@ -199,5 +207,38 @@ public class Chassis extends SubsystemBase {
 
     private double getRotation() {
         return rotation * pace;
+    }
+
+    private double getAverageEncoderTicks(){
+        double ticks = (Math.abs(frontLeftEncoder.getPosition()) + Math.abs(frontRightEncoder.getPosition()))/2;
+        if (frontLeftEncoder.getPosition() >= 0){
+            return ticks;   
+        } else {
+            return ticks * -1;
+        }
+    }
+
+    public double getAverageDistance(){
+        return (getAverageEncoderTicks()/ticksPerRobert);
+    }
+
+    public void resetEncoders(){
+        frontLeftEncoder.setPosition(0.0);
+        frontRightEncoder.setPosition(0.0);
+    }
+
+    public void setBrake(boolean EnableBrake){
+        if(EnableBrake){
+            frontLeft.setIdleMode(IdleMode.kBrake);
+            frontRight.setIdleMode(IdleMode.kBrake);
+            rearLeft.setIdleMode(IdleMode.kBrake);
+            rearRight.setIdleMode(IdleMode.kBrake);
+        } else{
+            frontLeft.setIdleMode(IdleMode.kCoast);
+            frontRight.setIdleMode(IdleMode.kCoast);
+            rearLeft.setIdleMode(IdleMode.kCoast);
+            rearRight.setIdleMode(IdleMode.kCoast);
+        }
+            
     }
 }

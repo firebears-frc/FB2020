@@ -29,7 +29,7 @@ public class OI {
 
         raiseAcqButton = new JoystickButton(xboxController, 6); //RB
         raiseAcqButton.whenPressed(new AcquisitionRaiseCommand(
-            Robot.acquisition, Robot.loader));
+            Robot.acquisition, Robot.loader, true));
 
         spitButton = new JoystickButton(xboxController, 2); //B
         spitButton.whenPressed(new SpitCommand(Robot.acquisition, Robot.loader));

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.firebears.commands.*;
+import org.firebears.commands.autoCommands.AutoRoutines.Auto7;
 import org.firebears.subsystems.*;
 
 public class Robot extends TimedRobot {
@@ -53,7 +54,7 @@ public class Robot extends TimedRobot {
         oi = new OI();
 
         // Add commands to Autonomous Sendable Chooser
-        chooser.setDefaultOption("FollowTarget", new FollowTargetCommand(chassis));
+        chooser.setDefaultOption("Drive back", new Auto7(chassis));
 
         SmartDashboard.putData("Auto mode", chooser);
     }
@@ -123,8 +124,9 @@ public class Robot extends TimedRobot {
         chassis.setDefaultCommand(null);
         storage.setDefaultCommand(null);
     }
+    
     public void setDefaultCommands(){
-        acquisition.setDefaultCommand(new AcquisitionRaiseCommand(acquisition, loader));
+        acquisition.setDefaultCommand(new AcquisitionRaiseCommand(acquisition, loader, false));
         chassis.setDefaultCommand(new DriveCommand(chassis));
         storage.setDefaultCommand(new TheOneCommandtoRuleThemAll(storage));
         shooter.setDefaultCommand(new idleTHATwheel(shooter));
