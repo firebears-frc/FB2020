@@ -2,6 +2,7 @@ package org.firebears;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,6 +13,8 @@ import org.firebears.commands.autoCommands.AutoRoutines.Auto7;
 import org.firebears.subsystems.*;
 
 public class Robot extends TimedRobot {
+
+    private final Preferences config = Preferences.getInstance();
 
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
@@ -35,8 +38,8 @@ public class Robot extends TimedRobot {
         loader = new Loader();
         acquisition = new Acquisition();
         shooter = new Shooter();
-        climberLeft = new ClimberSRX("climber.left.canID", 22);
-        climberRight = new ClimberSRX("climber.right.canID", 24);
+        climberLeft = createClimber("climber.left.canID", 22);
+        climberRight = createClimber("climber.right.canID", 24);
         vision = new Vision();
         lidar = new Lidar();
         storage = new Storage();
@@ -57,6 +60,14 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("Drive back", new Auto7(chassis));
 
         SmartDashboard.putData("Auto mode", chooser);
+    }
+
+    private Climber createClimber(String configCANID, int defCANID) {
+        if (config.getString("climber.type", "").equals("srx")) {
+            return new ClimberSRX(configCANID, defCANID);
+        } else {
+            return new ClimberSparkMAX(configCANID, defCANID);
+        }
     }
 
     @Override

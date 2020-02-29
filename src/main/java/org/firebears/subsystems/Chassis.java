@@ -1,6 +1,5 @@
 package org.firebears.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
@@ -49,7 +48,6 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry speedWidget;
     private final NetworkTableEntry rotationWidget;
     private final NetworkTableEntry distanceWidget;
-
 
     private double direction = 1.0;
     private double pace = 1.0;
@@ -116,7 +114,6 @@ public class Chassis extends SubsystemBase {
 
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
         addChild("RobotDrive", robotDrive);
-
         
         distanceWidget = tab.add("Distance traveled", 0).withPosition(3, 2).getEntry();
 
