@@ -26,7 +26,7 @@ public class DriveStraightCommand extends PIDCommand {
   public DriveStraightCommand(double distance) {
     super(
         // The controller that the command will use
-        new PIDController(0.37, 0.2, 0),
+        new PIDController(0.3, 0.016, 0),
         // This should return the measurement
         () -> Robot.chassis.getAverageDistance(),
         // This should return the setpoint (can also be a constant)
@@ -46,5 +46,10 @@ public class DriveStraightCommand extends PIDCommand {
     double distanceDiff = Math.abs(Robot.chassis.getAverageDistance() - targetDistance);
     return (distanceDiff < .1);
   }    
+
+  @Override
+  public void end(boolean interrupted) {
+    Robot.chassis.drive(0, 0);
+  }
 
 }

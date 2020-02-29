@@ -75,10 +75,10 @@ public class Robot extends TimedRobot {
         isFilled = driversTab.add("Is Filled", 0).withPosition(0, 0).getEntry();
         lidarDistance = driversTab.add("Lidar Distance", 0).withPosition(0, 1).getEntry();
         visionConfidence = driversTab.add("Vision Confidence", 0).withPosition(1, 0).getEntry();
-        isShooterSpunUp = driversTab.add("Is Shooter Spun Up", 0).withPosition(0, 2).getEntry();
+        isShooterSpunUp = driversTab.add("Is Shooter Spun Up", 0).withPosition(3, 2).getEntry();
         isInPosition = driversTab.add("Is In Position", 0).withPosition(2, 0).getEntry();
-        driversTab.add("Reset Button", new ResetCommand(storage)).withPosition(3, 0);
-        cameraScreen = driversTab.add("Camera Screen", 0).withPosition(0, 3).getEntry();
+        driversTab.add("Reset Button", new ResetCommand(storage)).withPosition(1, 1);
+        cameraScreen = driversTab.add("Camera Screen", 0).withPosition(4, 0).getEntry();
         driversTab.add("Auto Selection", chooser).withPosition(0, 4);
 
     }
@@ -117,6 +117,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
+        chassis.setBrake(true);
+        chassis.resetEncoders();
+        
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null)
@@ -140,9 +144,13 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+
+
         if (autonomousCommand != null)
             autonomousCommand.cancel();     
         setDefaultCommands();   
+
+        chassis.setBrake(false);
 
         new ResetCommand(storage).schedule(); 
     }

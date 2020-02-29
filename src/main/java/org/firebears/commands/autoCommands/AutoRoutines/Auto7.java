@@ -12,7 +12,7 @@ public class Auto7 extends SequentialCommandGroup {
 
   public Auto7(Chassis chassis) {
       super(new ResetEncoderCommand(),
-      new DriveStraightCommand(5));
+      new DriveStraightCommand(1));
     
   }
 }

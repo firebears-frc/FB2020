@@ -90,7 +90,7 @@ public class Storage extends SubsystemBase {
     }
 
     public void move() {
-        indexMotor.set(0.1);
+        indexMotor.set(0.4);
         
     }
 
