@@ -6,6 +6,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import com.kauailabs.navx.frc.AHRS.BoardAxis;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -48,6 +50,11 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry speedWidget;
     private final NetworkTableEntry rotationWidget;
     private final NetworkTableEntry distanceWidget;
+
+    private final NetworkTableEntry xAxis;
+    private final NetworkTableEntry yAxis;
+    private final NetworkTableEntry zAxis;
+
 
     private double direction = 1.0;
     private double pace = 1.0;
@@ -116,6 +123,11 @@ public class Chassis extends SubsystemBase {
         addChild("RobotDrive", robotDrive);
         
         distanceWidget = tab.add("Distance traveled", 0).withPosition(3, 2).getEntry();
+
+        xAxis = tab.add("X Axis", 0).withPosition(3, 0).getEntry();
+        yAxis = tab.add("Y Axis", 0).withPosition(3, 2).getEntry();
+        zAxis = tab.add("Z Axis", 0).withPosition(3, 2).getEntry();
+
 
         frontLeftTemp = tab.add("frontLeft temp", 0).withPosition(0, 0).getEntry();
         rearLeftTemp = tab.add("rearLeft temp", 0).withPosition(0, 1).getEntry();

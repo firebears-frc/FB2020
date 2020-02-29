@@ -131,7 +131,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinUp() {
-        srx.set(ControlMode.PercentOutput, 1.0);
+        srx.set(ControlMode.PercentOutput, 0.8);
         /*double range = Robot.lidar.getDistance();
         if (range < 0)
             range = DEFAULT_RANGE_M;

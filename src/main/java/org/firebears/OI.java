@@ -1,9 +1,17 @@
 package org.firebears;
 
+import org.firebears.commands.AcquisitionLowerCommand;
+import org.firebears.commands.AcquisitionRaiseCommand;
+import org.firebears.commands.BallQueueCommand;
+import org.firebears.commands.CelebrateCommand;
+import org.firebears.commands.ClimberExtendCommand;
+import org.firebears.commands.ClimberRetractCommand;
+import org.firebears.commands.SpitCommand;
+import org.firebears.commands.autoCommands.ShootAllCommand;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import org.firebears.commands.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;;
 
 public class OI {
     public final XboxController xboxController;
@@ -37,7 +45,7 @@ public class OI {
         buttonBox = new Joystick(1);
 
         shootButton = new JoystickButton(buttonBox, 1);
-        shootButton.whenHeld(new spinTHATwheel(Robot.shooter));
+        shootButton.whenPressed(new ShootAllCommand());
 
         indexButton = new JoystickButton(buttonBox, 11);
         indexButton.whenPressed(new BallQueueCommand(Robot.storage));
