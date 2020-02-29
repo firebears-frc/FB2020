@@ -113,7 +113,7 @@ public class Shooter extends SubsystemBase {
         double output = srx.getMotorOutputPercent();
         int velocity = srx.getSelectedSensorVelocity(PID_LOOP_IDX);
         // velocity in units per 100 ms
-        srx.set(ControlMode.Velocity, targetVelocity);
+        //srx.set(ControlMode.Velocity, targetVelocity);
         long now = System.currentTimeMillis();
         if (now > dashTimeout) {
             outputWidget.setNumber(output);
@@ -131,15 +131,18 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinUp() {
-        double range = Robot.lidar.getDistance();
+        srx.set(ControlMode.PercentOutput, 1.0);
+        /*double range = Robot.lidar.getDistance();
         if (range < 0)
             range = DEFAULT_RANGE_M;
         powerCellVelocity = optimalVelocity(range);
         targetRpm = calcRpm();
         targetVelocity = targetVelocity();
+        */
     }
 
     public void idle() {
+        srx.set(ControlMode.PercentOutput, 0);
         powerCellVelocity = IDLE_SPEED;
         targetRpm = calcRpm();
         targetVelocity = targetVelocity();
