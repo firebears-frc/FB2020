@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import org.firebears.Robot;
-
 public class Lights extends SubsystemBase {
 
     /** Thread for I2C communication */
@@ -103,15 +101,14 @@ public class Lights extends SubsystemBase {
     }
 
     private int getAnimation() {
-        int count = Robot.storage.getPowerCellCount();
         if (driverstation.isDisabled())
             return DEFAULT_ANIMATION;
         else if (isCelebrating)
             return CELEBRATE_ANIMATION;
         else if (isShooting)
             return SHOOTING_ANIMATION;
-        else if (count > 0)
-            return getCountAnimation(count);
+        //else if (count > 0)
+        //    return getCountAnimation(count);
         else if (driverstation.getAlliance().equals(Alliance.Blue))
             return BLUE_ANIMATION;
         else

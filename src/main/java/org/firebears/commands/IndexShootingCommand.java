@@ -9,6 +9,7 @@ public class IndexShootingCommand extends CommandBase {
 
     private final Storage storage;
     private final Shooter shooter;
+    private int cellsShot;
 
     private final BallQueueCommand ballQueue;
 
@@ -21,6 +22,7 @@ public class IndexShootingCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        cellsShot = 0;
         Robot.lights.shoot(true);
     }
 
@@ -28,13 +30,13 @@ public class IndexShootingCommand extends CommandBase {
     public void execute() {
         if (shooter.isWheelSpunUp()) {
             ballQueue.schedule(false);
+            cellsShot++;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return ballQueue.isFinished() &&
-            (storage.getPowerCellCount() == 0);
+        return ballQueue.isFinished() && (cellsShot >= 5);
     }
 
     @Override
