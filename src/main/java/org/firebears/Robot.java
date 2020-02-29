@@ -91,6 +91,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
+        chassis.setBrake(true);
+        chassis.resetEncoders();
+        
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null)
@@ -114,9 +118,13 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
+
+
         if (autonomousCommand != null)
             autonomousCommand.cancel();     
         setDefaultCommands();   
+
+        chassis.setBrake(false);
 
         new ResetCommand(storage).schedule(); 
     }
