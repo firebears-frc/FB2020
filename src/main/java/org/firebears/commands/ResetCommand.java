@@ -24,7 +24,7 @@ public class ResetCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         boolean aligned = storage.getPositionSensor();
-        if (aligned) {
+        if (aligned||storage.isIndexFull()) {
             storage.stop();
             return true;
         } else {

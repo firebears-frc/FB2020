@@ -3,7 +3,10 @@ package org.firebears;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -30,6 +33,14 @@ public class Robot extends TimedRobot {
     public static Lidar lidar;
     public static Storage storage;
     public static Lights lights;
+
+    private final ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
+    private NetworkTableEntry isFilled;
+    private NetworkTableEntry lidarDistance;
+    private NetworkTableEntry visionConfidence;
+    private NetworkTableEntry isShooterSpunUp;
+    private NetworkTableEntry isInPosition;
+    private NetworkTableEntry cameraScreen;
 
     @Override
     public void robotInit() {
@@ -60,6 +71,16 @@ public class Robot extends TimedRobot {
         chooser.setDefaultOption("Drive back", new Auto7(chassis));
 
         SmartDashboard.putData("Auto mode", chooser);
+
+        isFilled = driversTab.add("Is Filled", 0).withPosition(0, 0).getEntry();
+        lidarDistance = driversTab.add("Lidar Distance", 0).withPosition(0, 1).getEntry();
+        visionConfidence = driversTab.add("Vision Confidence", 0).withPosition(1, 0).getEntry();
+        isShooterSpunUp = driversTab.add("Is Shooter Spun Up", 0).withPosition(0, 2).getEntry();
+        isInPosition = driversTab.add("Is In Position", 0).withPosition(2, 0).getEntry();
+        driversTab.add("Reset Button", new ResetCommand(storage)).withPosition(3, 0);
+        cameraScreen = driversTab.add("Camera Screen", 0).withPosition(0, 3).getEntry();
+        driversTab.add("Auto Selection", chooser).withPosition(0, 4);
+
     }
 
     private Climber createClimber(String configCANID, int defCANID) {
@@ -73,6 +94,11 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+        isFilled.setBoolean(storage.isBackedUp() && storage.isIndexFull());
+        lidarDistance.setNumber(lidar.getDistance());
+        visionConfidence.setNumber(vision.getTargetConfidence());
+        isShooterSpunUp.setBoolean(shooter.isWheelSpunUp());
+        isInPosition.setBoolean(storage.getPositionSensor());
     }
 
     /**
