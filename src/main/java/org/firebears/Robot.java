@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
     }
 
     private Climber createClimber(String configCANID, int defCANID) {
-        if (config.getString("climber.type", "").equals("srx")) {
+        if (config.getString("climber.type", "srx").equals("srx")) {
             return new ClimberSRX(configCANID, defCANID);
         } else {
             return new ClimberSparkMAX(configCANID, defCANID);
