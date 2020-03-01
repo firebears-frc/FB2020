@@ -18,6 +18,7 @@ public class Auto6 extends ParallelCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
     super(new AcquisitionLowerCommand(Robot.acquisition, Robot.loader, Robot.storage),
-    new DriveStraightCommand(5.0));
+    new ResetEncoderCommand(),
+    new DriveStraightCommand(7.0));
   }
 }

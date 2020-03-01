@@ -17,8 +17,8 @@ public class Auto2 extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new ShootAllCommand(),
-   // new ResetEncoderCommand(),
-    new DriveStraightCommand(3.0));
-    //new ResetCommand(Robot.storage));
+   new ResetEncoderCommand(),
+    new DriveStraightCommand(3.0),
+    new ResetCommand(Robot.storage));
   }
 }

@@ -16,12 +16,11 @@ public class Auto5 extends SequentialCommandGroup {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
     super(new DriveStraightCommand(1.0),
+    new ResetEncoderCommand(),
     new TurnToAngleCommand(90.0),
+    new ResetEncoderCommand(),
     new DriveStraightCommand(10.0),
-    new spinTHATwheel(Robot.shooter),
-    new BallQueueCommand(Robot.storage),
-    new BallQueueCommand(Robot.storage),
-    new BallQueueCommand(Robot.storage),
+    new ShootAllCommand(),
     new ResetCommand(Robot.storage));
   }
 }

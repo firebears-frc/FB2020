@@ -17,10 +17,6 @@ public class Auto1 extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(new DriveStraightCommand(1.0),
      new TurnToAngleCommand(45.0),
-     new spinTHATwheel(Robot.shooter),
-     new BallQueueCommand(Robot.storage),
-     new BallQueueCommand(Robot.storage),
-     new BallQueueCommand(Robot.storage),
-     new ResetCommand(Robot.storage));
+     new ShootAllCommand());
   }
 }
