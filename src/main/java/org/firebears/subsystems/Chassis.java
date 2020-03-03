@@ -5,10 +5,11 @@ import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import com.kauailabs.navx.frc.AHRS;
 import com.kauailabs.navx.frc.AHRS.BoardAxis;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -61,22 +62,24 @@ public class Chassis extends SubsystemBase {
     private double speed = 0.0;
     private double rotation = 0.0;
 
+    AHRS navXboard;
+
     public Chassis() {
         CANError err;
-        int stallLimit = config.getInt("chassis.stallLimit", 65);
-        int freeLimit = config.getInt("chassis.freeLimit", 20);
-        int limitRPM = config.getInt("chassis.limitRPM", 1000);
-        double kP = config.getDouble("chassis.p", 0.00015);
-        double kI = config.getDouble("chassis.i", 0.0);
-        double kD = config.getDouble("chassis.d", 0.0);
-        double kP2 = config.getDouble("chassis.secondary.p", 0.015);
-        double kI2 = config.getDouble("chassis.secondary.i", 0.0);
-        double kD2 = config.getDouble("chassis.secondary.d", 0.0);
-        boolean closedLoop = config.getBoolean("chassis.closedLoop", false);
-        int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 2);
-        int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 3);
-        int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 4);
-        int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 5);
+        final int stallLimit = config.getInt("chassis.stallLimit", 65);
+        final int freeLimit = config.getInt("chassis.freeLimit", 20);
+        final int limitRPM = config.getInt("chassis.limitRPM", 1000);
+        final double kP = config.getDouble("chassis.p", 0.00015);
+        final double kI = config.getDouble("chassis.i", 0.0);
+        final double kD = config.getDouble("chassis.d", 0.0);
+        final double kP2 = config.getDouble("chassis.secondary.p", 0.015);
+        final double kI2 = config.getDouble("chassis.secondary.i", 0.0);
+        final double kD2 = config.getDouble("chassis.secondary.d", 0.0);
+        final boolean closedLoop = config.getBoolean("chassis.closedLoop", false);
+        final int chassisFrontLeftCanID = config.getInt("chassis.frontleft.canID", 2);
+        final int chassisRearLeftCanID = config.getInt("chassis.rearleft.canID", 3);
+        final int chassisFrontRightCanID = config.getInt("chassis.frontright.canID", 4);
+        final int chassisRearRightCanID = config.getInt("chassis.rearright.canID", 5);
 
         ticksPerRobert = config.getDouble("chassis.ticksPerRobert", 5.45);
 
@@ -121,13 +124,10 @@ public class Chassis extends SubsystemBase {
 
         robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
         addChild("RobotDrive", robotDrive);
-        
+
         distanceWidget = tab.add("Distance traveled", 0).withPosition(3, 2).getEntry();
 
-        xAxis = tab.add("X Axis", 0).withPosition(3, 0).getEntry();
-        yAxis = tab.add("Y Axis", 0).withPosition(3, 2).getEntry();
-        zAxis = tab.add("Z Axis", 0).withPosition(3, 2).getEntry();
-
+        
 
         frontLeftTemp = tab.add("frontLeft temp", 0).withPosition(0, 0).getEntry();
         rearLeftTemp = tab.add("rearLeft temp", 0).withPosition(0, 1).getEntry();
@@ -135,13 +135,24 @@ public class Chassis extends SubsystemBase {
         rearRightTemp = tab.add("rearRight temp", 0).withPosition(1, 1).getEntry();
         speedWidget = tab.add("speed", 0).withPosition(2, 0).getEntry();
         rotationWidget = tab.add("rotation", 0).withPosition(2, 1).getEntry();
-    
+
+        try {
+            navXboard = new AHRS(edu.wpi.first.wpilibj.SerialPort.Port.kUSB);
+        } catch (final RuntimeException ex) {
+            DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
+        }
+
+        xAxis = tab.add("Angle", 0).withPosition(3, 0).getEntry();
+        yAxis = tab.add("Pitch", 0).withPosition(3, 2).getEntry();
+        zAxis = tab.add("Roll", 0).withPosition(3, 2).getEntry();
+        
         resetEncoders();
+
     }
 
     @Override
     public void periodic() {
-        long now = System.currentTimeMillis();
+        final long now = System.currentTimeMillis();
         if (now > dashTimeout) {
             frontLeftTemp.setNumber(frontLeft.getMotorTemperature());
             rearLeftTemp.setNumber(rearLeft.getMotorTemperature());
@@ -151,7 +162,10 @@ public class Chassis extends SubsystemBase {
             rotationWidget.setNumber(getRotation());
             distanceWidget.setNumber(getAverageDistance());
 
-            
+            zAxis.setNumber(navXboard.getRoll());
+            xAxis.setNumber(navXboard.getAngle());
+            yAxis.setNumber(navXboard.getPitch());
+
             dashTimeout = now + dashDelay;
         }
         direction = getDirection();
@@ -184,13 +198,12 @@ public class Chassis extends SubsystemBase {
         return frontRightEncoder.getPosition();
     }
 
-
     public double rotation() {
-        double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
+        final double rotationConversionFactor = config.getDouble("chassis.ticksToDegreesConversionFactor", 0);
         return (ticksRight() - ticksLeft()) * rotationConversionFactor;
     }
 
-    public void drive(double speed, double rotation) {
+    public void drive(final double speed, final double rotation) {
         this.speed = filterSpeed(speed);
         this.rotation = filterRotation(rotation);
         robotDrive.arcadeDrive(getSpeed(), getRotation());
@@ -203,9 +216,9 @@ public class Chassis extends SubsystemBase {
     }
 
     private double filterRotation(double r) {
-        double accel = Math.max(speed, rotation);
+        final double accel = Math.max(speed, rotation);
         r = Math.min(r, accel + MAX_ACCEL);
-        double decel = Math.min(speed, rotation);
+        final double decel = Math.min(speed, rotation);
         r = Math.max(r, decel - MAX_DECEL);
         return r;
     }
@@ -218,25 +231,25 @@ public class Chassis extends SubsystemBase {
         return rotation * pace;
     }
 
-    private double getAverageEncoderTicks(){
-        double ticks = (Math.abs(frontLeftEncoder.getPosition()) + Math.abs(frontRightEncoder.getPosition()))/2;
-        if (frontLeftEncoder.getPosition() >= 0){
-            return ticks;   
+    private double getAverageEncoderTicks() {
+        final double ticks = (Math.abs(frontLeftEncoder.getPosition()) + Math.abs(frontRightEncoder.getPosition())) / 2;
+        if (frontLeftEncoder.getPosition() >= 0) {
+            return ticks;
         } else {
             return ticks * -1;
         }
     }
 
-    public double getAverageDistance(){
-        return (getAverageEncoderTicks()/ticksPerRobert);
+    public double getAverageDistance() {
+        return (getAverageEncoderTicks() / ticksPerRobert);
     }
 
-    public void resetEncoders(){
+    public void resetEncoders() {
         frontLeftEncoder.setPosition(0.0);
         frontRightEncoder.setPosition(0.0);
     }
 
-    public void setBrake(boolean EnableBrake){
+    public void setBrake(final boolean EnableBrake) {
         if(EnableBrake){
             frontLeft.setIdleMode(IdleMode.kBrake);
             frontRight.setIdleMode(IdleMode.kBrake);
@@ -248,6 +261,18 @@ public class Chassis extends SubsystemBase {
             rearLeft.setIdleMode(IdleMode.kCoast);
             rearRight.setIdleMode(IdleMode.kCoast);
         }
-            
+
+        
+    }
+
+    public double getAngle() {
+        if (navXboard != null){
+            return navXboard.getAngle();
+        } else {
+            return -1000.0;
+        }
+
+
+        
     }
 }

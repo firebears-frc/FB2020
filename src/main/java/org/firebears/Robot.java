@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
         // Add commands to Autonomous Sendable Chooser
         chooser.setDefaultOption("Shoot and Drive", new Auto2(chassis, storage, shooter));
         chooser.addOption("Drive Back", new Auto7(chassis));
+        chooser.addOption("Pick Up Balls", new Auto6());
 
         SmartDashboard.putData("Auto mode", chooser);
 
@@ -85,7 +86,7 @@ public class Robot extends TimedRobot {
     }
 
     private Climber createClimber(String configCANID, int defCANID) {
-        if (config.getString("climber.type", "srx").equals("srx")) {
+        if (config.getString("climber.type", "sparkMax").equals("srx")) {
             return new ClimberSRX(configCANID, defCANID);
         } else {
             return new ClimberSparkMAX(configCANID, defCANID);

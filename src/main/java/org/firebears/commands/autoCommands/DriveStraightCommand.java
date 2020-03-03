@@ -44,7 +44,7 @@ public class DriveStraightCommand extends PIDCommand {
   @Override
   public boolean isFinished() {
     double distanceDiff = Math.abs(Robot.chassis.getAverageDistance() - targetDistance);
-    return (distanceDiff < .1);
+    return (distanceDiff < .3);
   }    
 
   @Override

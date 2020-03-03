@@ -9,8 +9,7 @@ public class SpitCommand extends CommandBase {
     private final Acquisition acquisition;
     private final Loader loader;
 
-    // Remaining time in 20 ms ticks
-    private int remaining = 100;
+    private int remaining = 2000;
 
     public SpitCommand(Acquisition acquisition, Loader loader) {
         this.acquisition = acquisition;

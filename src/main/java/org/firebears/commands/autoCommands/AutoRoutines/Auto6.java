@@ -4,6 +4,8 @@ package org.firebears.commands.autoCommands.AutoRoutines;
 import org.firebears.commands.AcquisitionLowerCommand;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import org.firebears.commands.autoCommands.*;
 import org.firebears.Robot;
 import org.firebears.commands.*;
@@ -19,6 +21,8 @@ public class Auto6 extends ParallelCommandGroup {
     // super(new FooCommand(), new BarCommand());super();
     super(new AcquisitionLowerCommand(Robot.acquisition, Robot.loader, Robot.storage),
     new ResetEncoderCommand(),
-    new DriveStraightCommand(7.0));
+    new DriveStraightCommand(5.0));
+    new WaitCommand(.3);
+    new DriveStraightCommand(3.0);
   }
 }
