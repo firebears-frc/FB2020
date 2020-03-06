@@ -37,6 +37,7 @@ public class Chassis extends SubsystemBase {
     private final PIDSparkMotor pidFrontLeft;
     private final PIDSparkMotor pidFrontRight;
     private final DifferentialDrive robotDrive;
+    private final DifferentialDrive robotPIDDrive;
     private final CANEncoder frontLeftEncoder;
     private final CANEncoder frontRightEncoder;
     private final double ticksPerRobert;
@@ -87,7 +88,7 @@ public class Chassis extends SubsystemBase {
         dashTimeout = System.currentTimeMillis() + dashDelay;
 
         frontLeft = new CANSparkMax(chassisFrontLeftCanID, MotorType.kBrushless);
-        frontLeft.setInverted(false);
+        frontLeft.setInverted(true);
         err = frontLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on frontLeft");
@@ -97,7 +98,7 @@ public class Chassis extends SubsystemBase {
         pidFrontLeft.setInvertEncoder(false);
 
         rearLeft = new CANSparkMax(chassisRearLeftCanID, MotorType.kBrushless);
-        rearLeft.setInverted(false);
+        rearLeft.setInverted(true);
         err = rearLeft.setSmartCurrentLimit(stallLimit, freeLimit, limitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on rearLeft");
@@ -122,8 +123,12 @@ public class Chassis extends SubsystemBase {
             System.err.println("ERROR: " + err + " setting limits on rearRight");
         rearRight.follow(frontRight);
 
-        robotDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
+        robotPIDDrive = new DifferentialDrive(pidFrontLeft, pidFrontRight);
+        addChild("RobotpidDrive", robotPIDDrive);
+
+        robotDrive = new DifferentialDrive(frontLeft, frontRight);
         addChild("RobotDrive", robotDrive);
+
 
         distanceWidget = tab.add("Distance traveled", 0).withPosition(3, 2).getEntry();
 
@@ -206,7 +211,9 @@ public class Chassis extends SubsystemBase {
     public void drive(final double speed, final double rotation) {
         this.speed = filterSpeed(speed);
         this.rotation = filterRotation(rotation);
-        robotDrive.arcadeDrive(getSpeed(), getRotation());
+        // robotDrive.tankDrive(speed, rotation);
+      // robotDrive.setRightSideInverted(true);
+       robotDrive.arcadeDrive(this.speed, this.rotation);
     }
 
     private double filterSpeed(double s) {

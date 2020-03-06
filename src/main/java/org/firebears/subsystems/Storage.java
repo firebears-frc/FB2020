@@ -42,7 +42,7 @@ public class Storage extends SubsystemBase {
         int stallLimit = config.getInt("storage.stallLimit", 20);
         int freeLimit = config.getInt("storage.freeLimit", 10);
         int limitRPM = config.getInt("storage.limitRPM", 500);
-        int indexMotorCanID = config.getInt("storage.indexMotor.canID", 10);
+        int indexMotorCanID = config.getInt("storage.indexMotor.canID", 12);
         
         indexMotor = new CANSparkMax(indexMotorCanID, MotorType.kBrushless);
 

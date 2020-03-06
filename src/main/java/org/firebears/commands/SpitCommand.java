@@ -6,15 +6,15 @@ import org.firebears.subsystems.Loader;
 
 public class SpitCommand extends CommandBase {
 
-    private final Acquisition acquisition;
+   // private final Acquisition acquisition;
     private final Loader loader;
 
     private int remaining = 2000;
 
-    public SpitCommand(Acquisition acquisition, Loader loader) {
-        this.acquisition = acquisition;
+    public SpitCommand(Loader loader) {
+       // this.acquisition = acquisition;
         this.loader = loader;
-        addRequirements(acquisition, loader);
+        addRequirements(loader);
     }
 
     // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class SpitCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        acquisition.starReverse();
+       // acquisition.starReverse();
         loader.beltReverse();
         remaining--;
     }

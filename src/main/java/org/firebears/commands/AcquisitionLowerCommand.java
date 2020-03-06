@@ -37,7 +37,7 @@ public class AcquisitionLowerCommand extends CommandBase {
         if (loader.isJammed()) {
             cancel();
             CommandScheduler.getInstance().schedule(
-                new SpitCommand(acquisition, loader));
+                new SpitCommand(loader));
         }
     }
 

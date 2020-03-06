@@ -1,5 +1,7 @@
 package org.firebears.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANError;
 import com.revrobotics.CANSparkMax;
@@ -20,12 +22,13 @@ public class Acquisition extends SubsystemBase {
     private final CANDigitalInput limitUp;
     private final CANDigitalInput limitDown;
 
-    private final SpeedControllerGroup group;
+    //private final SpeedControllerGroup group;
     private final SpeedControllerGroup group1;
     /** Motor to lower acquisition system */
     private final CANSparkMax lowerMotor;
     /** Motor to spin the stars */
-    private final CANSparkMax spinMotor;
+   
+    private final WPI_TalonSRX spinMotor;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Acquisition");
     private final NetworkTableEntry lowerMotorSpeed;
@@ -35,6 +38,8 @@ public class Acquisition extends SubsystemBase {
 
     private final long dashDelay;
     private long dashTimeout = 0;
+
+    
 
 
     public Acquisition() {
@@ -46,7 +51,8 @@ public class Acquisition extends SubsystemBase {
         int spinFreeLimit = config.getInt("acquisition.spinFreeLimit", 10);
         int spinLimitRPM = config.getInt("acquisition.spinLimitRPM", 500);
         int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
-        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 12);
+       int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 10);
+       
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 150;
@@ -57,14 +63,9 @@ public class Acquisition extends SubsystemBase {
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on lowerMotor");
 
-        spinMotor = new CANSparkMax(acquisitionSpinMotorCanID, MotorType.kBrushless);
-        spinMotor.setInverted(true);
-        err = spinMotor.setSmartCurrentLimit(spinStallLimit, spinFreeLimit, spinLimitRPM);
-        if (err != CANError.kOk)
-            System.err.println("ERROR: " + err + " setting limits on spinMotor");
-
-        group = new SpeedControllerGroup(spinMotor);
-        addChild("SpinMotor", group);
+        spinMotor = new WPI_TalonSRX(10);
+        //group = new SpeedControllerGroup(spinMotor);
+        //addChild("SpinMotor", group);
 
         group1 = new SpeedControllerGroup(lowerMotor);
         addChild("LowerMotor", group1);
@@ -101,13 +102,13 @@ public class Acquisition extends SubsystemBase {
 
     /** Start acquiring power cells */
     public void startAcquire() {
-        lowerMotor.set(0.3);
+        lowerMotor.set(0.5);
         spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
-        lowerMotor.set(-0.3);
+        lowerMotor.set(-0.5);
         spinMotor.set(0);
     }
 

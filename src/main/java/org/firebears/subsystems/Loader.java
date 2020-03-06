@@ -11,7 +11,7 @@ public class Loader extends SubsystemBase {
 
     private final WPI_TalonSRX leftBeltMotor;
     private final WPI_TalonSRX rightBeltMotor;
-    private final SpeedControllerGroup belts;
+   // private final SpeedControllerGroup belts;
     private final DigitalInput loadEye;
     private int eyeDuration;
 
@@ -37,9 +37,9 @@ public class Loader extends SubsystemBase {
         rightBeltMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
         rightBeltMotor.setInverted(true);
 
-        belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
+       // belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
         loadEye = new DigitalInput(eyeDio);
-        addChild("Belts", belts);
+        //addChild("Belts", belts);
     }
 
     @Override
@@ -52,15 +52,18 @@ public class Loader extends SubsystemBase {
     }
 
     public void beltForward() {
-        belts.set(-1.0);
+        rightBeltMotor.set(-1.0);
+        leftBeltMotor.set(-1.0);
     }
 
     public void beltStop() {
-        belts.set(0);
+        rightBeltMotor.set(0);
+        leftBeltMotor.set(0);
     }
 
     public void beltReverse() {
-        belts.set(1.0);
+        rightBeltMotor.set(1.0);
+        leftBeltMotor.set(1.0);
     }
 
     public boolean isJammed() {

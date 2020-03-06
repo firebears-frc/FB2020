@@ -110,13 +110,13 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double output = srx.getMotorOutputPercent();
+       // double output = srx.getMotorOutputPercent();
         int velocity = srx.getSelectedSensorVelocity(PID_LOOP_IDX);
         // velocity in units per 100 ms
         //srx.set(ControlMode.Velocity, targetVelocity);
         long now = System.currentTimeMillis();
         if (now > dashTimeout) {
-            outputWidget.setNumber(output);
+           // outputWidget.setNumber(output);
             velocityWidget.setNumber(velocity);
             targetVelocityWidget.setNumber(targetVelocity);
             powerCellVelocityWidget.setNumber(powerCellVelocity);
