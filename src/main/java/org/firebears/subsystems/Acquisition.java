@@ -58,10 +58,12 @@ public class Acquisition extends SubsystemBase {
         dashTimeout = System.currentTimeMillis() + dashDelay + 150;
 
         lowerMotor = new CANSparkMax(acquisitionLowerMotorCanID, MotorType.kBrushless);
+        lowerMotor.restoreFactoryDefaults();
         lowerMotor.setInverted(false);
         err = lowerMotor.setSmartCurrentLimit(lowerStallLimit, lowerFreeLimit, lowerLimitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on lowerMotor");
+        
 
         spinMotor = new WPI_TalonSRX(10);
         //group = new SpeedControllerGroup(spinMotor);

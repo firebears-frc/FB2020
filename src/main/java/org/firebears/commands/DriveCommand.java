@@ -16,8 +16,8 @@ public class DriveCommand extends CommandBase {
         this.chassis = chassis;
         addRequirements(chassis);
         config = Preferences.getInstance();
-        joystickSpeedAxis = config.getInt("joystick1.speedAxis", 1);
-        joystickRotateAxis = config.getInt("joystick1.rotateAxis", 4);
+        joystickSpeedAxis = config.getInt("joystick1.speedAxis", 4);
+        joystickRotateAxis = config.getInt("joystick1.rotateAxis", 1);
         adjust = config.getDouble("driveCommand.deadBand", 0.1);
     }
 

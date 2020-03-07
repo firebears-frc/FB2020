@@ -18,7 +18,7 @@ public class Auto2 extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(new ShootAllCommand(),
    new ResetEncoderCommand(),
-    new DriveStraightCommand(3.0),
+    new DriveStraightCommand(-4.0),
     new ResetCommand(Robot.storage));
   }
 }

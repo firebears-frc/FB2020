@@ -33,7 +33,7 @@ public class DriveStraightCommand extends PIDCommand {
         () -> distance,
         // This uses the output
         output -> {
-          Robot.chassis.drive(output, 0); 
+          Robot.chassis.drive(0, output); 
         });
     addRequirements(Robot.chassis);
     targetDistance = distance;
