@@ -87,6 +87,7 @@ public class Shooter extends SubsystemBase {
         srx.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
         srx.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
         srx.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
+        srx.enableCurrentLimit(true);
         // Config PIDF
         srx.config_kP(PID_LOOP_IDX, p, timeoutMs);
         srx.config_kI(PID_LOOP_IDX, i, timeoutMs);
@@ -131,7 +132,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void spinUp() {
-        srx.set(ControlMode.PercentOutput, 0.7);
+        srx.set(ControlMode.PercentOutput, 1.0);
         /*double range = Robot.lidar.getDistance();
         if (range < 0)
             range = DEFAULT_RANGE_M;

@@ -52,6 +52,10 @@ public class Acquisition extends SubsystemBase {
         int spinLimitRPM = config.getInt("acquisition.spinLimitRPM", 500);
         int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 10);
+       int timeoutMs = config.getInt("stars.timeout", 30);
+       int peakCurrentLimit = config.getInt("stars.peakCurrentLimit", 15);
+        int peakCurrentDuration = config.getInt("stars.peakCurrentDuration", 5000);
+        int continuousCurrentLimit = config.getInt("stars.continuousCurrentLimit", 10);
        
 
         dashDelay = config.getLong("dashDelay", 250);
@@ -66,6 +70,11 @@ public class Acquisition extends SubsystemBase {
         
 
         spinMotor = new WPI_TalonSRX(10);
+        spinMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
+        spinMotor.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
+        spinMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
+        spinMotor.enableCurrentLimit(true);
+        
         //group = new SpeedControllerGroup(spinMotor);
         //addChild("SpinMotor", group);
 

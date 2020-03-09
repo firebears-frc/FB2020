@@ -31,11 +31,14 @@ public class Loader extends SubsystemBase {
         leftBeltMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
         leftBeltMotor.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
         leftBeltMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
+        leftBeltMotor.enableCurrentLimit(true);
         rightBeltMotor = new WPI_TalonSRX(rightBeltCanID);
         rightBeltMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
         rightBeltMotor.configPeakCurrentDuration(peakCurrentDuration, timeoutMs);
         rightBeltMotor.configContinuousCurrentLimit(continuousCurrentLimit, timeoutMs);
+        rightBeltMotor.enableCurrentLimit(true);
         rightBeltMotor.setInverted(true);
+        
 
        // belts = new SpeedControllerGroup(leftBeltMotor, rightBeltMotor);
         loadEye = new DigitalInput(eyeDio);
