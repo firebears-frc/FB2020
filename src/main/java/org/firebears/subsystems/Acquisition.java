@@ -2,9 +2,7 @@ package org.firebears.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.CANDigitalInput;
-import com.revrobotics.CANError;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.*;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -24,14 +22,18 @@ public class Acquisition extends SubsystemBase {
 
     //private final SpeedControllerGroup group;
     private final SpeedControllerGroup group1;
+
     /** Motor to lower acquisition system */
     private final CANSparkMax lowerMotor;
+    private final CANPIDController lowerMotorPidController;
+    private final CANEncoder lowerMotorEncoder;
+
     /** Motor to spin the stars */
-   
     private final WPI_TalonSRX spinMotor;
 
     private final ShuffleboardTab tab = Shuffleboard.getTab("Acquisition");
     private final NetworkTableEntry lowerMotorSpeed;
+    private final NetworkTableEntry lowerMotorPosition;
     private final NetworkTableEntry spinMotorSpeed;
     private final NetworkTableEntry upWidget;
     private final NetworkTableEntry downWidget;
@@ -56,7 +58,12 @@ public class Acquisition extends SubsystemBase {
        int peakCurrentLimit = config.getInt("stars.peakCurrentLimit", 15);
         int peakCurrentDuration = config.getInt("stars.peakCurrentDuration", 5000);
         int continuousCurrentLimit = config.getInt("stars.continuousCurrentLimit", 10);
-       
+        double lowerPID_P = config.getDouble("acquisition.lower.p", 1.0);
+        double lowerPID_I = config.getDouble("acquisition.lower.i", 0.0);
+        double lowerPID_D = config.getDouble("acquisition.lower.d", 0.0);
+        double lowerPID_FF = config.getDouble("acquisition.lower.ff", 0.0);
+        double lowerSetpoint_UP = config.getDouble("acquisition.lower.UP", 0.0);
+        double lowerSetpoint_DOWN = config.getDouble("acquisition.lower.DOWN", 100.0);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 150;
@@ -67,7 +74,12 @@ public class Acquisition extends SubsystemBase {
         err = lowerMotor.setSmartCurrentLimit(lowerStallLimit, lowerFreeLimit, lowerLimitRPM);
         if (err != CANError.kOk)
             System.err.println("ERROR: " + err + " setting limits on lowerMotor");
-        
+        lowerMotorEncoder = lowerMotor.getEncoder();
+        lowerMotorPidController = lowerMotor.getPIDController();
+        lowerMotorPidController.setP(lowerPID_P);
+        lowerMotorPidController.setI(lowerPID_I);
+        lowerMotorPidController.setD(lowerPID_D);
+        lowerMotorPidController.setFF(lowerPID_FF);
 
         spinMotor = new WPI_TalonSRX(10);
         spinMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
@@ -89,7 +101,8 @@ public class Acquisition extends SubsystemBase {
         downWidget = tab.add("Down Limit", false).withPosition(0, 3).getEntry();
 
         lowerMotorSpeed = tab.add("lower motor speed", 0).withPosition(0, 0).getEntry();
-        spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 1).getEntry();
+        lowerMotorPosition = tab.add("lower motor position", 0).withPosition(0, 1).getEntry();
+        spinMotorSpeed = tab.add("spin motor speed", 0).withPosition(0, 2).getEntry();
     }
 
     /** Periodic update */
@@ -106,6 +119,7 @@ public class Acquisition extends SubsystemBase {
             downWidget.setBoolean(isDown);
 
             lowerMotorSpeed.setNumber(lowerMotor.get());
+            lowerMotorPosition.setNumber(lowerMotorEncoder.getPosition());
             spinMotorSpeed.setNumber(spinMotor.get());
             dashTimeout = now + dashDelay;
         }
@@ -114,12 +128,14 @@ public class Acquisition extends SubsystemBase {
     /** Start acquiring power cells */
     public void startAcquire() {
         lowerMotor.set(0.5);
+//        lowerMotorPidController.setReference(lowerSetpoint_DOWN, ControlType.kPosition);
         spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
         lowerMotor.set(-0.5);
+//        lowerMotorPidController.setReference(lowerSetpoint_UP, ControlType.kPosition);
         spinMotor.set(0);
     }
 
