@@ -41,7 +41,9 @@ public class Acquisition extends SubsystemBase {
     private final long dashDelay;
     private long dashTimeout = 0;
 
-    
+    double lowerSetpoint_UP = 0.0;
+    double lowerSetpoint_DOWN = 25.0;
+    private double encoderHome = 0.0;
 
 
     public Acquisition() {
@@ -53,17 +55,18 @@ public class Acquisition extends SubsystemBase {
         int spinFreeLimit = config.getInt("acquisition.spinFreeLimit", 10);
         int spinLimitRPM = config.getInt("acquisition.spinLimitRPM", 500);
         int acquisitionLowerMotorCanID = config.getInt("acquisition.lowerMotor.canID", 11);
-       int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 10);
-       int timeoutMs = config.getInt("stars.timeout", 30);
-       int peakCurrentLimit = config.getInt("stars.peakCurrentLimit", 15);
+        int acquisitionSpinMotorCanID = config.getInt("acquisition.spinMotor.canID", 10);
+        int timeoutMs = config.getInt("stars.timeout", 30);
+        int peakCurrentLimit = config.getInt("stars.peakCurrentLimit", 15);
         int peakCurrentDuration = config.getInt("stars.peakCurrentDuration", 5000);
         int continuousCurrentLimit = config.getInt("stars.continuousCurrentLimit", 10);
-        double lowerPID_P = config.getDouble("acquisition.lower.p", 0.5);
-        double lowerPID_I = config.getDouble("acquisition.lower.i", 0.0);
-        double lowerPID_D = config.getDouble("acquisition.lower.d", 0.02);
-        double lowerPID_FF = config.getDouble("acquisition.lower.ff", 0.0);
-        double lowerSetpoint_UP = config.getDouble("acquisition.lower.UP", 0.0);
-        double lowerSetpoint_DOWN = config.getDouble("acquisition.lower.DOWN", 25.0);
+        double lowerPID_P = config.getDouble("acquisition.lowerMotor.pid.p", 0.5);
+        double lowerPID_I = config.getDouble("acquisition.lowerMotor.pid.i", 0.0);
+        double lowerPID_D = config.getDouble("acquisition.lowerMotor.pid.d", 0.02);
+        double lowerPID_FF = config.getDouble("acquisition.lowerMotor.pid.ff", 0.0);
+        double lowerPID_maxSpeed = config.getDouble("acquisition.lowerMotor.pid.maxSpeed", 0.2);
+        lowerSetpoint_UP = config.getDouble("acquisition.lowerMotor.pid.UP", 0.0);
+        lowerSetpoint_DOWN = config.getDouble("acquisition.lowerMotor.pid.DOWN", 25.0);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 150;
@@ -80,7 +83,7 @@ public class Acquisition extends SubsystemBase {
         lowerMotorPidController.setI(lowerPID_I);
         lowerMotorPidController.setD(lowerPID_D);
         lowerMotorPidController.setFF(lowerPID_FF);
-        lowerMotorPidController.setOutputRange(-0.2, 0.2)
+        lowerMotorPidController.setOutputRange(-1.0 * lowerPID_maxSpeed, lowerPID_maxSpeed);
 
         spinMotor = new WPI_TalonSRX(10);
         spinMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
@@ -124,19 +127,23 @@ public class Acquisition extends SubsystemBase {
             spinMotorSpeed.setNumber(spinMotor.get());
             dashTimeout = now + dashDelay;
         }
+
+        if (isUp) {
+            encoderHome = lowerMotorEncoder.getPosition();
+        }
     }
 
     /** Start acquiring power cells */
     public void startAcquire() {
         lowerMotor.set(0.5);
-//        lowerMotorPidController.setReference(lowerSetpoint_DOWN, ControlType.kPosition);
+        // lowerMotorPidController.setReference(lowerSetpoint_DOWN + encoderHome, ControlType.kPosition);
         spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
         lowerMotor.set(-0.5);
-//        lowerMotorPidController.setReference(lowerSetpoint_UP, ControlType.kPosition);
+        // lowerMotorPidController.setReference(lowerSetpoint_UP + encoderHome, ControlType.kPosition);
         spinMotor.set(0);
     }
 
