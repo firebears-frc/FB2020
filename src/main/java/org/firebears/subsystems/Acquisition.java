@@ -58,12 +58,12 @@ public class Acquisition extends SubsystemBase {
        int peakCurrentLimit = config.getInt("stars.peakCurrentLimit", 15);
         int peakCurrentDuration = config.getInt("stars.peakCurrentDuration", 5000);
         int continuousCurrentLimit = config.getInt("stars.continuousCurrentLimit", 10);
-        double lowerPID_P = config.getDouble("acquisition.lower.p", 1.0);
+        double lowerPID_P = config.getDouble("acquisition.lower.p", 0.5);
         double lowerPID_I = config.getDouble("acquisition.lower.i", 0.0);
-        double lowerPID_D = config.getDouble("acquisition.lower.d", 0.0);
+        double lowerPID_D = config.getDouble("acquisition.lower.d", 0.02);
         double lowerPID_FF = config.getDouble("acquisition.lower.ff", 0.0);
         double lowerSetpoint_UP = config.getDouble("acquisition.lower.UP", 0.0);
-        double lowerSetpoint_DOWN = config.getDouble("acquisition.lower.DOWN", 100.0);
+        double lowerSetpoint_DOWN = config.getDouble("acquisition.lower.DOWN", 25.0);
 
         dashDelay = config.getLong("dashDelay", 250);
         dashTimeout = System.currentTimeMillis() + dashDelay + 150;
@@ -80,6 +80,7 @@ public class Acquisition extends SubsystemBase {
         lowerMotorPidController.setI(lowerPID_I);
         lowerMotorPidController.setD(lowerPID_D);
         lowerMotorPidController.setFF(lowerPID_FF);
+        lowerMotorPidController.setOutputRange(-0.2, 0.2)
 
         spinMotor = new WPI_TalonSRX(10);
         spinMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
