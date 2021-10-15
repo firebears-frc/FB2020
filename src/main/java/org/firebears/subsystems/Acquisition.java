@@ -83,7 +83,12 @@ public class Acquisition extends SubsystemBase {
         lowerMotorPidController.setI(lowerPID_I);
         lowerMotorPidController.setD(lowerPID_D);
         lowerMotorPidController.setFF(lowerPID_FF);
+        lowerMotorPidController.setSmartMotionMaxVelocity(30, 0);
+        lowerMotorPidController.setSmartMotionMinOutputVelocity(0, 0);
+        lowerMotorPidController.setSmartMotionMaxAccel(30, 0);
+        lowerMotorPidController.setSmartMotionAllowedClosedLoopError(1, 0);
         lowerMotorPidController.setOutputRange(-1.0 * lowerPID_maxSpeed, lowerPID_maxSpeed);
+
 
         spinMotor = new WPI_TalonSRX(10);
         spinMotor.configPeakCurrentLimit(peakCurrentLimit, timeoutMs);
@@ -135,15 +140,15 @@ public class Acquisition extends SubsystemBase {
 
     /** Start acquiring power cells */
     public void startAcquire() {
-        lowerMotor.set(0.5);
-        // lowerMotorPidController.setReference(lowerSetpoint_DOWN + encoderHome, ControlType.kPosition);
+        //lowerMotor.set(0.5);
+        lowerMotorPidController.setReference(lowerSetpoint_DOWN + encoderHome, ControlType.kPosition);
         spinMotor.set(1.0);
     }
 
     /** Stop acquiring power cells */
     public void endAcquire() {
-        lowerMotor.set(-0.5);
-        // lowerMotorPidController.setReference(lowerSetpoint_UP + encoderHome, ControlType.kPosition);
+        //lowerMotor.set(-0.5);
+        lowerMotorPidController.setReference(lowerSetpoint_UP + encoderHome, ControlType.kPosition);
         spinMotor.set(0);
     }
 
