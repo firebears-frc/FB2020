@@ -1,7 +1,9 @@
 package org.firebears;
 
 import org.firebears.commands.AcquisitionLowerCommand;
+import org.firebears.commands.AcquisitionLowerCommand1;
 import org.firebears.commands.AcquisitionRaiseCommand;
+import org.firebears.commands.AcquisitionRaiseCommand1;
 import org.firebears.commands.AhhhItsJammedCommand;
 import org.firebears.commands.BallQueueCommand;
 import org.firebears.commands.CelebrateCommand;
@@ -34,10 +36,11 @@ public class OI {
         xboxController = new XboxController(0);
 
         lowerAcqButton = new JoystickButton(xboxController, 5); // LB
-        lowerAcqButton.whenPressed(new AcquisitionLowerCommand(Robot.acquisition, Robot.loader, Robot.storage));
+        lowerAcqButton.whenPressed(new AcquisitionLowerCommand1(Robot.acquisition, Robot.loader, Robot.storage));
 
         raiseAcqButton = new JoystickButton(xboxController, 6); // RB
-        raiseAcqButton.whenPressed(new AcquisitionRaiseCommand(Robot.acquisition, Robot.loader, true));
+       // raiseAcqButton.whenPressed(new AcquisitionRaiseCommand(Robot.acquisition, Robot.loader, true));
+        raiseAcqButton.whenPressed(new AcquisitionRaiseCommand1(Robot.acquisition, Robot.loader));
 
         spitButton = new JoystickButton(xboxController, 2); // B
         spitButton.whenPressed(new SpitCommand(Robot.loader));
