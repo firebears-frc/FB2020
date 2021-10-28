@@ -22,7 +22,7 @@ public class IndexAllCommand extends SequentialCommandGroup {
    * Creates a new Shoot5Command.
    */
     static double waitTime = 0.65;
-    static double startWaitTime = 1.0;
+    static double startWaitTime = 2.0;
 
   public IndexAllCommand(Storage storage) {
     // Add your commands in the super() call, e.g.

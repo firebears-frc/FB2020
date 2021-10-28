@@ -23,10 +23,10 @@ import org.firebears.util.PIDSparkMotor;
 public class Chassis extends SubsystemBase {
 
     /** Maximum acceleration per 20 ms tick */
-    static private final double MAX_ACCEL = 0.1;
+    static private final double MAX_ACCEL = 0.5;
 
     /** Maximum deceleration per 20 ms tick */
-    static private final double MAX_DECEL = 0.2;
+    static private final double MAX_DECEL = 0.5;
 
     private final Preferences config = Preferences.getInstance();
 
@@ -52,6 +52,8 @@ public class Chassis extends SubsystemBase {
     private final NetworkTableEntry speedWidget;
     private final NetworkTableEntry rotationWidget;
     private final NetworkTableEntry distanceWidget;
+    private final NetworkTableEntry ArcadeSpeed; //Speed passed to the arcade drive
+    private final NetworkTableEntry ArcadeRotation; //Rotation passed to arcade drive -- Diagnose turning issue
 
     private final NetworkTableEntry xAxis;
     private final NetworkTableEntry yAxis;
@@ -141,6 +143,11 @@ public class Chassis extends SubsystemBase {
         speedWidget = tab.add("speed", 0).withPosition(2, 0).getEntry();
         rotationWidget = tab.add("rotation", 0).withPosition(2, 1).getEntry();
 
+
+        ArcadeSpeed = tab.add("Arcade Drive Speed", 0).withPosition(4, 4).getEntry();
+        ArcadeRotation = tab.add("Arcade Drive Rotation", 0).withPosition(5, 5).getEntry();
+
+
         try {
             navXboard = new AHRS(edu.wpi.first.wpilibj.SerialPort.Port.kUSB);
         } catch (final RuntimeException ex) {
@@ -170,6 +177,9 @@ public class Chassis extends SubsystemBase {
             zAxis.setNumber(navXboard.getRoll());
             xAxis.setNumber(navXboard.getAngle());
             yAxis.setNumber(navXboard.getPitch());
+
+            ArcadeSpeed.setNumber(this.speed);
+            ArcadeRotation.setNumber(this.rotation);
 
             dashTimeout = now + dashDelay;
         }
@@ -208,12 +218,18 @@ public class Chassis extends SubsystemBase {
         return (ticksRight() - ticksLeft()) * rotationConversionFactor;
     }
 
+
+
+    //Speed and rotation seem be reversed somewhere, causing weird turning issues
     public void drive(final double speed, final double rotation) {
         this.speed = filterSpeed(speed);
         this.rotation = filterRotation(rotation);
         // robotDrive.tankDrive(speed, rotation);
       // robotDrive.setRightSideInverted(true);
+        System.out.println("Speed: " + this.speed + " Rotation: " + this.rotation);
        robotDrive.arcadeDrive(this.speed, this.rotation);
+       
+
     }
 
     private double filterSpeed(double s) {
