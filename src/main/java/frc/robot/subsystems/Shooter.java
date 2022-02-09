@@ -13,6 +13,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -61,5 +62,11 @@ public class Shooter extends SubsystemBase {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+    public void idleShooter(){
+            shooterMotor.set(0);
+    }
 
+    public void setSpeed(double speedInp){
+        shooterMotor.set(speedInp);
+    }
 }
