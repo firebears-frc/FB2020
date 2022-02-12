@@ -11,6 +11,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Preferences;
+import static frc.robot.util.Config.cleanAllPreferences;
+import static frc.robot.util.Config.loadConfiguration;
+import static frc.robot.util.Config.printPreferences;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -20,6 +25,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public class Constants {
+    public static boolean DEBUG;
     public static final int CHASSIS_LEFT_FRONT_MOTOR_CAN_ID = 2;
     public static final int CHASSIS_LEFT_REAR_MOTOR_CAN_ID = 3;
     public static final int CHASSIS_RIGHT_FRONT_MOTOR_CAN_ID = 4;
@@ -32,5 +38,13 @@ public class Constants {
     public static final int CLIMBER_LEFT_CLIMBER_MOTOR_CAN_ID = 22;
     public static final int CLIMBER_RIGHT_CLIMBER_MOTOR_CAN_ID = 24;
     public static final int SHOOTER_MOTOR_CAN_ID = 25;
+
+    public static void init(String... fileNames) {
+        cleanAllPreferences();
+        loadConfiguration(fileNames);
+        printPreferences(System.out);
+
+        DEBUG = Preferences.getBoolean("debug", false);
+    }
 }
 
