@@ -21,15 +21,13 @@ public class DriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize(){}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_xboxController.getLeftY();
-    double rotation = m_xboxController.getLeftX();
-
-    m_chassis.drive(speed, rotation);
+    
+    m_chassis.drive(m_xboxController.getLeftX(), m_xboxController.getLeftY());
   }
 
   // Called once the command ends or is interrupted.
