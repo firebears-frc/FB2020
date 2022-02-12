@@ -118,4 +118,12 @@ public class Acquisition extends SubsystemBase {
         encoder.setPosition(0);
     }
 
+    public boolean isLimitDown(){
+        return limitDown.get();
+    }
+
+    public void stop(){
+        lowerMotor.set(0);
+    }
+
 }
