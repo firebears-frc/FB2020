@@ -1,0 +1,264 @@
+Version 5.0
+
+---
+Children:
+- Children:
+  - Children:
+    - Children:
+      - Children:
+        - Children: []
+          Properties:
+            Idle Mode: !!robotbuilder.data.properties.ChoicesProperty
+              choices: &id001 [kCoast, kBrake]
+              default: kCoast
+              name: Idle Mode
+              validators: null
+              value: kCoast
+            Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
+              name: Inverted, validators: null, value: false}
+            CAN ID: !!robotbuilder.data.properties.ChoicesProperty
+              choices: &id002 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21',
+                '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']
+              default: '2'
+              name: CAN ID
+              validators: &id003 [CANID]
+              value: '4'
+            MOTOR TYPE: !!robotbuilder.data.properties.ChoicesProperty
+              choices: &id004 [kBrushless, kBrushed]
+              default: kBrushless
+              name: MOTOR TYPE
+              validators: null
+              value: kBrushless
+            Restore Factory Defaults: !!robotbuilder.data.properties.BooleanProperty {
+              default: true, name: Restore Factory Defaults, validators: null, value: true}
+          Base: Spark MAX
+          Name: rightFrontMotor
+        - Children: []
+          Properties:
+            Idle Mode: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id001
+              default: kCoast
+              name: Idle Mode
+              validators: null
+              value: kCoast
+            Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
+              name: Inverted, validators: null, value: false}
+            CAN ID: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id002
+              default: '2'
+              name: CAN ID
+              validators: *id003
+              value: '5'
+            MOTOR TYPE: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id004
+              default: kBrushless
+              name: MOTOR TYPE
+              validators: null
+              value: kBrushless
+            Restore Factory Defaults: !!robotbuilder.data.properties.BooleanProperty {
+              default: true, name: Restore Factory Defaults, validators: null, value: true}
+          Base: Spark MAX
+          Name: rightBackMotor
+        Properties:
+          MotorController2: !!robotbuilder.data.properties.ChildSelectionProperty
+            default: 1
+            name: MotorController2
+            type: PIDOutput
+            validators: &id005 [MotorControllerGroup, ChildDropdownSelected]
+            value: rightBackMotor
+          MotorController1: !!robotbuilder.data.properties.ChildSelectionProperty
+            default: 0
+            name: MotorController1
+            type: PIDOutput
+            validators: &id006 [MotorControllerGroup, ChildDropdownSelected]
+            value: rightFrontMotor
+          MotorController4: !!robotbuilder.data.properties.ChildSelectionProperty {
+            default: null, name: MotorController4, type: PIDOutput, validators: null,
+            value: null}
+          MotorController3: !!robotbuilder.data.properties.ChildSelectionProperty {
+            default: null, name: MotorController3, type: PIDOutput, validators: null,
+            value: null}
+        Base: Motor Controller Group
+        Name: rightMotors
+      - Children:
+        - Children: []
+          Properties:
+            Idle Mode: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id001
+              default: kCoast
+              name: Idle Mode
+              validators: null
+              value: kCoast
+            Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
+              name: Inverted, validators: null, value: false}
+            CAN ID: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id002
+              default: '2'
+              name: CAN ID
+              validators: *id003
+              value: '2'
+            MOTOR TYPE: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id004
+              default: kBrushless
+              name: MOTOR TYPE
+              validators: null
+              value: kBrushless
+            Restore Factory Defaults: !!robotbuilder.data.properties.BooleanProperty {
+              default: true, name: Restore Factory Defaults, validators: null, value: true}
+          Base: Spark MAX
+          Name: leftFrontMotor
+        - Children: []
+          Properties:
+            Idle Mode: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id001
+              default: kCoast
+              name: Idle Mode
+              validators: null
+              value: kCoast
+            Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
+              name: Inverted, validators: null, value: false}
+            CAN ID: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id002
+              default: '2'
+              name: CAN ID
+              validators: *id003
+              value: '3'
+            MOTOR TYPE: !!robotbuilder.data.properties.ChoicesProperty
+              choices: *id004
+              default: kBrushless
+              name: MOTOR TYPE
+              validators: null
+              value: kBrushless
+            Restore Factory Defaults: !!robotbuilder.data.properties.BooleanProperty {
+              default: true, name: Restore Factory Defaults, validators: null, value: true}
+          Base: Spark MAX
+          Name: leftBackMotor
+        Properties:
+          MotorController2: !!robotbuilder.data.properties.ChildSelectionProperty
+            default: 1
+            name: MotorController2
+            type: PIDOutput
+            validators: *id005
+            value: leftBackMotor
+          MotorController1: !!robotbuilder.data.properties.ChildSelectionProperty
+            default: 0
+            name: MotorController1
+            type: PIDOutput
+            validators: *id006
+            value: leftFrontMotor
+          MotorController4: !!robotbuilder.data.properties.ChildSelectionProperty {
+            default: null, name: MotorController4, type: PIDOutput, validators: null,
+            value: null}
+          MotorController3: !!robotbuilder.data.properties.ChildSelectionProperty {
+            default: null, name: MotorController3, type: PIDOutput, validators: null,
+            value: null}
+        Base: Motor Controller Group
+        Name: leftMotors
+      Properties:
+        Right Motor: !!robotbuilder.data.properties.ChildSelectionProperty
+          default: 1
+          name: Right Motor
+          type: PIDOutput
+          validators: [RobotDrive2, ChildDropdownSelected]
+          value: rightMotors
+        Maximum Output: !!robotbuilder.data.properties.DoubleProperty {default: 1,
+          name: Maximum Output, validators: null, value: 1.0}
+        Left Motor: !!robotbuilder.data.properties.ChildSelectionProperty
+          default: 0
+          name: Left Motor
+          type: PIDOutput
+          validators: [RobotDrive2, ChildDropdownSelected]
+          value: leftMotors
+        Safety Expiration Time: !!robotbuilder.data.properties.DoubleProperty {default: 0.1,
+          name: Safety Expiration Time, validators: null, value: 0.1}
+        Safety Enabled: !!robotbuilder.data.properties.BooleanProperty {default: true,
+          name: Safety Enabled, validators: null, value: true}
+      Base: Differential Drive
+      Name: differentialDrive
+    Properties:
+      Send to SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Send to SmartDashboard, validators: null, value: false}
+      Default command parameters: !!robotbuilder.data.properties.ParametersProperty
+        default: []
+        name: Default command parameters
+        validators: null
+        value: []
+      Default Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Default Command, type: Command, validators: null, value: ChassisDrive}
+      Constants: !!robotbuilder.data.properties.ConstantsProperty
+        default: []
+        name: Constants
+        validators: null
+        value: []
+    Base: Subsystem
+    Name: Chassis
+  Properties: {}
+  Base: Subsystems
+  Name: Subsystems
+- Children:
+  - Children: []
+    Properties:
+      Number: !!robotbuilder.data.properties.ChoicesProperty
+        choices: ['0', '1', '2', '3', '4', '5']
+        default: 1
+        name: Number
+        validators: [Joystick]
+        value: '0'
+    Base: Xbox Controller
+    Name: xboxController
+  Properties: {}
+  Base: OI
+  Name: Operator Interface
+- Children:
+  - Children: []
+    Properties:
+      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Autonomous Selection, validators: null, value: false}
+      Parameters: !!robotbuilder.data.properties.ParametersProperty
+        default: []
+        name: Parameters
+        validators: null
+        value: []
+      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Run When Disabled, validators: null, value: false}
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Chassis}
+      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
+        default: &id007 []
+        name: Parameter presets
+        validators: null
+        value: *id007
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+    Base: Command
+    Name: ChassisDrive
+  Properties: {}
+  Base: Commands
+  Name: Commands
+Properties:
+  Export Commands: !!robotbuilder.data.properties.BooleanProperty {default: true,
+    name: Export Commands, validators: null, value: true}
+  Desktop Support: !!robotbuilder.data.properties.BooleanProperty {default: false,
+    name: Desktop Support, validators: null, value: false}
+  Autonomous command parameters: !!robotbuilder.data.properties.ParametersProperty
+    default: []
+    name: Autonomous command parameters
+    validators: null
+    value: []
+  Java Package: !!robotbuilder.data.properties.StringProperty {default: frc.robot,
+    name: Java Package, validators: null, value: org.usfirst.frc2846}
+  Use Default Java Package: !!robotbuilder.data.properties.BooleanProperty {default: true,
+    name: Use Default Java Package, validators: null, value: true}
+  Team Number: !!robotbuilder.data.properties.TeamNumberProperty {default: 0, name: Team
+      Number, validators: null, value: 2846}
+  Export Subsystems: !!robotbuilder.data.properties.BooleanProperty {default: true,
+    name: Export Subsystems, validators: null, value: true}
+  Wiring file location: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\Firebears\',
+    extension: null, folder: true, name: Wiring file location, validators: null, value: 'C:\Users\Firebears\'}
+  Export Directory: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\Firebears\FRCProjects',
+    extension: null, folder: true, name: Export Directory, validators: null, value: 'C:\Users\Firebears\Documents'}
+  Autonomous Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+    name: Autonomous Command, type: Command, validators: null, value: Autonomous Command}
+Base: Robot
+Name: TheRewriteRewritten
