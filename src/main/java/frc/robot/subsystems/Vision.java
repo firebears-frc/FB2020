@@ -44,7 +44,7 @@ public class Vision extends SubsystemBase {
   VisionMap VM;
 
   PhotonPoseEstimator poseEstimator;
-  Field2d Field = new Field2d();
+  public Field2d Field = new Field2d();
   AprilTagFieldLayout layout;
 
   /** Creates a new Vision. */
