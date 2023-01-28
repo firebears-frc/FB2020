@@ -55,7 +55,7 @@ public class Chassis extends SubsystemBase {
     private final DifferentialDriveOdometry odometry;
 
     // Also show a field diagram
-    private final Field2d field2d;
+    private  Field2d field2d;
 
     private double leftOffSet = 0;
     private double rightOffSet = 0;
