@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
       layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
       poseEstimator = new PhotonPoseEstimator(
         layout, 
-        PoseStrategy.AVERAGE_BEST_TARGETS, 
+        PoseStrategy.CLOSEST_TO_LAST_POSE, 
         Camera, 
         new Transform3d(
           new Translation3d(
@@ -68,6 +68,7 @@ public class Vision extends SubsystemBase {
           new Rotation3d()
         )
       );
+      poseEstimator.setLastPose(new Pose3d());
       
     } catch (IOException e) {
       // TODO Auto-generated catch block
