@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 import frc.robot.util.VisionMap;
 
 
@@ -47,11 +48,14 @@ public class Vision extends SubsystemBase {
   public Field2d Field = new Field2d();
   AprilTagFieldLayout layout;
 
+  private boolean hasTarget = false;
+
   /** Creates a new Vision. */
   public Vision(String CamName) {
     Camera = new PhotonCamera(CamName);
     VM = new VisionMap();
     SmartDashboard.putData("VisionEyes",Field);
+    
     
     try {
       layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -76,6 +80,14 @@ public class Vision extends SubsystemBase {
     }
   }
 
+
+  public boolean hasTarget() {
+    return hasTarget;
+  }
+  void setLastPose(Pose2d p2d) {
+    poseEstimator.setLastPose(p2d);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -84,6 +96,7 @@ public class Vision extends SubsystemBase {
     
     PhotonPipelineResult result = Camera.getLatestResult();
     if(result.hasTargets()){
+      hasTarget = true;
       //VM.onVisionTargetSeen(result.getBestTarget());
       Optional<EstimatedRobotPose> pose = poseEstimator.update();
       if(pose.isPresent()){
@@ -91,7 +104,10 @@ public class Vision extends SubsystemBase {
         Pose3d p3d = pose.get().estimatedPose;
         //SmartDashboard.putString("VisionEayes",("" + p3d.toPose2d().getX() + ',' + p3d.toPose2d().getY()));
         Field.setRobotPose(p3d.toPose2d());
+        poseEstimator.setLastPose(p3d.toPose2d());
       }
+    } else {
+      hasTarget = false;
     }
   }
 }

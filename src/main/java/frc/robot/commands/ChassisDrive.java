@@ -58,8 +58,8 @@ public class ChassisDrive extends CommandBase {
     @Override
     public void execute() {
         XboxController xboxController=RobotContainer.getInstance().getxboxController();
-        double speed = xboxController.getLeftY();
-        double rotation = xboxController.getLeftX();
+        double speed = xboxController.getLeftY() * 0.6;
+        double rotation = xboxController.getRightX()  * 0.6;
         m_chassis.arcadeDrive(speed, rotation); 
 
     }
