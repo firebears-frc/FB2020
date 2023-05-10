@@ -5,16 +5,28 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Chassis;
 
 public class RobotContainer {
-    private final CommandJoystick joystick = new CommandJoystick(0);
-    private final CommandXboxController controller = new CommandXboxController(1);
+    public class Constants {
+        public static final int JOYSTICK_PORT = 0;
+        public static final int CONTROLLER_PORT = 1;
+    }
+
+    private final Chassis chassis;
+    private final CommandJoystick joystick;
+    private final CommandXboxController controller;
 
     public RobotContainer() {
+        chassis = new Chassis();
+        joystick = new CommandJoystick(Constants.JOYSTICK_PORT);
+        controller = new CommandXboxController(Constants.CONTROLLER_PORT);
+
         configureBindings();
     }
 
     private void configureBindings() {
+        chassis.setDefaultCommand(chassis.defaultCommand(joystick::getY, joystick::getX));
     }
 
     public Command getAutonomousCommand() {
