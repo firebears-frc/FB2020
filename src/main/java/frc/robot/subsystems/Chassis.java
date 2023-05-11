@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Chassis extends SubsystemBase {
     private static class Constants {
-        public static final int FRONT_LEFT_PORT = 2;
-        public static final int REAR_LEFT_PORT = 3;
-        public static final int FRONT_RIGHT_PORT = 4;
-        public static final int REAR_RIGHT_PORT = 5;
+        public static final int FRONT_LEFT_CAN_ID = 2;
+        public static final int REAR_LEFT_CAN_ID = 3;
+        public static final int FRONT_RIGHT_CAN_ID = 4;
+        public static final int REAR_RIGHT_CAN_ID = 5;
 
         public static final int STALL_CURRENT_LIMIT = 30;
         public static final int FREE_CURRENT_LIMIT = 20;
@@ -29,26 +29,26 @@ public class Chassis extends SubsystemBase {
     private final DifferentialDrive drivetrain;
 
     public Chassis() {
-        frontLeft = new CANSparkMax(Constants.FRONT_LEFT_PORT, MotorType.kBrushless);
+        frontLeft = new CANSparkMax(Constants.FRONT_LEFT_CAN_ID, MotorType.kBrushless);
         frontLeft.restoreFactoryDefaults();
         frontLeft.setInverted(true);
         frontLeft.setIdleMode(IdleMode.kCoast);
         frontLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
-        rearLeft = new CANSparkMax(Constants.REAR_LEFT_PORT, MotorType.kBrushless);
+        rearLeft = new CANSparkMax(Constants.REAR_LEFT_CAN_ID, MotorType.kBrushless);
         rearLeft.restoreFactoryDefaults();
         rearLeft.setInverted(true);
         rearLeft.setIdleMode(IdleMode.kCoast);
         rearLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         rearLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
-        frontRight = new CANSparkMax(Constants.FRONT_RIGHT_PORT, MotorType.kBrushless);
+        frontRight = new CANSparkMax(Constants.FRONT_RIGHT_CAN_ID, MotorType.kBrushless);
         frontRight.restoreFactoryDefaults();
         frontRight.setInverted(true);
         frontRight.setIdleMode(IdleMode.kCoast);
         frontRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
-        rearRight = new CANSparkMax(Constants.REAR_RIGHT_PORT, MotorType.kBrushless);
+        rearRight = new CANSparkMax(Constants.REAR_RIGHT_CAN_ID, MotorType.kBrushless);
         rearRight.restoreFactoryDefaults();
         rearRight.setInverted(true);
         rearRight.setIdleMode(IdleMode.kCoast);

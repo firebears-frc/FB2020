@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
     private static class Constants {
-        public static final int PORT = 12;
+        public static final int CAN_ID = 12;
 
         public static final double SPEED = 0.4;
 
@@ -22,7 +22,7 @@ public class Indexer extends SubsystemBase {
     private final CANSparkMax motor;
 
     public Indexer() {
-        motor = new CANSparkMax(Constants.PORT, MotorType.kBrushless);
+        motor = new CANSparkMax(Constants.CAN_ID, MotorType.kBrushless);
         motor.restoreFactoryDefaults();
         motor.setInverted(false);
         motor.setIdleMode(IdleMode.kBrake);

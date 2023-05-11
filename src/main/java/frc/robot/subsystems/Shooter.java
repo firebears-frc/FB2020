@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
     private static class Constants {
-        public static final int PORT = 25;
+        public static final int CAN_ID = 25;
 
         public static final double SPEED = 1.0;
 
@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
     private final WPI_TalonSRX motor;
 
     public Shooter() {
-        motor = new WPI_TalonSRX(Constants.PORT);
+        motor = new WPI_TalonSRX(Constants.CAN_ID);
         motor.configFactoryDefault();
         motor.setInverted(true);
         motor.setNeutralMode(NeutralMode.Coast);

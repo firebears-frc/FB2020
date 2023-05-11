@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Feeder extends SubsystemBase {
     private static class Constants {
-        public static final int LEFT_PORT = 20;
-        public static final int RIGHT_PORT = 21;
+        public static final int LEFT_CAN_ID = 20;
+        public static final int RIGHT_CAN_ID = 21;
 
         public static final double SPEED = 1.0;
 
@@ -24,7 +24,7 @@ public class Feeder extends SubsystemBase {
     private final WPI_TalonSRX right;
 
     public Feeder() {
-        left = new WPI_TalonSRX(Constants.LEFT_PORT);
+        left = new WPI_TalonSRX(Constants.LEFT_CAN_ID);
         left.configFactoryDefault();
         left.setInverted(true);
         left.setNeutralMode(NeutralMode.Coast);
@@ -32,7 +32,7 @@ public class Feeder extends SubsystemBase {
         left.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
         left.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
 
-        right = new WPI_TalonSRX(Constants.RIGHT_PORT);
+        right = new WPI_TalonSRX(Constants.RIGHT_CAN_ID);
         right.configFactoryDefault();
         right.setInverted(false);
         right.setNeutralMode(NeutralMode.Coast);

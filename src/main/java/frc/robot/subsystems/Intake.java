@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
     private static class Constants {
-        public static final int PORT = 10;
+        public static final int CAN_ID = 10;
 
         public static final double SPEED = 1.0;
 
@@ -22,7 +22,7 @@ public class Intake extends SubsystemBase {
     private final WPI_TalonSRX motor;
 
     public Intake() {
-        motor = new WPI_TalonSRX(Constants.PORT);
+        motor = new WPI_TalonSRX(Constants.CAN_ID);
         motor.configFactoryDefault();
         motor.setInverted(false);
         motor.setNeutralMode(NeutralMode.Coast);
