@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -18,6 +19,7 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Intake intake;
     private final Feeder feeder;
+    private final Indexer indexer;
     private final CommandXboxController controller;
 
     public RobotContainer() {
@@ -25,6 +27,7 @@ public class RobotContainer {
         shooter = new Shooter();
         intake = new Intake();
         feeder = new Feeder();
+        indexer = new Indexer();
         controller = new CommandXboxController(Constants.CONTROLLER_PORT);
 
         configureBindings();
@@ -34,8 +37,8 @@ public class RobotContainer {
     private void configureBindings() {
         chassis.setDefaultCommand(chassis.defaultCommand(controller::getLeftY, controller::getLeftX));
         controller.rightBumper().whileTrue(shooter.shoot());
-        controller.leftBumper().whileTrue(intake.intake());
-        controller.a().whileTrue(feeder.run());
+        controller.leftBumper().whileTrue(intake.intake()).whileTrue(feeder.run());
+        controller.a().whileTrue(indexer.run());
     }
 
     public Command getAutonomousCommand() {
