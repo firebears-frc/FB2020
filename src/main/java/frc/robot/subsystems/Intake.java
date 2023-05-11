@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,9 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         motor = new WPI_TalonSRX(Constants.PORT);
+        motor.configFactoryDefault();
+        motor.setInverted(false);
+        motor.setNeutralMode(NeutralMode.Coast);
     }
 
     private void set(double speed) {
