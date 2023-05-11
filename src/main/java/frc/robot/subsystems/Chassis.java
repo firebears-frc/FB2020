@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Chassis extends SubsystemBase {
     private static class Constants {
-        // Driving
         public static final int FRONT_LEFT_PORT = 2;
         public static final int REAR_LEFT_PORT = 3;
         public static final int FRONT_RIGHT_PORT = 4;
