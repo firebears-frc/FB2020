@@ -13,6 +13,10 @@ public class Intake extends SubsystemBase {
         public static final int PORT = 10;
 
         public static final double SPEED = 1.0;
+
+        public static final int PEAK_CURRENT_LIMIT = 15;
+        public static final int PEAK_CURRENT_DURATION = 5000;
+        public static final int CONTINUOUS_CURRENT_LIMIT = 10;
     }
 
     private final WPI_TalonSRX motor;
@@ -22,6 +26,9 @@ public class Intake extends SubsystemBase {
         motor.configFactoryDefault();
         motor.setInverted(false);
         motor.setNeutralMode(NeutralMode.Coast);
+        motor.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
+        motor.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
+        motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
     }
 
     private void set(double speed) {

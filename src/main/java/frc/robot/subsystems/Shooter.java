@@ -13,7 +13,12 @@ public class Shooter extends SubsystemBase {
         public static final int PORT = 25;
 
         public static final double SPEED = 1.0;
+
+        public static final int PEAK_CURRENT_LIMIT = 25;
+        public static final int PEAK_CURRENT_DURATION = 2000;
+        public static final int CONTINUOUS_CURRENT_LIMIT = 10;
     }
+
     private final WPI_TalonSRX motor;
 
     public Shooter() {
@@ -21,6 +26,9 @@ public class Shooter extends SubsystemBase {
         motor.configFactoryDefault();
         motor.setInverted(true);
         motor.setNeutralMode(NeutralMode.Coast);
+        motor.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
+        motor.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
+        motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
     }
 
     private void set(double speed) {

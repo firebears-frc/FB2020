@@ -14,6 +14,10 @@ public class Feeder extends SubsystemBase {
         public static final int RIGHT_PORT = 21;
 
         public static final double SPEED = 1.0;
+
+        public static final int PEAK_CURRENT_LIMIT = 15;
+        public static final int PEAK_CURRENT_DURATION = 5000;
+        public static final int CONTINUOUS_CURRENT_LIMIT = 10;
     }
 
     private final WPI_TalonSRX left;
@@ -24,11 +28,17 @@ public class Feeder extends SubsystemBase {
         left.configFactoryDefault();
         left.setInverted(true);
         left.setNeutralMode(NeutralMode.Coast);
+        left.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
+        left.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
+        left.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
 
         right = new WPI_TalonSRX(Constants.RIGHT_PORT);
         right.configFactoryDefault();
         right.setInverted(false);
         right.setNeutralMode(NeutralMode.Coast);
+        right.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
+        right.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
+        right.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
     }
 
     private void set(double speed) {

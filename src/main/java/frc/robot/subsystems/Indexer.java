@@ -13,6 +13,10 @@ public class Indexer extends SubsystemBase {
         public static final int PORT = 12;
 
         public static final double SPEED = 0.4;
+
+        public static final int STALL_CURRENT_LIMIT = 20;
+        public static final int FREE_CURRENT_LIMIT = 10;
+        public static final double SECONDARY_CURRENT_LIMIT = 25.0;
     }
 
     private final CANSparkMax motor;
@@ -22,6 +26,8 @@ public class Indexer extends SubsystemBase {
         motor.restoreFactoryDefaults();
         motor.setInverted(false);
         motor.setIdleMode(IdleMode.kBrake);
+        motor.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
+        motor.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         motor.burnFlash();
     }

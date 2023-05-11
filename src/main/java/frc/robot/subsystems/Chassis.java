@@ -18,7 +18,12 @@ public class Chassis extends SubsystemBase {
         public static final int REAR_LEFT_PORT = 3;
         public static final int FRONT_RIGHT_PORT = 4;
         public static final int REAR_RIGHT_PORT = 5;
+
+        public static final int STALL_CURRENT_LIMIT = 30;
+        public static final int FREE_CURRENT_LIMIT = 20;
+        public static final double SECONDARY_CURRENT_LIMIT = 60.0;
     }
+
     private final CANSparkMax frontLeft, frontRight, rearLeft, rearRight;
     private final MotorControllerGroup left, right;
     private final DifferentialDrive drivetrain;
@@ -28,19 +33,27 @@ public class Chassis extends SubsystemBase {
         frontLeft.restoreFactoryDefaults();
         frontLeft.setInverted(true);
         frontLeft.setIdleMode(IdleMode.kCoast);
+        frontLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
+        frontLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
         rearLeft = new CANSparkMax(Constants.REAR_LEFT_PORT, MotorType.kBrushless);
         rearLeft.restoreFactoryDefaults();
         rearLeft.setInverted(true);
         rearLeft.setIdleMode(IdleMode.kCoast);
+        rearLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
+        rearLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         frontRight = new CANSparkMax(Constants.FRONT_RIGHT_PORT, MotorType.kBrushless);
         frontRight.restoreFactoryDefaults();
         frontRight.setInverted(true);
         frontRight.setIdleMode(IdleMode.kCoast);
+        frontRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
+        frontRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
         rearRight = new CANSparkMax(Constants.REAR_RIGHT_PORT, MotorType.kBrushless);
         rearRight.restoreFactoryDefaults();
         rearRight.setInverted(true);
         rearRight.setIdleMode(IdleMode.kCoast);
+        rearRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
+        rearRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         left = new MotorControllerGroup(frontLeft, rearLeft);
         right = new MotorControllerGroup(frontRight, rearRight);
