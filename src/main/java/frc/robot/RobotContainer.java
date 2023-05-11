@@ -6,27 +6,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     public class Constants {
-        public static final int JOYSTICK_PORT = 0;
-        public static final int CONTROLLER_PORT = 1;
+        public static final int CONTROLLER_PORT = 0;
     }
 
     private final Chassis chassis;
-    private final CommandJoystick joystick;
+    private final Shooter shooter;
     private final CommandXboxController controller;
 
     public RobotContainer() {
         chassis = new Chassis();
-        joystick = new CommandJoystick(Constants.JOYSTICK_PORT);
+        shooter = new Shooter();
         controller = new CommandXboxController(Constants.CONTROLLER_PORT);
 
         configureBindings();
     }
 
     private void configureBindings() {
-        chassis.setDefaultCommand(chassis.defaultCommand(joystick::getY, joystick::getX));
+        chassis.setDefaultCommand(chassis.defaultCommand(controller::getLeftY, controller::getLeftX));
+
+        controller.rightBumper().whileTrue(shooter.shoot());
     }
 
     public Command getAutonomousCommand() {
