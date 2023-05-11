@@ -37,4 +37,12 @@ public class Indexer extends SubsystemBase {
             set(0.0);
         }, this);
     }
+
+    public Command reverse() {
+        return new StartEndCommand(() -> {
+            set(Constants.SPEED * -1.0);
+        }, () -> {
+            set(0.0);
+        }, this);
+    }
 }
