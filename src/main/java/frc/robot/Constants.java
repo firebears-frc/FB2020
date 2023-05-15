@@ -13,7 +13,34 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final int CONFIG_SET_TIMEOUT_MS = 0; // 0 for no blocking / checking (30 in main branch)
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+  public static class StorageConstants {
+    public static final int INDEX_MOTOR_ID = 12;
+    public static final int ALIGNED_SENSOR_CHANNEL = 0;
+  }
+  public static class ShooterConstants {
+    public static final int SHOOTER_MOTOR_ID = 25;
+    public static final double SHOOTER_SHOOT_SPEED = 1.0;
+    public static final double SHOOTER_IDLE_SPEED = 0.25;
+    public static final int PEAK_CURRENT_LIMIT = 25;
+    public static final int PEAK_CURRENT_DURATION_MS = 3000;
+    public static final int CONTINUOUS_CURRENT_LIMIT = 10;
+  }
+  public static class LoaderConstants {
+    public static final int LEFT_BELT_MOTOR_ID = 20;
+    public static final int RIGHT_BELT_MOTOR_ID = 21;
+    public static final int PEAK_CURRENT_LIMIT = 15;
+    public static final int CONTINUOUS_CURRENT_LIMIT = 10;
+    public static final int PEAK_CURRENT_DURATION_MS = 5000;
+  }
+  public static class AcquisitionConstants {
+    public static final int STARS_MOTOR_ID = 10;
+    public static final int STARS_PEAK_CURRENT_LIMIT = 15;
+    public static final int STARS_PEAK_CURRENT_DURATION_MS = 5000;
+    public static final int STARS_CONTINUOUS_CURRENT_LIMIT = 10;
   }
 }

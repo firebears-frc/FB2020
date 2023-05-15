@@ -5,12 +5,18 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.AcquisitionStart;
+import frc.robot.commands.AcquisitionStop;
+import frc.robot.commands.StorageAdvanceCommand;
+import frc.robot.subsystems.Acquisition;
+import frc.robot.subsystems.Loader;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Storage;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -21,16 +27,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Storage m_storageSubsystem = new Storage();
+  private final Shooter m_shooterSubsystem = new Shooter();
+  private final Loader m_loaderSubsystem = new Loader();
+  private final Acquisition m_acquisitionSubsystem = new Acquisition();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
   }
 
@@ -44,13 +49,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    m_driverController.a()
+      .onTrue(new StorageAdvanceCommand(m_storageSubsystem));
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.x()
+      .onTrue(new InstantCommand(m_shooterSubsystem::shootSpeed, m_shooterSubsystem));
+
+    m_driverController.y()
+      .onTrue(new InstantCommand(m_shooterSubsystem::idleSpeed, m_shooterSubsystem));
+    
+    m_driverController.b()
+      .onTrue(new InstantCommand(m_shooterSubsystem::stop, m_shooterSubsystem));
+
+    m_driverController.rightTrigger()
+      .onTrue(new AcquisitionStart(m_acquisitionSubsystem, m_loaderSubsystem));
+
+    m_driverController.leftTrigger()
+      .onTrue(new AcquisitionStop(m_acquisitionSubsystem, m_loaderSubsystem));
+
+    m_driverController.leftBumper()
+      .onTrue(new InstantCommand(m_loaderSubsystem::reverse, m_loaderSubsystem));
+    
+    m_driverController.rightBumper()
+      .onTrue(new InstantCommand(m_acquisitionSubsystem::reverseAcquire, m_acquisitionSubsystem));
   }
 
   /**
@@ -60,7 +81,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return new WaitCommand(1);
   }
 
   /**
