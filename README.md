@@ -6,9 +6,9 @@ Stop Acquisition - Left trigger
 Reverse Acquisition - Right bumper
 
 Index Storage - A
+ReverseStorage - B
 
 Full Speed Shooter - X
-Idle Shooter - Y
-Stop Shooter - B
+Stop Shooter - Y
 
 Driving - Left Stick

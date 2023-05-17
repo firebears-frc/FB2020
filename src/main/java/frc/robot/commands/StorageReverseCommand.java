@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Storage;
 
-public class StorageAdvanceCommand extends CommandBase {
+public class StorageReverseCommand extends CommandBase {
   
   private Storage storage;
   private boolean hasBeenUnaligned;
-  public StorageAdvanceCommand(Storage s) {
+  public StorageReverseCommand(Storage s) {
     // Use addRequirements() here to declare subsystem dependencies.
     storage = s;
   }
@@ -20,7 +20,7 @@ public class StorageAdvanceCommand extends CommandBase {
   @Override
   public void initialize() {
     hasBeenUnaligned = false;
-    storage.run();
+    storage.reverse();
   }
 
   // Called every time the scheduler runs while the command is scheduled. 

@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AcquisitionStart;
 import frc.robot.commands.AcquisitionStop;
 import frc.robot.commands.StorageAdvanceCommand;
+import frc.robot.commands.StorageReverseCommand;
 import frc.robot.subsystems.Acquisition;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Loader;
@@ -53,14 +54,14 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.a()
       .onTrue(new StorageAdvanceCommand(m_storageSubsystem));
+    
+    m_driverController.b()
+      .onTrue(new StorageReverseCommand(m_storageSubsystem));
 
     m_driverController.x()
       .onTrue(new InstantCommand(m_shooterSubsystem::shootSpeed, m_shooterSubsystem));
 
     m_driverController.y()
-      .onTrue(new InstantCommand(m_shooterSubsystem::idleSpeed, m_shooterSubsystem));
-    
-    m_driverController.b()
       .onTrue(new InstantCommand(m_shooterSubsystem::stop, m_shooterSubsystem));
 
     m_driverController.rightTrigger()

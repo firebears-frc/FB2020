@@ -28,8 +28,11 @@ public class Storage extends SubsystemBase {
     
   }
 
-  public void move() {
+  public void run() {
     indexMotor.set(0.4);
+  }
+  public void reverse() {
+    indexMotor.set(-0.4);
   }
   public void stop() {
     indexMotor.set(0.0);
