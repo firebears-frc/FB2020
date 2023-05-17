@@ -9,6 +9,7 @@ import frc.robot.commands.AcquisitionStart;
 import frc.robot.commands.AcquisitionStop;
 import frc.robot.commands.StorageAdvanceCommand;
 import frc.robot.subsystems.Acquisition;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Loader;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Storage;
@@ -31,6 +32,7 @@ public class RobotContainer {
   private final Shooter m_shooterSubsystem = new Shooter();
   private final Loader m_loaderSubsystem = new Loader();
   private final Acquisition m_acquisitionSubsystem = new Acquisition();
+  private final Drivetrain m_Drivetrain = new Drivetrain();
 
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -72,6 +74,8 @@ public class RobotContainer {
     
     m_driverController.rightBumper()
       .onTrue(new InstantCommand(m_acquisitionSubsystem::reverseAcquire, m_acquisitionSubsystem));
+
+    m_Drivetrain.setDefaultCommand(m_Drivetrain.defaultCommand(m_driverController::getLeftY, m_driverController::getLeftX));
   }
 
   /**
