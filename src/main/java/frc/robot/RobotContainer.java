@@ -39,16 +39,16 @@ public class RobotContainer {
         chassis.setDefaultCommand(chassis.defaultCommand(controller::getLeftY, controller::getLeftX));
 
         // Intake & Feeder
-        controller.leftBumper().whileTrue(intake.intake()).whileTrue(feeder.run());
-        controller.b().whileTrue(intake.reverse()).whileTrue(feeder.reverse());
+        controller.leftTrigger().whileTrue(intake.intake()).whileTrue(feeder.run());
+        controller.leftBumper().whileTrue(intake.reverse()).whileTrue(feeder.reverse());
 
         // Indexer
         controller.a().whileTrue(indexer.run());
-        controller.y().whileTrue(indexer.reverse());
+        controller.b().whileTrue(indexer.reverse());
 
         // Shooter
-        controller.rightBumper().whileTrue(shooter.shoot());
-        controller.x().whileTrue(shooter.reverse());
+        controller.rightTrigger().whileTrue(shooter.shoot());
+        controller.rightBumper().whileTrue(shooter.reverse());
     }
 
     public Command getAutonomousCommand() {
