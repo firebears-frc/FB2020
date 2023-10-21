@@ -4,13 +4,17 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
     private static class Constants {
         public static final int CAN_ID = 12;
+
+        public static final int POSITION_SENSOR_PORT = 0;
 
         public static final double SPEED = 0.4;
 
@@ -20,6 +24,7 @@ public class Indexer extends SubsystemBase {
     }
 
     private final CANSparkMax motor;
+    private final DigitalInput positionSensor;
 
     public Indexer() {
         motor = new CANSparkMax(Constants.CAN_ID, MotorType.kBrushless);
@@ -29,6 +34,8 @@ public class Indexer extends SubsystemBase {
         motor.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         motor.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
+        positionSensor = new DigitalInput(Constants.POSITION_SENSOR_PORT);
+
         motor.burnFlash();
     }
 
@@ -36,9 +43,14 @@ public class Indexer extends SubsystemBase {
         motor.set(speed);
     }
 
-    public Command run() {
+    public Command advance() {
+        return new FunctionalCommand(
+            () -> {
+                set(Constants.SPEED);
+            },
+            () -> {}, null, null, null)
         return new StartEndCommand(() -> {
-            set(Constants.SPEED);
+            
         }, () -> {
             set(0.0);
         }, this);
