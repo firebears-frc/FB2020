@@ -1,11 +1,12 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2023.4.3"
-    id "com.peterabeles.gversion" version "1.10"
+    id "edu.wpi.first.GradleRIO" version "2024.1.1-beta-2"
 }
 
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
@@ -85,6 +86,7 @@ wpi.sim.addDriverstation()
 // knows where to look for our Robot Class.
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    from sourceSets.main.allSource
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
@@ -97,15 +99,4 @@ wpi.java.configureTestTasks(test)
 // Configure string concat to always inline compile
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-XDstringConcat=inline'
-}
-
-// Add git info
-project.compileJava.dependsOn(createVersionFile)
-gversion {
-    srcDir       = "src/main/java/"
-    classPackage = "frc.robot"
-    className    = "BuildConstants"
-    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-    timeZone     = "America/Chicago" // Use preferred time zone
-    indent       = "    "
 }
