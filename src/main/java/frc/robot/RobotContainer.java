@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -25,6 +26,7 @@ public class RobotContainer {
     private final Shooter shooter;
     private final Intake intake;
     private final Feeder feeder;
+    private final Indexer indexer;
 
     private final CommandXboxController controller;
 
@@ -35,6 +37,7 @@ public class RobotContainer {
         shooter = new Shooter();
         intake = new Intake();
         feeder = new Feeder();
+        indexer = new Indexer();
 
         controller = new CommandXboxController(Constants.CONTROLLER_PORT);
 
@@ -54,7 +57,7 @@ public class RobotContainer {
         controller.a()
                 .onTrue(shooter.shoot())
                 .onFalse(shooter.stop());
-        controller.b()
+        controller.x()
                 .onTrue(shooter.reverse())
                 .onFalse(shooter.stop());
 
@@ -72,5 +75,8 @@ public class RobotContainer {
                 .onFalse(Commands.parallel(
                         intake.stop(),
                         feeder.stop()));
+
+        controller.b().onTrue(indexer.advance());
+        controller.y().onFalse(indexer.reverse());
     }
 }
