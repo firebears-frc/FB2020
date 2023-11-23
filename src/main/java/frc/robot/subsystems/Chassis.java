@@ -21,7 +21,7 @@ public class Chassis extends SubsystemBase {
         private static final int FRONT_RIGHT_CAN_ID = 4;
         private static final int REAR_RIGHT_CAN_ID = 5;
 
-        public static final int STALL_CURRENT_LIMIT = 30;
+        public static final int STALL_CURRENT_LIMIT = 40;
         public static final int FREE_CURRENT_LIMIT = 20;
         public static final double SECONDARY_CURRENT_LIMIT = 60.0;
     }
@@ -38,25 +38,25 @@ public class Chassis extends SubsystemBase {
 
     public Chassis() {
         frontLeft.restoreFactoryDefaults();
-        frontLeft.setInverted(true);
+        frontLeft.setInverted(false);
         frontLeft.setIdleMode(IdleMode.kCoast);
         frontLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         rearLeft.restoreFactoryDefaults();
-        rearLeft.setInverted(true);
+        rearLeft.setInverted(false);
         rearLeft.setIdleMode(IdleMode.kCoast);
         rearLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         rearLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         frontRight.restoreFactoryDefaults();
-        frontRight.setInverted(true);
+        frontRight.setInverted(false);
         frontRight.setIdleMode(IdleMode.kCoast);
         frontRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
         rearRight.restoreFactoryDefaults();
-        rearRight.setInverted(true);
+        rearRight.setInverted(false);
         rearRight.setIdleMode(IdleMode.kCoast);
         rearRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         rearRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);

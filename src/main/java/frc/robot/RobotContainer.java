@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     private static final class Constants {
@@ -16,12 +17,21 @@ public class RobotContainer {
         private static final int PDP_CAN_ID = 1;
     }
 
-    private final PowerDistribution pdp = new PowerDistribution(Constants.PDP_CAN_ID,
-            PowerDistribution.ModuleType.kCTRE);
-    private final Chassis chassis = new Chassis();
-    private final CommandXboxController controller = new CommandXboxController(Constants.CONTROLLER_PORT);
+    private final PowerDistribution pdp;
+
+    private final Chassis chassis;
+    private final Shooter shooter;
+
+    private final CommandXboxController controller;
 
     public RobotContainer() {
+        pdp = new PowerDistribution(Constants.PDP_CAN_ID, PowerDistribution.ModuleType.kCTRE);
+
+        chassis = new Chassis();
+        shooter = new Shooter();
+
+        controller = new CommandXboxController(Constants.CONTROLLER_PORT);
+
         configureBindings();
     }
 
@@ -34,5 +44,12 @@ public class RobotContainer {
 
     private void configureBindings() {
         chassis.setDefaultCommand(chassis.defaultCommand(this::getChassisSpeeds));
+
+        controller.a()
+                .onTrue(shooter.shoot())
+                .onFalse(shooter.stop());
+        controller.b()
+                .onTrue(shooter.reverse())
+                .onFalse(shooter.stop());
     }
 }
