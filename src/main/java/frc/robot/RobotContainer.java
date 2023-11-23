@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -21,8 +22,9 @@ public class RobotContainer {
     private final PowerDistribution pdp;
 
     private final Chassis chassis;
-    private final Intake intake;
     private final Shooter shooter;
+    private final Intake intake;
+    private final Feeder feeder;
 
     private final CommandXboxController controller;
 
@@ -30,8 +32,9 @@ public class RobotContainer {
         pdp = new PowerDistribution(Constants.PDP_CAN_ID, PowerDistribution.ModuleType.kCTRE);
 
         chassis = new Chassis();
-        intake = new Intake();
         shooter = new Shooter();
+        intake = new Intake();
+        feeder = new Feeder();
 
         controller = new CommandXboxController(Constants.CONTROLLER_PORT);
 
@@ -57,13 +60,17 @@ public class RobotContainer {
 
         controller.leftTrigger()
                 .onTrue(Commands.parallel(
-                        intake.intake()))
+                        intake.run(),
+                        feeder.run()))
                 .onFalse(Commands.parallel(
-                        intake.stop()));
+                        intake.stop(),
+                        feeder.stop()));
         controller.leftBumper()
                 .onTrue(Commands.parallel(
-                        intake.reverse()))
+                        intake.reverse(),
+                        feeder.reverse()))
                 .onFalse(Commands.parallel(
-                        intake.stop()));
+                        intake.stop(),
+                        feeder.stop()));
     }
 }

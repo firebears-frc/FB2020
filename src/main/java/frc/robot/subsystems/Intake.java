@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
         motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
     }
 
-    public Command intake() {
+    public Command run() {
         return runOnce(() -> motor.set(Constants.SPEED));
     }
 
