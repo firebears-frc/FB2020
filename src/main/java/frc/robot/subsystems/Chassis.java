@@ -26,40 +26,45 @@ public class Chassis extends SubsystemBase {
         public static final double SECONDARY_CURRENT_LIMIT = 60.0;
     }
 
-    private final CANSparkMax frontLeft = new CANSparkMax(Constants.FRONT_LEFT_CAN_ID, MotorType.kBrushless);
-    private final CANSparkMax rearLeft = new CANSparkMax(Constants.REAR_LEFT_CAN_ID, MotorType.kBrushless);
-    private final CANSparkMax frontRight = new CANSparkMax(Constants.FRONT_RIGHT_CAN_ID, MotorType.kBrushless);
-    private final CANSparkMax rearRight = new CANSparkMax(Constants.REAR_RIGHT_CAN_ID, MotorType.kBrushless);
-    private final MotorControllerGroup left = new MotorControllerGroup(frontLeft, rearLeft);
-    private final MotorControllerGroup right = new MotorControllerGroup(frontRight, rearRight);
-    private final DifferentialDrive drive = new DifferentialDrive(left, right);
+    private final CANSparkMax frontLeft, rearLeft, frontRight, rearRight;
+    private final MotorControllerGroup left, right;
+    private final DifferentialDrive drive;
 
-    private ChassisSpeeds target = new ChassisSpeeds();
+    @AutoLogOutput
+    private ChassisSpeeds targetSpeeds = new ChassisSpeeds();
 
     public Chassis() {
+        frontLeft = new CANSparkMax(Constants.FRONT_LEFT_CAN_ID, MotorType.kBrushless);
         frontLeft.restoreFactoryDefaults();
         frontLeft.setInverted(false);
         frontLeft.setIdleMode(IdleMode.kCoast);
         frontLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
+        rearLeft = new CANSparkMax(Constants.REAR_LEFT_CAN_ID, MotorType.kBrushless);
         rearLeft.restoreFactoryDefaults();
         rearLeft.setInverted(false);
         rearLeft.setIdleMode(IdleMode.kCoast);
         rearLeft.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         rearLeft.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
+        frontRight = new CANSparkMax(Constants.FRONT_RIGHT_CAN_ID, MotorType.kBrushless);
         frontRight.restoreFactoryDefaults();
         frontRight.setInverted(false);
         frontRight.setIdleMode(IdleMode.kCoast);
         frontRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         frontRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
 
+        rearRight = new CANSparkMax(Constants.REAR_RIGHT_CAN_ID, MotorType.kBrushless);
         rearRight.restoreFactoryDefaults();
         rearRight.setInverted(false);
         rearRight.setIdleMode(IdleMode.kCoast);
         rearRight.setSmartCurrentLimit(Constants.STALL_CURRENT_LIMIT, Constants.FREE_CURRENT_LIMIT);
         rearRight.setSecondaryCurrentLimit(Constants.SECONDARY_CURRENT_LIMIT);
+
+        left = new MotorControllerGroup(frontLeft, rearLeft);
+        right = new MotorControllerGroup(frontRight, rearRight);
+        drive = new DifferentialDrive(left, right);
 
         frontLeft.burnFlash();
         rearLeft.burnFlash();
@@ -68,18 +73,12 @@ public class Chassis extends SubsystemBase {
     }
 
     private void drive(ChassisSpeeds speeds) {
-        target = speeds;
+        targetSpeeds = speeds;
 
         drive.arcadeDrive(speeds.vxMetersPerSecond, speeds.omegaRadiansPerSecond, false);
-    }
-
-    @AutoLogOutput
-    public ChassisSpeeds targetSpeeds() {
-        return target;
     }
 
     public Command defaultCommand(Supplier<ChassisSpeeds> supplier) {
         return run(() -> drive(supplier.get()));
     }
 }
-
