@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,18 @@ public class Intake extends SubsystemBase {
         motor.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
         motor.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
         motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
+
+        // https://v5.docs.ctr-electronics.com/en/stable/ch18_CommonAPI.html#setting-status-frame-periods
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 20);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_4_AinTempVbat, 20);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_8_PulseWidth, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_14_Turn_PIDF1, 1000);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_21_FeedbackIntegrated, 1000);
 
         speed = 0.0;
     }
