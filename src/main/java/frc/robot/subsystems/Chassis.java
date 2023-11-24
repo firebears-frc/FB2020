@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -70,6 +71,36 @@ public class Chassis extends SubsystemBase {
         rearLeft.burnFlash();
         frontRight.burnFlash();
         rearRight.burnFlash();
+
+        // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 20);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
+        frontLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 20);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
+        rearLeft.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 20);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
+        frontRight.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 20);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
+        rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
     }
 
     private void drive(ChassisSpeeds speeds) {

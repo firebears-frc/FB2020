@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +36,15 @@ public class Indexer extends SubsystemBase {
         positionSensor = new DigitalInput(Constants.POSITION_SENSOR_PORT);
 
         motor.burnFlash();
+
+        // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 20);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 20);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 20);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 1000);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
+        motor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
     }
 
     public Command advance() {
