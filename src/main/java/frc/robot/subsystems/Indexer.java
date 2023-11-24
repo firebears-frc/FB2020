@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,6 +27,9 @@ public class Indexer extends SubsystemBase {
     private final CANSparkMax motor;
     private final DigitalInput positionSensor;
 
+    @AutoLogOutput(key = "Indexer/Speed")
+    private double speed;
+
     public Indexer() {
         motor = new CANSparkMax(Constants.CAN_ID, MotorType.kBrushless);
         motor.restoreFactoryDefaults();
@@ -45,13 +50,25 @@ public class Indexer extends SubsystemBase {
         motor.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
         motor.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
         motor.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
+
+        speed = 0.0;
+    }
+
+    @AutoLogOutput(key = "Indexer/Sensor")
+    private boolean sensor() {
+        return positionSensor.get();
     }
 
     public Command advance() {
-        return runEnd(() -> motor.set(Constants.SPEED), () -> motor.set(0.0)).until(positionSensor::get);
+        return runEnd(() -> speed = Constants.SPEED, () -> speed = 0.0).until(this::sensor);
     }
 
     public Command reverse() {
-        return runEnd(() -> motor.set(-Constants.SPEED), () -> motor.set(0.0)).until(positionSensor::get);
+        return runEnd(() -> speed = -Constants.SPEED, () -> speed = 0.0).until(this::sensor);
+    }
+
+    @Override
+    public void periodic() {
+        motor.set(speed);
     }
 }

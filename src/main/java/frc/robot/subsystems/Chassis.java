@@ -31,8 +31,8 @@ public class Chassis extends SubsystemBase {
     private final MotorControllerGroup left, right;
     private final DifferentialDrive drive;
 
-    @AutoLogOutput
-    private ChassisSpeeds targetSpeeds = new ChassisSpeeds();
+    @AutoLogOutput(key = "Chassis/Target")
+    private ChassisSpeeds targetSpeeds;
 
     public Chassis() {
         frontLeft = new CANSparkMax(Constants.FRONT_LEFT_CAN_ID, MotorType.kBrushless);
@@ -101,15 +101,16 @@ public class Chassis extends SubsystemBase {
         rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus4, 1000);
         rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 1000);
         rearRight.setPeriodicFramePeriod(PeriodicFrame.kStatus6, 1000);
-    }
 
-    private void drive(ChassisSpeeds speeds) {
-        targetSpeeds = speeds;
-
-        drive.arcadeDrive(speeds.vxMetersPerSecond, speeds.omegaRadiansPerSecond, false);
+        targetSpeeds = new ChassisSpeeds();
     }
 
     public Command defaultCommand(Supplier<ChassisSpeeds> supplier) {
-        return run(() -> drive(supplier.get()));
+        return run(() -> targetSpeeds = supplier.get());
+    }
+
+    @Override
+    public void periodic() {
+        drive.arcadeDrive(targetSpeeds.vxMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
     }
 }

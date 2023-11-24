@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -20,6 +21,9 @@ public class Shooter extends SubsystemBase {
 
     private final WPI_TalonSRX motor;
 
+    @AutoLogOutput(key = "Shooter/Speed")
+    private double speed;
+
     public Shooter() {
         motor = new WPI_TalonSRX(Constants.CAN_ID);
         motor.configFactoryDefault();
@@ -28,21 +32,24 @@ public class Shooter extends SubsystemBase {
         motor.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
         motor.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
         motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
-    }
 
-    private void set(double speed) {
-        motor.set(ControlMode.PercentOutput, speed);
+        speed = 0.0;
     }
 
     public Command shoot() {
-        return runOnce(() -> set(Constants.SPEED));
+        return runOnce(() -> speed = Constants.SPEED);
     }
 
     public Command reverse() {
-        return runOnce(() -> set(-Constants.SPEED));
+        return runOnce(() -> speed = -Constants.SPEED);
     }
 
     public Command stop() {
-        return runOnce(() -> set(0.0));
+        return runOnce(() -> speed = 0.0);
+    }
+
+    @Override
+    public void periodic() {
+        motor.set(speed);
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -22,6 +24,9 @@ public class Feeder extends SubsystemBase {
     private final WPI_TalonSRX leftMotor, rightMotor;
     private final MotorControllerGroup motors;
 
+    @AutoLogOutput(key = "Feeder/Speed")
+    private double speed;
+
     public Feeder() {
         leftMotor = new WPI_TalonSRX(Constants.LEFT_CAN_ID);
         leftMotor.configFactoryDefault();
@@ -40,17 +45,24 @@ public class Feeder extends SubsystemBase {
         rightMotor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
 
         motors = new MotorControllerGroup(leftMotor, rightMotor);
+
+        speed = 0.0;
     }
 
     public Command run() {
-        return runOnce(() -> motors.set(Constants.SPEED));
+        return runOnce(() -> speed = Constants.SPEED);
     }
 
     public Command reverse() {
-        return runOnce(() -> motors.set(-Constants.SPEED));
+        return runOnce(() -> speed = -Constants.SPEED);
     }
 
     public Command stop() {
-        return runOnce(() -> motors.set(0.0));
+        return runOnce(() -> speed = 0.0);
+    }
+
+    @Override
+    public void periodic() {
+        motors.set(speed);
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,6 +21,9 @@ public class Intake extends SubsystemBase {
 
     private final WPI_TalonSRX motor;
 
+    @AutoLogOutput(key = "Intake/Speed")
+    private double speed;
+
     public Intake() {
         motor = new WPI_TalonSRX(Constants.CAN_ID);
         motor.configFactoryDefault();
@@ -27,17 +32,24 @@ public class Intake extends SubsystemBase {
         motor.configPeakCurrentLimit(Constants.PEAK_CURRENT_LIMIT);
         motor.configPeakCurrentDuration(Constants.PEAK_CURRENT_DURATION);
         motor.configContinuousCurrentLimit(Constants.CONTINUOUS_CURRENT_LIMIT);
+
+        speed = 0.0;
     }
 
     public Command run() {
-        return runOnce(() -> motor.set(Constants.SPEED));
+        return runOnce(() -> speed = Constants.SPEED);
     }
 
     public Command reverse() {
-        return runOnce(() -> motor.set(-Constants.SPEED));
+        return runOnce(() -> speed = -Constants.SPEED);
     }
 
     public Command stop() {
-        return runOnce(() -> motor.set(0.0));
+        return runOnce(() -> speed = 0.0);
+    }
+
+    @Override
+    public void periodic() {
+        motor.set(speed);
     }
 }
