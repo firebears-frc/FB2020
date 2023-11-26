@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Feeder extends SubsystemBase {
-    private static class Constants {
+    private static final class Constants {
         public static final int LEFT_CAN_ID = 20;
         public static final int RIGHT_CAN_ID = 21;
 

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
-    private static class Constants {
+    private static final class Constants {
         public static final int CAN_ID = 12;
 
         public static final int POSITION_SENSOR_PORT = 0;

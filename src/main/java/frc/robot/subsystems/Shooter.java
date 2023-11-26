@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
-    private static class Constants {
+    private static final class Constants {
         public static final int CAN_ID = 25;
 
         public static final double SPEED = 1.0;
