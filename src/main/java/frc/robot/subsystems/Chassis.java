@@ -44,10 +44,7 @@ public class Chassis extends SubsystemBase {
         frontRight = new CANSparkMax(Constants.FRONT_RIGHT_CAN_ID, MotorType.kBrushless);
         rearRight = new CANSparkMax(Constants.REAR_RIGHT_CAN_ID, MotorType.kBrushless);
 
-        Constants.CONFIG.apply(frontLeft);
-        Constants.CONFIG.apply(rearLeft);
-        Constants.CONFIG.apply(frontRight);
-        Constants.CONFIG.apply(rearRight);
+        Constants.CONFIG.apply(frontLeft, rearLeft, frontRight, rearRight);
 
         left = new MotorControllerGroup(frontLeft, rearLeft);
         right = new MotorControllerGroup(frontRight, rearRight);

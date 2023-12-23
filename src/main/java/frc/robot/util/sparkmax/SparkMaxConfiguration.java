@@ -62,4 +62,10 @@ public class SparkMaxConfiguration {
         }
         Util.burnFlash(motor);
     }
+
+    public void apply(CANSparkMax... motors) {
+        for (CANSparkMax motor : motors) {
+            apply(motor);
+        }
+    }
 }

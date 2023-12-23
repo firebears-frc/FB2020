@@ -24,4 +24,10 @@ public class TalonSRXConfiguration {
         currentLimits.apply(motor);
         statusFrames.apply(motor);
     }
+
+    public void apply(WPI_TalonSRX... motors) {
+        for (WPI_TalonSRX motor : motors) {
+            apply(motor);
+        }
+    }
 }
