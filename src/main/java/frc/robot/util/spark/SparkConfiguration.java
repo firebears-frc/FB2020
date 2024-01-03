@@ -1,11 +1,11 @@
-package frc.robot.util.sparkmax;
+package frc.robot.util.spark;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.MotorFeedbackSensor;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
-public class SparkMaxConfiguration {
+public class SparkConfiguration {
     private final boolean inverted;
     private final IdleMode idleMode;
     private final CurrentLimitConfiguration currentLimits;
@@ -14,7 +14,7 @@ public class SparkMaxConfiguration {
     private final FeedbackConfiguration feedback;
     private final FollowingConfiguration following;
 
-    public SparkMaxConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
+    public SparkConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
             StatusFrameConfiguration statusFrames) {
         this.inverted = inverted;
         this.idleMode = idleMode;
@@ -25,7 +25,7 @@ public class SparkMaxConfiguration {
         this.following = null;
     }
 
-    public SparkMaxConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
+    public SparkConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
             StatusFrameConfiguration statusFrames, ClosedLoopConfiguration closedLoop, FeedbackConfiguration feedback) {
         this.inverted = inverted;
         this.idleMode = idleMode;
@@ -36,7 +36,7 @@ public class SparkMaxConfiguration {
         this.following = null;
     }
 
-    public SparkMaxConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
+    public SparkConfiguration(boolean inverted, IdleMode idleMode, CurrentLimitConfiguration currentLimits,
             StatusFrameConfiguration statusFrames, FollowingConfiguration following) {
         this.inverted = inverted;
         this.idleMode = idleMode;
@@ -47,14 +47,14 @@ public class SparkMaxConfiguration {
         this.following = following;
     }
 
-    public void apply(CANSparkMax motor) {
+    public void apply(CANSparkBase motor) {
         Util.configure(motor::restoreFactoryDefaults, false, "restoreFactoryDefaults");
         Util.configureAndVerify(motor::setInverted, motor::getInverted, inverted, "inverted");
         Util.configureCheckAndVerify(motor::setIdleMode, motor::getIdleMode, idleMode, "idleMode");
         currentLimits.apply(motor);
         statusFrames.apply(motor);
         if (closedLoop != null && feedback != null) {
-            SparkMaxPIDController pid = closedLoop.apply(motor);
+            SparkPIDController pid = closedLoop.apply(motor);
             MotorFeedbackSensor sensor = feedback.apply(motor);
             pid.setFeedbackDevice(sensor);
         } else if (following != null) {
@@ -63,8 +63,8 @@ public class SparkMaxConfiguration {
         Util.burnFlash(motor);
     }
 
-    public void apply(CANSparkMax... motors) {
-        for (CANSparkMax motor : motors) {
+    public void apply(CANSparkBase... motors) {
+        for (CANSparkBase motor : motors) {
             apply(motor);
         }
     }

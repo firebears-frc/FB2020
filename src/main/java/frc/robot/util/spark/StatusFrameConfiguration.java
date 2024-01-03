@@ -1,13 +1,13 @@
-package frc.robot.util.sparkmax;
+package frc.robot.util.spark;
 
 import java.util.Map;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
 
 public interface StatusFrameConfiguration {
     // https://docs.revrobotics.com/sparkmax/operating-modes/control-interfaces#periodic-status-frames
-    public void apply(CANSparkMax motor);
+    public void apply(CANSparkBase motor);
 
     public static StatusFrameConfiguration normal() {
         return new StatusFrameConfiguration() {
@@ -21,7 +21,7 @@ public interface StatusFrameConfiguration {
                     PeriodicFrame.kStatus6, 1000);
 
             @Override
-            public void apply(CANSparkMax motor) {
+            public void apply(CANSparkBase motor) {
                 StatusFrameConfiguration.apply(motor, NORMAL_FRAME_CONFIGURATION);
             }
         };
@@ -39,7 +39,7 @@ public interface StatusFrameConfiguration {
                     PeriodicFrame.kStatus6, 1000);
 
             @Override
-            public void apply(CANSparkMax motor) {
+            public void apply(CANSparkBase motor) {
                 StatusFrameConfiguration.apply(motor, ABSOLUTE_ENCODER_CONFIGURATION);
             }
         };
@@ -57,13 +57,13 @@ public interface StatusFrameConfiguration {
                     PeriodicFrame.kStatus6, 1000);
 
             @Override
-            public void apply(CANSparkMax motor) {
+            public void apply(CANSparkBase motor) {
                 StatusFrameConfiguration.apply(motor, LEADING_ABSOLUTE_ENCODER_CONFIGURATION);
             }
         };
     }
 
-    private static void apply(CANSparkMax motor, Map<PeriodicFrame, Integer> periods) {
+    private static void apply(CANSparkBase motor, Map<PeriodicFrame, Integer> periods) {
         for (Map.Entry<PeriodicFrame, Integer> entry : periods.entrySet()) {
             Util.configure(period -> motor.setPeriodicFramePeriod(entry.getKey(), entry.getValue()), entry.getValue(),
                     entry.getKey().name());

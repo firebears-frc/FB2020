@@ -1,7 +1,7 @@
-package frc.robot.util.sparkmax;
+package frc.robot.util.spark;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkBase;
+import com.revrobotics.SparkPIDController;
 
 public class ClosedLoopConfiguration {
     private final double p, i, d, ff;
@@ -38,8 +38,8 @@ public class ClosedLoopConfiguration {
         this.maxIAccum = maxIAccum;
     }
 
-    public SparkMaxPIDController apply(CANSparkMax motor) {
-        SparkMaxPIDController pid = motor.getPIDController();
+    public SparkPIDController apply(CANSparkBase motor) {
+        SparkPIDController pid = motor.getPIDController();
         Util.configureCheckAndVerify(pid::setP, pid::getP, p, "p");
         Util.configureCheckAndVerify(pid::setI, pid::getI, i, "i");
         Util.configureCheckAndVerify(pid::setD, pid::getD, d, "d");

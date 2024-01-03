@@ -3,15 +3,15 @@ package frc.robot.subsystems;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.sparkmax.CurrentLimitConfiguration;
-import frc.robot.util.sparkmax.SparkMaxConfiguration;
-import frc.robot.util.sparkmax.StatusFrameConfiguration;
+import frc.robot.util.spark.CurrentLimitConfiguration;
+import frc.robot.util.spark.SparkConfiguration;
+import frc.robot.util.spark.StatusFrameConfiguration;
 
 public class Indexer extends SubsystemBase {
     private static final class Constants {
@@ -21,7 +21,7 @@ public class Indexer extends SubsystemBase {
 
         public static final double SPEED = 0.4;
 
-        public static final SparkMaxConfiguration CONFIG = new SparkMaxConfiguration(
+        public static final SparkConfiguration CONFIG = new SparkConfiguration(
                 false,
                 IdleMode.kBrake,
                 CurrentLimitConfiguration.complex(20, 10, 10, 25.0),

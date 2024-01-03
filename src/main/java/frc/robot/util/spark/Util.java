@@ -1,10 +1,10 @@
-package frc.robot.util.sparkmax;
+package frc.robot.util.spark;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.REVLibError;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -57,10 +57,10 @@ public class Util {
         DriverStation.reportWarning("Failed to set parameter '" + name + "'", true);
     }
 
-    static void burnFlash(CANSparkMax sparkMax) {
+    static void burnFlash(CANSparkBase spark) {
         Timer.delay(Constants.PRE_FLASH_DELAY);
-        if (sparkMax.burnFlash() != REVLibError.kOk) {
-            DriverStation.reportWarning("Failed to burn flash", true);
+        if (spark.burnFlash() != REVLibError.kOk) {
+            DriverStation.reportWarning("Failed to burn flash on " + spark.getDeviceId(), true);
             return;
         }
         Timer.delay(Constants.POST_FLASH_DELAY);

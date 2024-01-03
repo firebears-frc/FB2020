@@ -5,17 +5,17 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.sparkmax.CurrentLimitConfiguration;
-import frc.robot.util.sparkmax.SparkMaxConfiguration;
-import frc.robot.util.sparkmax.StatusFrameConfiguration;
+import frc.robot.util.spark.CurrentLimitConfiguration;
+import frc.robot.util.spark.SparkConfiguration;
+import frc.robot.util.spark.StatusFrameConfiguration;
 
 public class Chassis extends SubsystemBase {
     private static final class Constants {
@@ -24,7 +24,7 @@ public class Chassis extends SubsystemBase {
         private static final int FRONT_RIGHT_CAN_ID = 4;
         private static final int REAR_RIGHT_CAN_ID = 5;
 
-        public static final SparkMaxConfiguration CONFIG = new SparkMaxConfiguration(
+        public static final SparkConfiguration CONFIG = new SparkConfiguration(
                 false,
                 IdleMode.kCoast,
                 CurrentLimitConfiguration.complex(40, 20, 10, 60.0),

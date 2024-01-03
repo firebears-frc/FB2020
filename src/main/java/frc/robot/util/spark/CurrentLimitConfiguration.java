@@ -1,14 +1,14 @@
-package frc.robot.util.sparkmax;
+package frc.robot.util.spark;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase;
 
 public interface CurrentLimitConfiguration {
-    public void apply(CANSparkMax motor);
+    public void apply(CANSparkBase motor);
 
     public static CurrentLimitConfiguration simple(int smartLimit, double secondaryLimit) {
         return new CurrentLimitConfiguration() {
             @Override
-            public void apply(CANSparkMax motor) {
+            public void apply(CANSparkBase motor) {
                 Util.configure(motor::setSmartCurrentLimit, smartLimit, "smartCurrentLimit");
                 Util.configure(motor::setSecondaryCurrentLimit, secondaryLimit, "secondaryCurrentLimit");
             }
@@ -19,7 +19,7 @@ public interface CurrentLimitConfiguration {
             double secondaryLimit) {
         return new CurrentLimitConfiguration() {
             @Override
-            public void apply(CANSparkMax motor) {
+            public void apply(CANSparkBase motor) {
                 Util.configure(ignored -> motor.setSmartCurrentLimit(stallLimit, freeLimit, rpmCutoff), this,
                         "smartCurrentLimit");
                 Util.configure(motor::setSecondaryCurrentLimit, secondaryLimit, "secondaryCurrentLimit");
