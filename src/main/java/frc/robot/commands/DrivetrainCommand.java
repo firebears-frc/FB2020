@@ -4,9 +4,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 
-public class DrivetrainCommand extends CommandBase {
+public class DrivetrainCommand extends Command {
   /** Creates a new DrivetrainCommand. */
   public DrivetrainCommand() {
     // Use addRequirements() here to declare subsystem dependencies.

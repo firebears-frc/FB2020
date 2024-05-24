@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Storage;
 
-public class StorageAdvanceCommand extends CommandBase {
+public class StorageAdvanceCommand extends Command {
   
   private Storage storage;
   private boolean hasBeenUnaligned;

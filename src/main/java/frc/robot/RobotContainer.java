@@ -87,15 +87,4 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return new WaitCommand(1);
   }
-
-  /**
-   * Display the git info on the dashboard via network tables
-   */
-  private void displayGitInfo() {
-    final NetworkTable table = NetworkTableInstance.getDefault().getTable("Build Info");
-    table.getEntry("Branch Name").setValue(BuildConstants.GIT_BRANCH);
-    table.getEntry("Commit Hash (Short)").setValue(BuildConstants.GIT_SHA.substring(0, 8));
-    table.getEntry("Commit Hash (Full)").setValue(BuildConstants.GIT_SHA);
-    table.getEntry("Build Time").setValue(BuildConstants.BUILD_DATE);
-  }
 }
